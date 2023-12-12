@@ -2,8 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 
-public class Player {
+
+public class Player implements MouseListener{
 
     private int x, y;
     private int width, height; // hitbox
@@ -14,10 +16,13 @@ public class Player {
 
 
     public Player(int x, int y, int width, int height) {
+        addMouseListener(this);
         this.x = x;
         this.y = y;
         this.width  = width;
         this.height = height;
+        this.vx = 0; this.vy = 2;
+
     }
 
     public void move() {
@@ -32,7 +37,6 @@ public class Player {
     public Rectangle getSpriteBound() {
         return new Rectangle(x, y, width2, height2);
     }
-
 
 
     public void draw(Graphics g) {
@@ -61,7 +65,6 @@ public class Player {
     }
 
 
-
     public void setVX(int vx) {
         this.vx = vx;
     }
@@ -74,9 +77,7 @@ public class Player {
         return width;
     }
 
-    public int getHeight() {
-        return height;
-    }
+    public int getHeight() {return height;}
 
     public int getX() {
         return x;
@@ -93,6 +94,13 @@ public class Player {
     public int getVY() {
         return vy;
     }
+    public void mousePressed(MouseEvent e) {}
+    public void	mouseClicked(MouseEvent e){}
 
+    public void	mouseEntered(MouseEvent e){}
+
+    public void	mouseExited(MouseEvent e){}
+    public void	mouseReleased(MouseEvent e) {
+    }
 
 }

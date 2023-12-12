@@ -26,6 +26,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void move() {
+        player.move();
 
     }
 
@@ -59,7 +60,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mouseReleased(MouseEvent e) {
-
     }
 
     public void mouseMoved(MouseEvent e) {

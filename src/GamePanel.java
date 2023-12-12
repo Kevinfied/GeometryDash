@@ -11,6 +11,8 @@ import java.util.Set;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
+
+    Player player;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
     public GamePanel() {
         setFocusable(true);
@@ -18,6 +20,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         requestFocus();
         timer = new Timer(1000/60, this);
         timer.start();
+
+        player = new Player(100, 100, 50, 50);
+
     }
 
     public void move() {
@@ -75,5 +80,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Graphics2D g2d = (Graphics2D)(g);
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 800, 600);
+
+        player.drawHitbox(g2d);
+        player.drawSpriteBound(g2d);
     }
 }

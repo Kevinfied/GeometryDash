@@ -9,7 +9,6 @@ public class Main extends JFrame {
 
     GamePanel geometryDash = new GamePanel();
 
-
     public Main() {
 
         super("Geometry Dash");

@@ -17,6 +17,8 @@ public class Main extends JFrame {
         add(geometryDash);
         setVisible(true);
 
+
+        
     }
 
     public static void main(String[] args) {

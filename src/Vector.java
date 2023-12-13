@@ -1,3 +1,8 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
 public class Vector {
     private double x;
     private double y;

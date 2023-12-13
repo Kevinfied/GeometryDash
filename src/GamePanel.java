@@ -21,7 +21,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         timer = new Timer(1000/60, this);
         timer.start();
 
-        player = new Player(100, 100, 50, 50);
+        player = new Player(400, 400, 50, 50);
 
     }
 
@@ -46,6 +46,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void mouseClicked(MouseEvent e) {
 
+
     }
     public void mouseEntered(MouseEvent e) {
 
@@ -56,6 +57,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mousePressed(MouseEvent e) {
+        if (player.getGamemode() == "cube") {
+            player.move();
+            player.thrust();
+        }
+
 
     }
 
@@ -80,8 +86,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Graphics2D g2d = (Graphics2D)(g);
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 800, 600);
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(100, 400, 300, 300);
 
-        player.drawHitbox(g2d);
-        player.drawSpriteBound(g2d);
+
+        player.draw(g2d);
+//        player.drawHitbox(g2d);
+//        player.drawSpriteBound(g2d);
     }
 }

@@ -11,7 +11,10 @@ public class Player{
     private double x, y;
     private int width, height; // hitbox
     private int width2, height2; // sprite
-    private Vector pos, velocity, acceleration, gravity;
+    private double gravity = 1;
+    private double velocity =0;
+//    private Vector pos, velocity, acceleration, gravity;
+    private int floor=325;
 
     private int vx, vy;
     private double rotation;
@@ -22,17 +25,10 @@ public class Player{
 
     private Image icon;
     public Player(double x, double y, int width, int height) {
-
+        this.y=y;
         this.x = x;
-        this.y = y;
         this.width  = width;
         this.height = height;
-
-
-        this.pos = new Vector(x, y);
-        this.velocity = new Vector( 0, 0);
-        this.gravity=new Vector (0, 0.1);
-        this.acceleration=new Vector (2, -2);
         this.gamemode = "cube";
         this.inAir = false;
 
@@ -40,37 +36,43 @@ public class Player{
     }
 
     public void move() {
-        velocity.add(gravity);
-        pos.add(velocity);
+
+            y += velocity;
+            velocity += gravity;
 
     }
+    public void fallCheck() {
+        if ( y > floor ) {
+            y = floor;
+            velocity = 0;
+            System.out.println(y);
+        }
+    }
+
 
     public void thrust() {
-        velocity.add(acceleration);
+            velocity = -20;
     }
 
     public Rectangle getHitbox() {
-
-        return new Rectangle((int) pos.getX(), (int) pos.getY(), width, height);
+        return new Rectangle((int) x, (int) y, width, height);
     }
 
     public Rectangle getSpriteBound() {
-        return new Rectangle((int) pos.getX(), (int) pos.getY(), width2, height2);
+        return new Rectangle((int) x, (int) y, width2, height2);
     }
 
 
     public void draw(Graphics g) {
-//        g.setColor(Color.RED);
-//        g.fillRect((int) pos.getX(), (int) pos.getY(), width, height);
 
-        g.drawImage(icon, (int) pos.getX(), (int) pos.getY(), width, height, null);
+        g.drawImage(icon, (int) x, (int) y, width, height, null);
 
         drawHitbox(g);
     }
 
     public void drawHitbox(Graphics g) {
         g.setColor(Color.RED);
-        g.drawRect((int) pos.getX() - (height/2), (int) pos.getY() - (height/2), width, height);
+        g.drawRect((int) x - (height/2), (int) y - (height/2), width, height);
     }
 
 

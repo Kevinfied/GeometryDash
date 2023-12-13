@@ -17,16 +17,18 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public GamePanel() {
         setFocusable(true);
         addKeyListener(this);
+        addMouseListener(this);
         requestFocus();
         timer = new Timer(1000/60, this);
         timer.start();
 
-        player = new Player(400, 400, 50, 50);
+        player = new Player(400, 350, 50, 50);
 
     }
 
     public void move() {
         player.move();
+        player.fallCheck();
 
     }
 
@@ -45,7 +47,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mouseClicked(MouseEvent e) {
-
+        System.out.println("hi");
 
     }
     public void mouseEntered(MouseEvent e) {
@@ -57,8 +59,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mousePressed(MouseEvent e) {
+        System.out.println("mouse down");
         if (player.getGamemode() == "cube") {
-            player.move();
             player.thrust();
         }
 
@@ -87,7 +89,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 800, 600);
         g2d.setColor(Color.WHITE);
-        g2d.fillRect(100, 400, 300, 300);
+        g2d.fillRect(100, 350, 300, 300);
 
 
         player.draw(g2d);

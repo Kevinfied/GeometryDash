@@ -13,7 +13,12 @@ public class Player{
     private int width2, height2; // sprite
     private double gravity = 1;
     private double velocity =0;
-//    private Vector pos, velocity, acceleration, gravity;
+
+
+    private Vector location;
+    private Vector Gravity = new Vector(0, 1);
+    private Vector initV = new Vector(0, 0);
+
     private int floor=325;
 
     private int vx, vy;
@@ -25,27 +30,32 @@ public class Player{
 
     private Image icon;
     public Player(double x, double y, int width, int height) {
+        this.gamemode = "cube";
         this.y=y;
         this.x = x;
         this.width  = width;
         this.height = height;
-        this.gamemode = "cube";
         this.inAir = false;
+
+        this.location = new Vector(x, y);
 
         this.icon = new ImageIcon("assets/icons/Cube001.png").getImage();
     }
 
     public void move() {
-
             y += velocity;
             velocity += gravity;
+            fallCheck();
+
+            if( y < floor) {
+                x += 2;
+            }
 
     }
     public void fallCheck() {
         if ( y > floor ) {
             y = floor;
             velocity = 0;
-            System.out.println(y);
         }
     }
 

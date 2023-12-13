@@ -22,13 +22,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         timer = new Timer(1000/60, this);
         timer.start();
 
-        player = new Player(400, 350, 50, 50);
+        player = new Player(0, 350, 50, 50);
 
     }
 
     public void move() {
         player.move();
-        player.fallCheck();
 
     }
 

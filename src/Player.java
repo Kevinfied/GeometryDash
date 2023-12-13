@@ -61,7 +61,9 @@ public class Player{
 
 
     public void thrust() {
+        if( y == floor) {
             velocity = -20;
+        }
     }
 
     public Rectangle getHitbox() {

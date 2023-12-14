@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import javax.swing.*;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
@@ -14,6 +15,10 @@ public class Player{
     private double g = 2;
     private double vy =0;
 
+//    private double rotation = Math.toRadians(45);
+    double locX = width/2;
+    double locY = height/2;
+//    AffineTransform tx = AffineTransform.getRotateInstance(rotation, locX, locY);
 
     private int floor=325;
 

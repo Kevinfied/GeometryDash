@@ -23,7 +23,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         requestFocus();
         timer = new Timer(1000/60, this);
         player = new Player(0, 350, 50, 50);
-        background = new ImageIcon("assets/backgrounds/background1.png").getImage();
+        background = new ImageIcon("assets/background/background1.png").getImage();
 
 
 

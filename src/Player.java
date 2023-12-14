@@ -11,17 +11,13 @@ public class Player{
     private double x, y;
     private int width, height; // hitbox
     private int width2, height2; // sprite
-    private double gravity = 1;
-    private double velocity =0;
+    private double g = 2;
+    private double vy =0;
 
-
-    private Vector location;
-    private Vector Gravity = new Vector(0, 1);
-    private Vector initV = new Vector(0, 0);
 
     private int floor=325;
 
-    private int vx, vy;
+    private int vx;
     private double rotation;
 
     private String gamemode;
@@ -48,18 +44,17 @@ public class Player{
         this.height = height;
         this.inAir = false;
 
-        this.location = new Vector(x, y);
-
         this.icon = new ImageIcon("assets/icons/Cube001.png").getImage();
+
     }
 
     public void move() {
-            y += velocity;
-            velocity += gravity;
+            y += vy;
+            vy += g;
             fallCheck();
 
             if( y < floor) {
-                x += 4;
+                x += 5;
             }
 
 
@@ -67,14 +62,14 @@ public class Player{
     public void fallCheck() {
         if ( y > floor ) {
             y = floor;
-            velocity = 0;
+            vy = 0;
         }
     }
 
 
     public void thrust() {
         if( y == floor) {
-            velocity = -20;
+            vy = -30;
         }
     }
 
@@ -128,7 +123,7 @@ public class Player{
     public double getX() {return x;}
     public double getY() {return y;}
     public int getVX() {return vx;}
-    public int getVY() {return vy;}
+    public double getVY() {return vy;}
 
     public String getGamemode() {
         return gamemode;

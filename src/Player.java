@@ -29,6 +29,17 @@ public class Player{
     private boolean inAir;
 
     private Image icon;
+
+    private Point[] pointsOutline;
+
+    // point a = (a + 2cos((pi/4)-R), b + 2sin((pi/4)-R))
+    // point b = (a + 2cos(-(pi/4)-R), b + 2sin(-(pi/4)-R))
+    // point c = (a - 2cos((pi/4)-R), b - 2sin((pi/4)-R))
+    // point d = (a - 2cos(-(pi/4)-R), b - 2sin(-(pi/4)-R))
+
+    private Point outlinePA, outlinePB, outlinePC, outlinePD;
+
+
     public Player(double x, double y, int width, int height) {
         this.gamemode = "cube";
         this.y=y;
@@ -48,8 +59,9 @@ public class Player{
             fallCheck();
 
             if( y < floor) {
-                x += 2;
+                x += 4;
             }
+
 
     }
     public void fallCheck() {
@@ -74,6 +86,11 @@ public class Player{
         return new Rectangle((int) x, (int) y, width2, height2);
     }
 
+    public Polygon getOutline() {
+        return new Polygon(new int[] {(int) outlinePA.getX(), (int) outlinePB.getX(), (int) outlinePC.getX(), (int) outlinePD.getX()},
+                new int[] {(int) outlinePA.getY(), (int) outlinePB.getY(), (int) outlinePC.getY(), (int) outlinePD.getY()}, 4);
+    }
+
 
     public void draw(Graphics g) {
 
@@ -88,15 +105,18 @@ public class Player{
     }
 
 
+
+
 //    public void drawSpriteBound(Graphics g) {
 //        g.setColor(Color.GREEN);
 //        g.drawRect((int) pos.getX(), (int) pos.getY(), width2, height2);
 //    }
 
-
     public void setX(int x) {
         this.x = x;
     }
+
+
     public void setY(int y) {
         this.y = y;
     }

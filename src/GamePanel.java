@@ -85,10 +85,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D)(g);
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, 800, 600);
         g2d.setColor(Color.WHITE);
-        g2d.fillRect(100, 350, 300, 300);
+        g2d.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+
+
+        Graphics ground = (Graphics2D)(g);
+        ground.setColor(Color.BLUE);
+        ground.fillRect(0, 325+player.getHeight()/2, Globals.SCREEN_WIDTH, 1);
+
 
 
         player.draw(g2d);

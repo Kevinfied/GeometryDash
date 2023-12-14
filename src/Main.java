@@ -13,12 +13,12 @@ public class Main extends JFrame {
 
         super("Geometry Dash");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
         add(geometryDash);
         setVisible(true);
 
 
-        
+
     }
 
     public static void main(String[] args) {

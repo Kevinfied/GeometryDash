@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
@@ -24,14 +27,9 @@ public class Player{
 
     private boolean inAir;
 
-    private Image icon;
+    private BufferedImage icon;
 
     private Point[] pointsOutline;
-
-    // point a = (a + 2cos((pi/4)-R), b + 2sin((pi/4)-R))
-    // point b = (a + 2cos(-(pi/4)-R), b + 2sin(-(pi/4)-R))
-    // point c = (a - 2cos((pi/4)-R), b - 2sin((pi/4)-R))
-    // point d = (a - 2cos(-(pi/4)-R), b - 2sin(-(pi/4)-R))
 
     private Point outlinePA, outlinePB, outlinePC, outlinePD;
 
@@ -43,8 +41,19 @@ public class Player{
         this.width  = width;
         this.height = height;
         this.inAir = false;
+        //"assets/icons/Cube001.png"
 
-        this.icon = new ImageIcon("assets/icons/Cube001.png").getImage();
+
+        this.icon = Util.loadBuffImage("assets/icons/Cube001.png");
+
+    }
+
+    public void rotate(){
+        double radians = Math.toRadians(45);
+        double sin = Math.abs(Math.sin(radians));
+        double cos = Math.abs(Math.cos(radians));
+        int newWidth = (int) Math.round(icon.getWidth() * cos );
+        double rotationPX = width/2;
     }
 
     public void move() {

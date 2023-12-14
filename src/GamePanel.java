@@ -8,6 +8,14 @@ import java.util.*;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.imageio.*;
+import java.awt.image.*;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
@@ -55,7 +63,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mouseClicked(MouseEvent e) {
-        System.out.println("hi");
+//        System.out.println("hi");
 
     }
     public void mouseEntered(MouseEvent e) {

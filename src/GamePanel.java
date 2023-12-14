@@ -13,6 +13,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Timer timer;
 
     Player player;
+
+    Image background;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
     public GamePanel() {
         setFocusable(true);
@@ -20,10 +22,17 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
         timer = new Timer(1000/60, this);
-        timer.start();
-
         player = new Player(0, 350, 50, 50);
+        background = new ImageIcon("assets/backgrounds/background1.png").getImage();
 
+
+
+
+
+
+
+
+        timer.start();
     }
 
     public void move() {
@@ -85,12 +94,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D)(g);
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+//        g2d.setColor(Color.WHITE);
+//        g2d.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+        g2d.drawImage(background, 0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT, null);
 
 
         Graphics ground = (Graphics2D)(g);
-        ground.setColor(Color.BLUE);
+        ground.setColor(Color.WHITE);
         ground.fillRect(0, 325+player.getHeight()/2, Globals.SCREEN_WIDTH, 1);
 
 

@@ -45,7 +45,6 @@ public class Player{
         this.inAir = false;
 
         this.icon = new ImageIcon("assets/icons/Cube001.png").getImage();
-
     }
 
     public void move() {
@@ -56,8 +55,6 @@ public class Player{
             if( y < floor) {
                 x += 5;
             }
-
-
     }
     public void fallCheck() {
         if ( y > floor ) {
@@ -89,7 +86,7 @@ public class Player{
 
     public void draw(Graphics g) {
 
-        g.drawImage(icon, (int) x, (int) y, width, height, null);
+        g.drawImage(icon, (int)x-width/2, (int)y-height/2, width, height, null);
 
         drawHitbox(g);
     }

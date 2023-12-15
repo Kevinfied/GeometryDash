@@ -59,15 +59,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void keyTyped(KeyEvent e) {
-
     }
 
     public void mouseClicked(MouseEvent e) {
-//        System.out.println("hi");
-
     }
     public void mouseEntered(MouseEvent e) {
-
     }
 
     public void mouseExited(MouseEvent e) {

@@ -31,22 +31,21 @@ public class Player{
     private double vx = 5;
     private double initY = -30;
 
-    double locX = width/2;
-    double locY = height/2;
+    double locX = (double) width/2;
+    double locY = (double) height/2;
 
-    private int floor=325;
 
     // rotation
     private double angle = 0;
-    private double jumpRotate = (double) ( -Math.PI * g ) / ( 4 * initY ); // add to angle when jump
+    private double jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump
 
-    private double ang = 0;
 
     private String gamemode;
+    private int floor=325;
 
     private boolean inAir;
 
-    private BufferedImage icon;
+    private final BufferedImage icon;
 
     private Point[] pointsOutline;
 
@@ -64,7 +63,7 @@ public class Player{
 
         this.inAir = false;
 
-        this.icon = Util.resize(Util.loadBuffImage("assets/icons/Cube001.png"), width, height);
+        this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
 
     }
 
@@ -111,19 +110,15 @@ public class Player{
 
 
     public void draw(Graphics g) {
-        System.out.println("angle: "+ angle);
-
         g.setColor(new Color(110,110,222));
-//        g.fillRect(0,0,800,600);
-//        g.drawImage(icon, (int)x-width/2, (int)y-height/2, width, height, null);
-//        drawHitbox(g);
+        drawHitbox(g);
 
         AffineTransform rot = new AffineTransform();
 
         rot.rotate(angle,(double) width/2,(double) height/2);
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
-        // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR
-        Graphics2D g2D = (Graphics2D)g; 														// NEAREST_NEIGHBOR is fastest but lowest quality
+        // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
+        Graphics2D g2D = (Graphics2D)g;
         g2D.drawImage(icon,rotOp,(int)x-width/2,(int)y-height/2);
 
         drawHitbox(g);
@@ -135,18 +130,8 @@ public class Player{
     }
 
 
-
-
-//    public void drawSpriteBound(Graphics g) {
-//        g.setColor(Color.GREEN);
-//        g.drawRect((int) pos.getX(), (int) pos.getY(), width2, height2);
-//    }
-
     public void setX(int x) { this.x = x;}
-
-    public void setY(int y) {
-        this.y = y;
-    }
+    public void setY(int y) { this.y = y; }
     public void setVX(int vx) { this.vx = vx; }
     public void setVY(int vy) { this.vy = vy; }
 
@@ -158,8 +143,6 @@ public class Player{
     public double getVY() {return vy;}
 
     public String getGamemode() { return gamemode; }
-
-    public void setGamemode(String e) { gamemode = e;
-    }
+    public void setGamemode(String e) { gamemode = e;}
 
 }

@@ -1,20 +1,8 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.imageio.*;
-import java.awt.image.*;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 
 
 public class Player{
@@ -28,7 +16,7 @@ public class Player{
     // vector
     private double g = 2; //gravity
     private double vy = 0;
-    private double vx = 5;
+    private double vx = 4;
     private double initY = -30;
 
     double locX = (double) width/2;
@@ -41,11 +29,12 @@ public class Player{
 
 
     private String gamemode;
-    private int floor=325;
+    private int floor=400;
 
     private boolean inAir;
 
     private final BufferedImage icon;
+    boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
     private Point[] pointsOutline;
 
@@ -88,8 +77,13 @@ public class Player{
 
 
     public void thrust() {
-        if( y == floor) {
-            vy = initY; //initial velocity added
+        if( gamemode == "cube" ) {
+            if (y == floor) {
+                vy = initY; //initial velocity added
+            }
+        }
+        if( gamemode == "ship" ) {
+            vy = initY;
         }
     }
 
@@ -102,8 +96,7 @@ public class Player{
     }
 
     public Polygon getOutline() {
-        return new Polygon(new int[]
-                {(int) outlinePA.getX(), (int) outlinePB.getX(), (int) outlinePC.getX(), (int) outlinePD.getX()},
+        return new Polygon(new int[]{(int) outlinePA.getX(), (int) outlinePB.getX(), (int) outlinePC.getX(), (int) outlinePD.getX()},
                 new int[] {(int) outlinePA.getY(), (int) outlinePB.getY(), (int) outlinePC.getY(), (int) outlinePD.getY()},
                 4);
     }
@@ -129,6 +122,9 @@ public class Player{
         g.drawRect((int) x - (height/2), (int) y - (height/2), width, height);
     }
 
+    public String getGamemode() { return gamemode; }
+    public void setGamemode(String e) { gamemode = e;}
+
 
     public void setX(int x) { this.x = x;}
     public void setY(int y) { this.y = y; }
@@ -141,8 +137,10 @@ public class Player{
     public double getY() {return y;}
     public double getVX() {return vx;}
     public double getVY() {return vy;}
+    public void setInitY( int n ) { initY = n;}
+    public void setJumpRotate(){
+        jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump
+    }
 
-    public String getGamemode() { return gamemode; }
-    public void setGamemode(String e) { gamemode = e;}
 
 }

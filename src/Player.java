@@ -112,7 +112,7 @@ public class Player{
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         Graphics2D g2D = (Graphics2D)g;
-        g2D.drawImage(icon,rotOp,(int)x-width/2,(int)y-height/2);
+        g2D.drawImage(icon,rotOp,(int)300-width/2,(int)y-height/2);
 
         drawHitbox(g);
     }

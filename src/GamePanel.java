@@ -3,7 +3,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.util.ArrayList;
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
     Player player;
@@ -11,11 +11,17 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
+
+    ArrayList<Solid> solids = new ArrayList<Solid>();
     public GamePanel() {
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
         requestFocus();
+        Solid s1 = new Solid(300, 400, "solid");
+        Solid s2 = new Solid(400, 400, "solid");
+        Solid s3 = new Solid(500, 400, "solid");
+        solids.add(s1); solids.add(s2); solids.add(s3);
         timer = new Timer(1000/60, this);
         player = new Player(25, 400, 50, 50);
         background = new ImageIcon("assets/background/background1.png").getImage();
@@ -32,9 +38,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void move() {
-        player.move();
+        player.move(solids);
         if(mouseDown) {
             player.thrust();
+        }
+
+        for(Solid s: solids) {
+            s.collide(player.getHitbox());
         }
     }
 
@@ -63,6 +73,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         ground.fillRect(0, 400+player.getHeight()/2, Globals.SCREEN_WIDTH, 1);
 
         player.draw(g2d);
+        for(Solid s: solids) {
+            s.draw(g2d);
+        }
 
     }
 

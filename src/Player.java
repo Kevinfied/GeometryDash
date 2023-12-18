@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 
 public class Player{
@@ -19,8 +20,8 @@ public class Player{
     private double vx = 4;
     private double initY = -30;
 
-    double locX = (double) width/2;
-    double locY = (double) height/2;
+//    double locX = (double) width/2;
+//    double locY = (double) height/2;
 
 
     // rotation
@@ -57,18 +58,18 @@ public class Player{
     }
 
 
-    public void move() {
+    public void move(ArrayList<Solid> solids) {
         y += vy;
         vy += g;
-        fallCheck();
-        if( y < floor) {
+        fallCheck(solids);
+        if(y < floor) {
             x += vx;
             angle += jumpRotate;
         }
     }
 
 
-    public void fallCheck() {
+    public void fallCheck(ArrayList<Solid> solids ) {
         if ( y > floor ) {
             y = floor;
             vy = 0;
@@ -88,7 +89,7 @@ public class Player{
     }
 
     public Rectangle getHitbox() {
-        return new Rectangle((int) x, (int) y, width, height);
+        return new Rectangle((int)x - width/2, (int) y - height/2, width, height);
     }
 
     public Rectangle getSpriteBound() {

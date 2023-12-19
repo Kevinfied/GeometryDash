@@ -57,17 +57,21 @@ public class Player{
 
 
     public void move(ArrayList<Solid> solids) {
+        py = y;
+        px = x;
         y += vy;
         vy += g;
 
         for (Solid s : solids) {
-            if (willLand(s)){
-                y = s.getY() - height ;
-                vy = 0;
-                onSurface = true;
-                return;
-            }
-            s.collide(this.getHitbox());
+//            if (willLand(s)){
+//                y = s.getY() - height ;
+//                vy = 0;
+//                onSurface = true;
+//                System.out.println("collide1");
+//                return;
+//            }
+//            s.collide(this.getHitbox());
+            collideSolid(s);
         }
 
         onGround();
@@ -79,17 +83,72 @@ public class Player{
         }
     }
 
+    public void collideSolid(Solid solid) {
+        Rectangle solidHitbox = solid.getRect();
+        int solidBottom = (int)solid.getY()+solid.getHeight();
+        int playerBottom = (int)getY()+getHeight();
+        if (getHitbox().intersects(solidHitbox)) {
+            System.out.println("collide");
+
+            if (!getPrevHitboxX().intersects(solidHitbox)) {
+                System.out.println("collideX");
+                System.out.println("DIES");
+                dies();
+                return;
+            }
+
+            if (!getPrevHitboxY().intersects(solidHitbox)) {
+                System.out.println("collideY");
+
+                // if top, dies
+                // if bottom, lands on solid and survives
+                if (playerBottom > solidBottom) {
+
+                    System.out.println("NOOOO");
+                    System.out.println("collideYtop");
+                    System.out.println("DIES");
+                    dies();
+                    return;
+                }
+                else {
+                    System.out.println("collideYbottom");
+
+                    y = solid.getY() - height;
+                    vy = 0;
+                    onSurface = true;
+                }
+
+            }
+
+        }
+
+    }
+
+    public void collideHazard(Hazard hazard) {
+        Rectangle hazardHitbox = hazard.getRect();
+        if (getHitbox().intersects(hazardHitbox)) {
+            dies();
+        }
+    }
+
 
     public boolean willLand(Solid s) {
         return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
     }
 
     public void onGround() {
-        if ( y + width > floor ) {
+        if (y + width > floor) {
             y = floor - width;
             vy = 0;
             onSurface = true;
         }
+    }
+
+    public void dies(){
+        y = 400;
+        vy = 0;
+        x = 25;
+        onSurface = true;
     }
 
 
@@ -142,6 +201,16 @@ public class Player{
 
     public String getGamemode() { return gamemode; }
     public void setGamemode(String e) { gamemode = e;}
+
+    public Rectangle getPrevHitboxY() {
+        return new Rectangle((int) x, (int)py, width, height);
+    }
+
+    public Rectangle getPrevHitboxX() {
+        return new Rectangle((int) px, (int) y, width, height);
+    }
+
+
 
 
     public void setX(int x) { this.x = x;}

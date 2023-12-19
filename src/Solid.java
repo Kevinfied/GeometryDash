@@ -26,36 +26,44 @@ public class Solid {
 
     }
 
-    public void collide(Rectangle rectangle) {
-        int playerX = (int)(rectangle.getX() + width/2);
-        int playerY = (int)(rectangle.getY() + height/2);
-        int distX = Math.abs(playerX - x);
-        int distY = Math.abs(playerY - y);
-
-        if (rectangle.intersects(getRect())) {
-
-            if (distX > distY) { // survives. landed on top of the solid
-                if (playerX > x) {
-                    rectangle.setLocation((int)(rectangle.getX() + distX - distY), (int)rectangle.getY());
-                }
-
-                else {
-                    rectangle.setLocation((int)(rectangle.getX() - distX + distY), (int)rectangle.getY());
-                }
-            }
-            else { // dies. hit the side of the solid
-                if (playerY > y) {
-                    rectangle.setLocation((int)rectangle.getX(), (int)(rectangle.getY() + distY - distX));
-                }
-
-                else {
-                    rectangle.setLocation((int)rectangle.getX(), (int)(rectangle.getY() - distY + distX));
-                }
-
-//                dies();
-            }
+    public void collide(Player player) {
+        Rectangle playerHitbox = player.getHitbox();
+        if (playerHitbox.intersects(getRect())) {
+            System.out.println("collide");
 
         }
+//        int playerX = (int)(rectangle.getX() + width/2);
+//        int playerY = (int)(rectangle.getY() + height/2);
+//        int distX = Math.abs(playerX - x);
+//        int distY = Math.abs(playerY - y);
+//        if (rectangle.intersects(getRect())) {
+//            System.out.println("collide");
+//            if (distX > distY) { // survives. landed on top of the solid
+//                if (playerX > x) {
+//                    rectangle.setLocation((int)(rectangle.getX() + distX - distY), (int)rectangle.getY());
+//                }
+//
+//                else {
+//                    rectangle.setLocation((int)(rectangle.getX() - distX + distY), (int)rectangle.getY());
+//                }
+//
+//                System.out.println("collide");
+//
+//            }
+//            else { // dies. hit the side of the solid
+//                if (playerY > y) {
+//                    rectangle.setLocation((int)rectangle.getX(), (int)(rectangle.getY() + distY - distX));
+//                }
+//
+//                else {
+//                    rectangle.setLocation((int)rectangle.getX(), (int)(rectangle.getY() - distY + distX));
+//                }
+//                System.out.println("dies");
+////                dies();
+//            }
+//
+//        }
+
     }
 
 

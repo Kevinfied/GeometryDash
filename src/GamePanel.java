@@ -21,7 +21,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Solid s1 = new Solid(300, 400, "solid");
         Solid s2 = new Solid(400, 400, "solid");
         Solid s3 = new Solid(500, 400, "solid");
-        solids.add(s1); solids.add(s2); solids.add(s3);
+        Solid s4 = new Solid(500, 140, "solid");
+        solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
         timer = new Timer(1000/60, this);
         player = new Player(25, 400, 50, 50);
         background = new ImageIcon("assets/background/background1.png").getImage();
@@ -44,8 +45,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
         for(Solid s: solids) {
-            s.collide(player.getHitbox());
+//            s.collide(player.getHitbox());
+            player.collideSolid(s);
         }
+
     }
 
     public void changeGamemode() {

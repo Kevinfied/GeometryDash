@@ -69,6 +69,12 @@ public class Solid {
 
     }
 
+    public double getX() { return x;}
+    public double getY() { return y;}
+    public int getWidth() {return width;}
+    public int getHeight() {return height;}
+
+
 
 
 

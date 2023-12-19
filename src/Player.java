@@ -35,6 +35,7 @@ public class Player{
 
     private final BufferedImage icon;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
+    public boolean onSurface = true;
 
     private Point[] pointsOutline;
 
@@ -58,32 +59,50 @@ public class Player{
     public void move(ArrayList<Solid> solids) {
         y += vy;
         vy += g;
-        Ground(solids);
-        if(y + width < floor) {
+
+        for (Solid s : solids) {
+            if (willLand(s)){
+                y = s.getY() - height ;
+                vy = 0;
+                onSurface = true;
+                return;
+            }
+            s.collide(this.getHitbox());
+        }
+
+        onGround();
+//
+        if(!onSurface) {
             x += vx;
             angle += jumpRotate;
+            onSurface = false;
         }
-        System.out.println(y+width);
     }
 
 
-    public void Ground(ArrayList<Solid> solids ) {
+    public boolean willLand(Solid s) {
+        return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
+    }
+
+    public void onGround() {
         if ( y + width > floor ) {
             y = floor - width;
             vy = 0;
+            onSurface = true;
         }
     }
 
 
     public void thrust() {
         if( gamemode == "cube" ) {
-            if (y + width == floor) {
-                vy = initY; //initial velocity added
+            if (onSurface) {
+                vy = initY; //initial y-velocity when jumping
             }
         }
         if( gamemode == "ship" ) {
             vy = initY;
         }
+        onSurface = false;
     }
 
     public Rectangle getHitbox() {

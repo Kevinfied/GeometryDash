@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Player{
     // hit box
     private double x, y;
+    private double px, py;
     private int width, height;
 
     // sprite
@@ -30,9 +31,7 @@ public class Player{
 
 
     private String gamemode;
-    private int floor=400;
-
-    private boolean inAir;
+    private int floor=450;
 
     private final BufferedImage icon;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
@@ -51,8 +50,6 @@ public class Player{
         this.width  = width;
         this.height = height;
 
-        this.inAir = false;
-
         this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
 
     }
@@ -61,17 +58,18 @@ public class Player{
     public void move(ArrayList<Solid> solids) {
         y += vy;
         vy += g;
-        fallCheck(solids);
-        if(y < floor) {
+        Ground(solids);
+        if(y + width < floor) {
             x += vx;
             angle += jumpRotate;
         }
+        System.out.println(y+width);
     }
 
 
-    public void fallCheck(ArrayList<Solid> solids ) {
-        if ( y > floor ) {
-            y = floor;
+    public void Ground(ArrayList<Solid> solids ) {
+        if ( y + width > floor ) {
+            y = floor - width;
             vy = 0;
         }
     }
@@ -79,7 +77,7 @@ public class Player{
 
     public void thrust() {
         if( gamemode == "cube" ) {
-            if (y == floor) {
+            if (y + width == floor) {
                 vy = initY; //initial velocity added
             }
         }
@@ -89,7 +87,7 @@ public class Player{
     }
 
     public Rectangle getHitbox() {
-        return new Rectangle((int)x - width/2, (int) y - height/2, width, height);
+        return new Rectangle((int) x, (int) y, width, height);
     }
 
     public Rectangle getSpriteBound() {
@@ -113,14 +111,14 @@ public class Player{
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         Graphics2D g2D = (Graphics2D)g;
-        g2D.drawImage(icon,rotOp,(int)300-width/2,(int)y-height/2);
+        g2D.drawImage(icon,rotOp,(int)x,(int)y);
 
         drawHitbox(g);
     }
 
     public void drawHitbox(Graphics g) {
         g.setColor(Color.RED);
-        g.drawRect((int) x - (height/2), (int) y - (height/2), width, height);
+        g.drawRect((int) x, (int) y , width, height);
     }
 
     public String getGamemode() { return gamemode; }

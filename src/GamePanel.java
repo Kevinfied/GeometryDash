@@ -70,7 +70,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         Graphics ground = (Graphics2D)(g);
         ground.setColor(Color.WHITE);
-        ground.fillRect(0, 400+player.getHeight()/2, Globals.SCREEN_WIDTH, 1);
+        ground.fillRect(0, 400+player.getHeight(), Globals.SCREEN_WIDTH, 1);
 
         player.draw(g2d);
         for(Solid s: solids) {
@@ -86,6 +86,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         //give mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
+        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
     }
 
     public void mouseReleased(MouseEvent e) {

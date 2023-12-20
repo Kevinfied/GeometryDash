@@ -9,6 +9,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Timer timer;
     Player player;
     Image background;
+    public double stationaryX;
 
     boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
@@ -25,7 +26,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Solid s4 = new Solid(500, 140, "solid");
         solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
         timer = new Timer(1000/60, this);
-        player = new Player(25, 400, 50, 50);
+        double stationaryX = 100;
+        player = new Player(stationaryX, 400, 50, 50);
         background = new ImageIcon("assets/background/background1.png").getImage();
 //        BufferedImage lev1_map = Util.loadBuffImage("map1.png ");
         Level lvl1 = new Level("assets/mapMaking/map1.png");
@@ -83,8 +85,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         ground.fillRect(0, 400+player.getHeight(), Globals.SCREEN_WIDTH, 1);
 
         player.draw(g2d);
+        int offset = (int) (stationaryX - player.getX());
         for(Solid s: solids) {
-            s.draw(g2d);
+            s.draw(g2d, offset);
         }
 
     }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Player{
     // hit box
     private double x, y;
+    private double constantX;
     private double px, py;
     private int width, height;
 
@@ -47,6 +48,7 @@ public class Player{
 
         this.y=y;
         this.x = x;
+        this.constantX = x;
 
         this.width  = width;
         this.height = height;
@@ -77,11 +79,13 @@ public class Player{
         onGround();
 //
         if(!onSurface) {
-            x += vx;
+//            x += vx;
             angle += jumpRotate;
             onSurface = false;
         }
+        x += vx;
     }
+
 
     public void collideSolid(Solid solid) {
         Rectangle solidHitbox = solid.getRect();
@@ -189,7 +193,7 @@ public class Player{
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         Graphics2D g2D = (Graphics2D)g;
-        g2D.drawImage(icon,rotOp,(int)x,(int)y);
+        g2D.drawImage(icon,rotOp,(int)constantX,(int)y);
 
         drawHitbox(g);
     }

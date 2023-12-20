@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
     Player player;
@@ -26,7 +27,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         timer = new Timer(1000/60, this);
         player = new Player(25, 400, 50, 50);
         background = new ImageIcon("assets/background/background1.png").getImage();
+//        BufferedImage lev1_map = Util.loadBuffImage("map1.png ");
+        Level lvl1 = new Level("assets/mapMaking/map1.png");
+        lvl1.loadMap();
 
+//        System.out.print(lvl1.getMapArr().toString());
+
+        lvl1.asciiPrint();
 
 
         timer.start();

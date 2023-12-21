@@ -58,11 +58,21 @@ public class Player{
         }
 
         onGround();
+        if(onSurface){
+            int floorR =(int)  (angle / (Math.PI /2 ));
+            if(angle % (Math.PI /2) != 0){
+                angle += 0.1;
+            }
+            if(angle > floorR) {
+                angle = floorR * (Math.PI /2 );
+            }
+        }
         if(!onSurface) {
             angle += jumpRotate;
             onSurface = false;
         }
         x += vx;
+        angle  = angle % (Math.PI);
     }
 
 

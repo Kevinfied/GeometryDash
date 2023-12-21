@@ -17,10 +17,10 @@ public class Player{
     private int width2, height2;
 
     // vector
-    private double g = 2; //gravity
+    private double g = 3; //gravity
     private double vy = 0;
-    private double vx = 4;
-    private double initY = -30;
+    private double vx = 10;
+    private double initY = -32;
 
 //    double locX = (double) width/2;
 //    double locY = (double) height/2;
@@ -32,7 +32,7 @@ public class Player{
 
 
     private String gamemode;
-    private int floor=450;
+//    private int floor=450;
 
     private final BufferedImage icon;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
@@ -141,8 +141,8 @@ public class Player{
     }
 
     public void onGround() {
-        if (y + width > floor) {
-            y = floor - width;
+        if (y + width > Globals.floor) {
+            y = Globals.floor - width;
             vy = 0;
             onSurface = true;
         }

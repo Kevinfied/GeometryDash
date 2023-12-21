@@ -1,11 +1,11 @@
 import java.awt.image.BufferedImage;
-
+import java.util.*;
 
 public class Level {
     String map;
     private BufferedImage pic;
     private int w, h;
-    Solid[][] solids;
+    ArrayList<Solid> solids;
     int[][] mapArr;
     // constructor
     public Level(String map) {
@@ -15,7 +15,7 @@ public class Level {
         h = pic.getHeight();
         System.out.printf("width: %d\n", w);
         System.out.printf("height: %d\n", h);
-        solids = new Solid[w][h];
+        solids = new ArrayList<Solid>();
         mapArr = new int[w][h];
     }
 
@@ -44,9 +44,21 @@ public class Level {
 //        return map;
     }
 
-    public void makeMap(int[][] level, int w, int h) {
+    public void makeMap() {
+        // ground is 400
+        // 7 from the bottom is the ground in mapArr
 
-        Solid[][] solids = new Solid[w][h];
+        // h * 50 = bottom
+
+        // h - y
+        for (int y=0; y<h; y++) {
+            for (int x=0; x<w; x++) {
+                if (mapArr[x][y] == 1) {
+                    Solid s = new Solid(x*50, Globals.floor - ((h-y-7) * 50) - 50, "solid");
+                    solids.add(s);
+                }
+            }
+        }
 
 
 //        for (int i=0; i<w; i)
@@ -62,7 +74,8 @@ public class Level {
     }
 
 
-    public Solid[][] getSolids() {
+    public ArrayList<Solid> getSolids() {
+
         return solids;
     }
 

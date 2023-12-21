@@ -9,6 +9,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Timer timer;
     Player player;
     Image background;
+    ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     public double stationaryX;
 
     boolean mouseDown = false;
@@ -26,13 +27,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Solid s4 = new Solid(500, 140, "solid");
         solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
         timer = new Timer(1000/60, this);
-        double stationaryX = 100;
+        double stationaryX = 0;
         player = new Player(stationaryX, 400, 50, 50);
         background = new ImageIcon("assets/background/background1.png").getImage();
 //        BufferedImage lev1_map = Util.loadBuffImage("map1.png ");
         Level lvl1 = new Level("assets/mapMaking/map1.png");
         lvl1.loadMap();
-
+        lvl1.makeMap();
+        lvl1solids = lvl1.getSolids();
 //        System.out.print(lvl1.getMapArr().toString());
 
         lvl1.asciiPrint();
@@ -55,6 +57,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         for(Solid s: solids) {
 //            s.collide(player.getHitbox());
+            player.collideSolid(s);
+        }
+        for (Solid s: lvl1solids) {
             player.collideSolid(s);
         }
 
@@ -89,6 +94,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for(Solid s: solids) {
             s.draw(g2d, offset);
         }
+
+        for (Solid s: lvl1solids) {
+            s.draw(g2d, offset);
+
+            System.out.println(s.getY());
+        }
+
+
 
     }
 

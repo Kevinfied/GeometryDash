@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 public class Solid {
 
     private int x, y;
-    private int width = 50;
-    private int height = 50;
+    public static int width = 75;
+    public static int height = 75;
 
     private String type;
 
@@ -77,7 +77,7 @@ public class Solid {
         g.drawRect(x, y, width, height);
         Rectangle d = getRect();
 //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
-        g.fillRect(x+offset, y, width, height);
+        g.fillRect(x+offset+100, y, width, height);
 //        d.translate(offset, 0);
 //        g2d.draw(d);
 

@@ -54,7 +54,7 @@ public class Level {
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {
                 if (mapArr[x][y] == 1) {
-                    Solid s = new Solid(x*50, Globals.floor - ((h-y-7) * 50) - 50, "solid");
+                    Solid s = new Solid(x*Solid.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height, "solid");
                     solids.add(s);
                 }
             }

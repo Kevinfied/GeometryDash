@@ -17,9 +17,9 @@ public class Player{
     private int width2, height2;
 
     // vector
-    private double g = 3; //gravity
+    private double g = 4.5; //gravity
     private double vy = 0;
-    private double vx = 10;
+    private double vx = 15;
     private double initY = -32;
 
 //    double locX = (double) width/2;
@@ -38,15 +38,11 @@ public class Player{
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
     public boolean onSurface = true;
 
-    private Point[] pointsOutline;
-
-    private Point outlinePA, outlinePB, outlinePC, outlinePD;
-
 
     public Player(double x, double y, int width, int height) {
         this.gamemode = "cube";
 
-        this.y=y;
+        this.y = y;
         this.x = x;
         this.constantX = x;
 
@@ -65,21 +61,11 @@ public class Player{
         vy += g;
 
         for (Solid s : solids) {
-//            if (willLand(s)){
-//                y = s.getY() - height ;
-//                vy = 0;
-//                onSurface = true;
-//                System.out.println("collide1");
-//                return;
-//            }
-//            s.collide(this.getHitbox());
             collideSolid(s);
         }
 
         onGround();
-//
         if(!onSurface) {
-//            x += vx;
             angle += jumpRotate;
             onSurface = false;
         }
@@ -151,13 +137,13 @@ public class Player{
     public void dies(){
         y = 400;
         vy = 0;
-        x = 25;
+        x = constantX;
         onSurface = true;
     }
 
 
     public void thrust() {
-        if( gamemode == "cube" ) {
+        if (gamemode == "cube" ) {
             if (onSurface) {
                 vy = initY; //initial y-velocity when jumping
             }
@@ -172,15 +158,6 @@ public class Player{
         return new Rectangle((int) x, (int) y, width, height);
     }
 
-    public Rectangle getSpriteBound() {
-        return new Rectangle((int) x, (int) y, width2, height2);
-    }
-
-    public Polygon getOutline() {
-        return new Polygon(new int[]{(int) outlinePA.getX(), (int) outlinePB.getX(), (int) outlinePC.getX(), (int) outlinePD.getX()},
-                new int[] {(int) outlinePA.getY(), (int) outlinePB.getY(), (int) outlinePC.getY(), (int) outlinePD.getY()},
-                4);
-    }
 
 
     public void draw(Graphics g) {

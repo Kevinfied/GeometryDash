@@ -21,22 +21,20 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addKeyListener(this);
         addMouseListener(this);
         requestFocus();
-        Solid s1 = new Solid(300, 400, "solid");
-        Solid s2 = new Solid(400, 400, "solid");
-        Solid s3 = new Solid(500, 400, "solid");
-        Solid s4 = new Solid(500, 140, "solid");
-        solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
+//        Solid s1 = new Solid(300, 400, "solid");
+//        Solid s2 = new Solid(400, 400, "solid");
+//        Solid s3 = new Solid(500, 400, "solid");
+//        Solid s4 = new Solid(500, 140, "solid");
+//        solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
         timer = new Timer(1000/60, this);
-        double stationaryX = 0;
-        player = new Player(stationaryX, 400, 50, 50);
+        double stationaryX = 300;
+        player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
         background = new ImageIcon("assets/background/background1.png").getImage();
-//        BufferedImage lev1_map = Util.loadBuffImage("map1.png ");
+
         Level lvl1 = new Level("assets/mapMaking/map1.png");
         lvl1.loadMap();
         lvl1.makeMap();
         lvl1solids = lvl1.getSolids();
-//        System.out.print(lvl1.getMapArr().toString());
-
         lvl1.asciiPrint();
 
 
@@ -56,7 +54,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
         for(Solid s: solids) {
-//            s.collide(player.getHitbox());
             player.collideSolid(s);
         }
         for (Solid s: lvl1solids) {
@@ -87,7 +84,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         Graphics ground = (Graphics2D)(g);
         ground.setColor(Color.WHITE);
-        ground.fillRect(0, 400+player.getHeight(), Globals.SCREEN_WIDTH, 1);
+        ground.fillRect(0, Globals.floor - Solid.height +player.getHeight(), Globals.SCREEN_WIDTH, 1);
 
         player.draw(g2d);
         int offset = (int) (stationaryX - player.getX());

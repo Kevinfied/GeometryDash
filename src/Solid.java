@@ -77,7 +77,7 @@ public class Solid {
         g.drawRect(x, y, width, height);
         Rectangle d = getRect();
 //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
-        g.fillRect(x+offset+100, y, width, height);
+        g.fillRect(x+offset, y, width, height);
 //        d.translate(offset, 0);
 //        g2d.draw(d);
 

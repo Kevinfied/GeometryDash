@@ -10,7 +10,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Player player;
     Image background;
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
-    public double stationaryX;
+    public double stationaryX = 300;
 
     boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
@@ -86,6 +86,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         ground.setColor(Color.WHITE);
         ground.fillRect(0, Globals.floor - Solid.height +player.getHeight(), Globals.SCREEN_WIDTH, 1);
 
+        Graphics debug = (Graphics2D)(g);
+        debug.setColor(Color.RED);
+        debug.fillRect((int) 300, Globals.floor, 1, 100);
+
         player.draw(g2d);
         int offset = (int) (stationaryX - player.getX());
         for(Solid s: solids) {
@@ -95,7 +99,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (Solid s: lvl1solids) {
             s.draw(g2d, offset);
 
-            System.out.println(s.getY());
         }
 
 

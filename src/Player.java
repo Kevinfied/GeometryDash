@@ -13,18 +13,11 @@ public class Player{
     private double px, py;
     private int width, height;
 
-    // sprite
-    private int width2, height2;
-
     // vector
     private double g = 4.5; //gravity
     private double vy = 0;
     private double vx = 15;
     private double initY = -32;
-
-//    double locX = (double) width/2;
-//    double locY = (double) height/2;
-
 
     // rotation
     private double angle = 0;
@@ -94,7 +87,6 @@ public class Player{
                 // if bottom, lands on solid and survives
                 if (playerBottom > solidBottom) {
 
-                    System.out.println("NOOOO");
                     System.out.println("collideYtop");
                     System.out.println("DIES");
                     dies();

@@ -99,10 +99,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         player.draw(g2d);
         int offsetX = (int) (stationaryX - player.getX());
-//        int offsetY = (int) (Globals.floor-Solid.height- player.getY());
-//        if(offsetY <30 ){
-//            offsetY = 0;
-//        }
+        int offsetY = (int) (Globals.floor-Solid.height- player.getY());
+        if(offsetY <30 ){
+            offsetY = 0;
+        }
         for(Solid s: solids) {
             s.draw(g2d, offsetX, 0);
         }

@@ -9,6 +9,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Timer timer;
     Player player;
     Image background;
+
+    Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     public double stationaryX = 300;
 
@@ -29,7 +31,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         timer = new Timer(1000/60, this);
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
-        background = new ImageIcon("assets/background/background1.png").getImage();
+        background = new ImageIcon("assets/background/stereoBG.png").getImage();
+
+        Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
+
 
         Level lvl1 = new Level("assets/mapMaking/map1.png");
         lvl1.loadMap();
@@ -48,6 +53,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void move() {
+        bg.move();
         player.move(solids);
         if(mouseDown) {
             player.thrust();
@@ -79,8 +85,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D)(g);
+        bg.draw(g2d);
 
-        g2d.drawImage(background, 0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT, null);
+     // g2d.drawImage(background, 0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT, null);
 
         Graphics ground = (Graphics2D)(g);
         ground.setColor(Color.WHITE);
@@ -91,13 +98,17 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         debug.fillRect((int) 300, Globals.floor, 1, 100);
 
         player.draw(g2d);
-        int offset = (int) (stationaryX - player.getX());
+        int offsetX = (int) (stationaryX - player.getX());
+//        int offsetY = (int) (Globals.floor-Solid.height- player.getY());
+//        if(offsetY <30 ){
+//            offsetY = 0;
+//        }
         for(Solid s: solids) {
-            s.draw(g2d, offset);
+            s.draw(g2d, offsetX, 0);
         }
 
         for (Solid s: lvl1solids) {
-            s.draw(g2d, offset);
+            s.draw(g2d, offsetX, 0);
 
         }
 

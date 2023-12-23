@@ -17,7 +17,7 @@ public class Player{
     private double g = 4.5; //gravity
     private double vy = 0;
     private double vx = 15;
-    private double initY = -32;
+    private double initY = -33;
 
     // rotation
     private double angle = 0;
@@ -137,10 +137,16 @@ public class Player{
     }
 
     public void dies(){
-        y = 400;
+//        y = 400;
+//        vy = 0;
+//        x = constantX;
+//        onSurface = true;
+        // stop all motion
+
         vy = 0;
-        x = constantX;
-        onSurface = true;
+        vx = 0;
+
+        
     }
 
 

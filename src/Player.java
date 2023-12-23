@@ -18,6 +18,7 @@ public class Player{
     private double vy = 0;
     private double vx = 15;
     private double initY = -33;
+    private double initY = -38;
 
     // rotation
     private double angle = 0;
@@ -51,8 +52,9 @@ public class Player{
         py = y;
         px = x;
         y += vy;
-        vy += g;
-
+        if(vy < 34 || vy > -34) {
+            vy += g;
+        }
         for (Solid s : solids) {
             collideSolid(s);
         }
@@ -178,7 +180,8 @@ public class Player{
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         Graphics2D g2D = (Graphics2D)g;
-        g2D.drawImage(icon,rotOp,(int)constantX,(int)y);
+        g2D.drawImage(icon, rotOp, (int) constantX, (int) y);
+
 
         drawHitbox(g);
     }

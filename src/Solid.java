@@ -71,7 +71,7 @@ public class Solid {
         return new Rectangle(x, y, height, width);
     }
 
-    public void draw(Graphics g, int offset) {
+    public void draw(Graphics g, int offsetX, int offsetY) {
         Graphics2D g2d = (Graphics2D)g;
         g.setColor(Color.BLACK);
         g.drawRect(x, y, width, height);
@@ -81,6 +81,7 @@ public class Solid {
         Rectangle d = getRect();
 //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
 
+        g.fillRect(x + offsetX, y + offsetY, width, height);
 //        d.translate(offset, 0);
 //        g2d.draw(d);
 

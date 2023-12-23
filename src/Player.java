@@ -17,7 +17,7 @@ public class Player{
     private double g = 4.5; //gravity
     private double vy = 0;
     private double vx = 15;
-    private double initY = -33;
+//    private double initY = -33;
     private double initY = -38;
 
     // rotation

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
-    Player player;
+    static Player player;
     Image background;
 
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
@@ -28,7 +28,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        Solid s3 = new Solid(500, 400, "solid");
 //        Solid s4 = new Solid(500, 140, "solid");
 //        solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
-        timer = new Timer(1000/60, this);
+        timer = new Timer(1000/20, this);
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
         background = new ImageIcon("assets/background/stereoBG.png").getImage();
@@ -54,9 +54,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(solids);
+        player.move(lvl1solids);
         if(mouseDown) {
-            player.thrust();
+            player.cubeJump();
         }
 
         for(Solid s: solids) {
@@ -75,7 +75,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
         if(keys[KeyEvent.VK_2]) {
             player.setGamemode("ship");
-            player.setInitY(-15);
+            player.setAngle( 0 );
+
+        }
+        if(keys[KeyEvent.VK_3]) {
+            player.setGamemode("ufo");
+            player.setInitY(-20);
         }
 
         player.setJumpRotate();
@@ -103,9 +108,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if(offsetY <30 ){
             offsetY = 0;
         }
-        for(Solid s: solids) {
-            s.draw(g2d, offsetX, 0);
-        }
+//        for(Solid s: solids) {
+//            s.draw(g2d, offsetX, 0);
+//        }
 
         for (Solid s: lvl1solids) {
             s.draw(g2d, offsetX, 0);
@@ -120,10 +125,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
+        player.ufoJump();
         //give mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
-        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+//        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -131,7 +137,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
     public void mouseMoved(MouseEvent e) {}
     public void mouseDragged(MouseEvent e) {}
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        player.ufoJump();
+    }
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
 

@@ -17,21 +17,18 @@ public class Player{
     private double g = 4.5; //gravity
     private double vy = 0;
     private double vx = 15;
-//    private double initY = -33;
     private double initY = -38;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;
+
+    private ArrayList<Solid> ocupiedSolids = new ArrayList<Solid>();
 
     // rotation
     private double angle = 0;
     private double jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump
 
-
     private String gamemode;
-//    private int floor=450;
-
     private final BufferedImage icon;
-    boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
     public boolean onSurface = true;
 
 
@@ -54,59 +51,95 @@ public class Player{
         py = y;
         px = x;
         y += vy;
+        x += vx;
 
-        if(gamemode == "cube") {
-            if(vy < 34 || vy > -34) {
+        for (Solid s : solids) {
+            collideSolid(s);
+
+            if( onSolid(s) && !ocupiedSolids.contains(s)) {
+                ocupiedSolids.add(s);
+            }
+            //if !onSolid(s) and is in ocupiedSolids, then remove it from the arraylist
+            if (!onSolid(s) && ocupiedSolids.contains(s)) {
+                ocupiedSolids.remove(s);
+            }
+        }
+//       System.out.println(ocupiedSolids);
+
+
+        onSurface = (onGround() || ! ocupiedSolids.isEmpty());
+//        onGround();
+
+
+
+        if(gamemode.equals ("cube")  || gamemode.equals ("ufo") ) {
+            if(vy < 34 || vy > -34) {    //cube velocity change
                 vy += g;
             }
+            if(!onSurface) {      //cube rotation
+                angle += jumpRotate;
+            }
         }
 
-        if(gamemode == "ship") { vy += shipG ;}
-
-        for (Solid s : solids) { collideSolid(s); }
-
-        onGround();
-
-        if(!onSurface) {
-            if( gamemode == "cube") {
-                angle += jumpRotate; }
-        }
-
-
-        if (gamemode == "ship") {
-            if (GamePanel.mouseDown) {
-                angle -= 0.05;
+        if(gamemode == "ship") {
+            vy += shipG ;
+            if (GamePanel.mouseDown) {        //ship movement if mouse pressed
                 vy += shipLift;
-            } else if (!GamePanel.mouseDown) {
-                angle += 0.05;
+            }
+            angle = Math.tan( vy / vx );
+
+            if (angle > Math.PI / 3) {
+                angle = Math.PI /3 ;
+            }
+            else if (angle < -Math.PI / 3) {
+                angle = -Math.PI / 3;
             }
         }
 
 
-        x += vx;
-        angle = angle % ( 2 * Math.PI);
+        //rotation adjustment
         if(onSurface){
-            int floorR =(int)  (angle / (Math.PI /2 ));
-            if(angle % (Math.PI /2) != 0){
-                angle += 0.1;
-            }
-            if(angle > floorR) {
-                angle = floorR * (Math.PI /2 );
-            }
+            angleAdjust();
         }
+
     }
+
+    public boolean onSolid(Solid s) {
+        return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
+    }
+
+    public boolean onGround() {
+        if (y + width > Globals.floor) {
+            y = Globals.floor - width;
+            vy = 0;
+            return true;
+        }
+        return false;
+    }
+
+
+    public void angleAdjust() {
+        int floorR =(int)  (angle / (Math.PI /2 ));
+        if(angle % (Math.PI /2) != 0){
+            angle += 0.1;
+        }
+        if(angle > floorR) {
+            angle = floorR * (Math.PI /2 );
+        }
+        angle = angle % ( 2 * Math.PI);
+    }
+
 
 
     public void collideSolid(Solid solid) {
         Rectangle solidHitbox = solid.getRect();
         int solidBottom = (int)solid.getY()+solid.getHeight();
         int playerBottom = (int)getY()+getHeight();
+
         if (getHitbox().intersects(solidHitbox)) {
             System.out.println("collide");
-
             if (!getPrevHitboxX().intersects(solidHitbox)) {
-                System.out.println("collideX");
-                System.out.println("DIES");
+                System.out.println("collideX, dies");
                 dies();
                 return;
             }
@@ -119,16 +152,13 @@ public class Player{
                 if (playerBottom > solidBottom) {
 
                     System.out.println("collideYtop");
-                    System.out.println("DIES");
                     dies();
                     return;
                 }
                 else {
                     System.out.println("collideYbottom");
-
                     y = solid.getY() - height;
                     vy = 0;
-                    onSurface = true;
                 }
 
             }
@@ -144,34 +174,19 @@ public class Player{
         }
     }
 
-
-    public boolean willLand(Solid s) {
-        return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
-    }
-
-    public void onGround() {
-        if (y + width > Globals.floor) {
-            y = Globals.floor - width;
-            vy = 0;
-            onSurface = true;
-        }
-    }
-
     public void dies(){
 //        y = 400;
 //        vy = 0;
 //        x = constantX;
 //        onSurface = true;
         // stop all motion
-
         vy = 0;
         vx = 0;
 
-        
     }
 
 
-    public void thrust() {
+    public void cubeJump() {
         if (gamemode == "cube" ) {
             if (onSurface) {
                 vy = initY; //initial y-velocity when jumping
@@ -179,6 +194,13 @@ public class Player{
         }
         onSurface = false;
     }
+
+    public void ufoJump() {
+        if (gamemode == "ufo" ) {
+            vy = initY;
+        }
+    }
+
 
     public Rectangle getHitbox() {
         return new Rectangle((int) x, (int) y, width, height);
@@ -198,8 +220,9 @@ public class Player{
         Graphics2D g2D = (Graphics2D)g;
         g2D.drawImage(icon, rotOp, (int) constantX, (int) y);
 
-
         drawHitbox(g);
+
+
     }
 
     public void drawHitbox(Graphics g) {
@@ -232,6 +255,7 @@ public class Player{
     public double getY() {return y;}
     public double getVX() {return vx;}
     public double getVY() {return vy;}
+    public void setAngle( double n ) { angle = n ;}
     public void setInitY( int n ) { initY = n;}
     public void setJumpRotate(){
         jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump

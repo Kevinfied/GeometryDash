@@ -14,7 +14,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     public double stationaryX = 300;
 
-    boolean mouseDown = false;
+    static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
     ArrayList<Solid> solids = new ArrayList<Solid>();

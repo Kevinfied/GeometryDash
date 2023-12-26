@@ -19,6 +19,8 @@ public class Player{
     private double vx = 15;
 //    private double initY = -33;
     private double initY = -38;
+    private double shipG = 1.2;
+    private double shipLift = -2.008 * shipG;
 
     // rotation
     private double angle = 0;
@@ -52,14 +54,37 @@ public class Player{
         py = y;
         px = x;
         y += vy;
-        if(vy < 34 || vy > -34) {
-            vy += g;
-        }
-        for (Solid s : solids) {
-            collideSolid(s);
+
+        if(gamemode == "cube") {
+            if(vy < 34 || vy > -34) {
+                vy += g;
+            }
         }
 
+        if(gamemode == "ship") { vy += shipG ;}
+
+        for (Solid s : solids) { collideSolid(s); }
+
         onGround();
+
+        if(!onSurface) {
+            if( gamemode == "cube") {
+                angle += jumpRotate; }
+        }
+
+
+        if (gamemode == "ship") {
+            if (GamePanel.mouseDown) {
+                angle -= 0.05;
+                vy += shipLift;
+            } else if (!GamePanel.mouseDown) {
+                angle += 0.05;
+            }
+        }
+
+
+        x += vx;
+        angle = angle % ( 2 * Math.PI);
         if(onSurface){
             int floorR =(int)  (angle / (Math.PI /2 ));
             if(angle % (Math.PI /2) != 0){
@@ -69,12 +94,6 @@ public class Player{
                 angle = floorR * (Math.PI /2 );
             }
         }
-        if(!onSurface) {
-            angle += jumpRotate;
-            onSurface = false;
-        }
-        x += vx;
-        angle  = angle % (Math.PI);
     }
 
 
@@ -157,9 +176,6 @@ public class Player{
             if (onSurface) {
                 vy = initY; //initial y-velocity when jumping
             }
-        }
-        if( gamemode == "ship" ) {
-            vy = initY;
         }
         onSurface = false;
     }

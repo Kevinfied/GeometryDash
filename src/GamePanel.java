@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
     static Player player;
-    Image background;
 
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
@@ -23,17 +22,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addKeyListener(this);
         addMouseListener(this);
         requestFocus();
-//        Solid s1 = new Solid(300, 400, "solid");
-//        Solid s2 = new Solid(400, 400, "solid");
-//        Solid s3 = new Solid(500, 400, "solid");
-//        Solid s4 = new Solid(500, 140, "solid");
-//        solids.add(s1); solids.add(s2); solids.add(s3); solids.add(s4);
-        timer = new Timer(1000/20, this);
+
+        timer = new Timer(1000/10, this);
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
-        background = new ImageIcon("assets/background/stereoBG.png").getImage();
-
-        Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
 
 
         Level lvl1 = new Level("assets/mapMaking/map1.png");
@@ -68,7 +60,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    public void changeGamemode() {
+    public void changeGamemode() { //debug stuff
         if(keys[KeyEvent.VK_1]) {
             player.setGamemode("cube");
             player.setInitY(-30);
@@ -82,6 +74,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.setGamemode("ufo");
             player.setInitY(-20);
         }
+        if(keys[KeyEvent.VK_A]) {
+            player.setVX( 0 );
+            System.out.println(  player.getVX() );
+        }
+        else if(keys[KeyEvent.VK_D]) {
+            player.setVX( 15 );
+            System.out.println(  player.getVX() );
+        }
 
         player.setJumpRotate();
     }
@@ -92,31 +92,34 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Graphics2D g2d = (Graphics2D)(g);
         bg.draw(g2d);
 
-     // g2d.drawImage(background, 0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT, null);
 
         Graphics ground = (Graphics2D)(g);
         ground.setColor(Color.WHITE);
-        ground.fillRect(0, Globals.floor - Solid.height +player.getHeight(), Globals.SCREEN_WIDTH, 1);
 
         Graphics debug = (Graphics2D)(g);
         debug.setColor(Color.RED);
         debug.fillRect((int) 300, Globals.floor, 1, 100);
 
-        player.draw(g2d);
+
         int offsetX = (int) (stationaryX - player.getX());
         int offsetY = (int) (Globals.floor-Solid.height- player.getY());
-        if(offsetY <30 ){
+
+        System.out.println(offsetY);
+        int playerOSY = offsetY - 200;
+
+        if(offsetY <200 && offsetY >-200 ){
+            playerOSY = 0;
             offsetY = 0;
         }
-//        for(Solid s: solids) {
-//            s.draw(g2d, offsetX, 0);
-//        }
-
-        for (Solid s: lvl1solids) {
-            s.draw(g2d, offsetX, 0);
-
+        else{
+            offsetY -= 200;
         }
 
+        player.draw(g2d, playerOSY);
+        for (Solid s: lvl1solids) {
+            s.draw(g2d, offsetX, offsetY);
+        }
+        ground.fillRect(0, Globals.floor - Solid.height +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 
 
     }
@@ -129,7 +132,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         //give mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
-//        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -153,8 +156,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         keys[code] = false;
     }
 
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) { }
 
 
 

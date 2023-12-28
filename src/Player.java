@@ -137,26 +137,26 @@ public class Player{
         int playerBottom = (int)getY()+getHeight();
 
         if (getHitbox().intersects(solidHitbox)) {
-            System.out.println("collide");
+//            System.out.println("collide");
             if (!getPrevHitboxX().intersects(solidHitbox)) {
-                System.out.println("collideX, dies");
+//                System.out.println("collideX, dies");
                 dies();
                 return;
             }
 
             if (!getPrevHitboxY().intersects(solidHitbox)) {
-                System.out.println("collideY");
+//                System.out.println("collideY");
 
                 // if top, dies
                 // if bottom, lands on solid and survives
                 if (playerBottom > solidBottom) {
 
-                    System.out.println("collideYtop");
+//                    System.out.println("collideYtop");
                     dies();
                     return;
                 }
                 else {
-                    System.out.println("collideYbottom");
+//                    System.out.println("collideYbottom");
                     y = solid.getY() - height;
                     vy = 0;
                 }
@@ -208,7 +208,7 @@ public class Player{
 
 
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int offsetY) {
         g.setColor(new Color(110,110,222));
         drawHitbox(g);
 
@@ -218,7 +218,7 @@ public class Player{
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         Graphics2D g2D = (Graphics2D)g;
-        g2D.drawImage(icon, rotOp, (int) constantX, (int) y);
+        g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
 
         drawHitbox(g);
 

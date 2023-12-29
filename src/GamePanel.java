@@ -80,11 +80,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
         if(keys[KeyEvent.VK_A]) {
             player.setVX( 0 );
-            System.out.println(  player.getVX() );
         }
         else if(keys[KeyEvent.VK_D]) {
             player.setVX( 15 );
-            System.out.println(  player.getVX() );
         }
 
         player.setJumpRotate();
@@ -108,7 +106,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         int offsetX = (int) (stationaryX - player.getX());
         int offsetY = (int) (Globals.floor-Solid.height- player.getY());
 
-        System.out.println(offsetY);
+//        System.out.println(offsetY);
         int playerOSY = offsetY - 200;
 
         if(offsetY <200 && offsetY >-200 ){
@@ -142,7 +140,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         //give mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
-        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+//        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
     }
 
     public void mouseReleased(MouseEvent e) {

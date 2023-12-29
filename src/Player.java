@@ -72,14 +72,28 @@ public class Player{
             }
         }
 
+//        for (int i = ocupiedSolids.size() - 1; i >= 0; i--) {
+//            Solid s = ocupiedSolids.get(i);
+//            if (!will_land_on(s)) {
+//                ocupiedSolids.remove(i); // Remove element at index i
+//            }
+//        }
+
+
+
+//        System.out.println( ocupiedSolids);
+
+
         for (Slab s : slabs) {
             collideSlab(s);
-
         }
 
         for (Spike s : spikes) {
             collideSpike(s);
         }
+
+
+
 
 //       System.out.println(ocupiedSolids);
 
@@ -103,14 +117,19 @@ public class Player{
             if (GamePanel.mouseDown) {        //ship movement if mouse pressed
                 vy += shipLift;
             }
-            angle = Math.tan( vy / vx );
 
-            if (angle > Math.PI / 3) {
-                angle = Math.PI /3 ;
+            if ( vy >= Math.tan( Math.PI / 4) * vx ) {
+                angle = Math.PI /4 ;
             }
-            else if (angle < -Math.PI / 3) {
-                angle = -Math.PI / 3;
+            else if ( vy <= Math.tan( - Math.PI / 4) * vx ) {
+                angle = -Math.PI / 4;
             }
+            else {
+                angle = Math.atan2( vy , vx );
+            }
+
+            System.out.println(angle * 180 / Math.PI  + "    vy = " + vy + ",vx = " + vx);
+
         }
 
 
@@ -119,6 +138,10 @@ public class Player{
             angleAdjust();
         }
 
+    }
+
+    public boolean will_land_on( Solid s ) {
+        return x + width > s.getX() && x < s.getX() + s.getWidth();
     }
 
     public boolean onSolid(Solid s) {
@@ -136,12 +159,21 @@ public class Player{
 
 
     public void angleAdjust() {
+
+        System.out.println( gamemode);
         int floorR =(int)  (angle / (Math.PI /2 ));
-        if(angle % (Math.PI /2) != 0){
-            angle += 0.1;
+
+        if (angle % (Math.PI / 2) != 0) {
+            if(gamemode.equals( "cube" ) ) {
+                angle += 0.1;
+            }
+            if(gamemode.equals( "ship" ))  {
+                angle += 0.001;
+            }
         }
-        if(angle > floorR) {
-            angle = floorR * (Math.PI /2 );
+
+        if (angle > floorR) {
+            angle = floorR * (Math.PI / 2);
         }
         angle = angle % ( 2 * Math.PI);
     }
@@ -178,6 +210,9 @@ public class Player{
 //                    System.out.println("collideYbottom");
                     y = solid.getY() - height;
                     vy = 0;
+//                    if(!ocupiedSolids.contains(solid)) {
+//                        ocupiedSolids.add(solid);
+//                    }
                 }
 
             }

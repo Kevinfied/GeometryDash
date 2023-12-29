@@ -6,7 +6,11 @@ public class Level {
     private BufferedImage pic;
     private int w, h;
     ArrayList<Solid> solids;
+    ArrayList<Slab> slabs;
+    ArrayList<Spike> spikes;
     int[][] mapArr;
+
+
     // constructor
     public Level(String map) {
         this.map = map;
@@ -16,6 +20,8 @@ public class Level {
         System.out.printf("width: %d\n", w);
         System.out.printf("height: %d\n", h);
         solids = new ArrayList<Solid>();
+        slabs = new ArrayList<Slab>();
+        spikes = new ArrayList<Spike>();
         mapArr = new int[w][h];
     }
 
@@ -24,7 +30,8 @@ public class Level {
         /*
             Table:
             1 - Solids
-            2 - 
+            2 - Spike (upright)
+            3 - Slabs
          */
 
         for(int x=0; x<w; x++){
@@ -34,6 +41,13 @@ public class Level {
                 if (c==0xFF0026FF){
 //                    solids[y][x] = new Solid( x*50, y*50, "solid");
                     v = 1;
+                }
+                else if (c == 0xFFFF0000) {
+                    v = 2;
+                }
+
+                else if (c == 0xFF00FFFF) {
+                    v = 3;
                 }
 //                if(c==0xFFFFFF00){
 //                    v = 2;
@@ -53,10 +67,20 @@ public class Level {
         // h - y
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {
-                if (mapArr[x][y] == 1) {
-                    Solid s = new Solid(x*Solid.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height, "solid");
+                int target = mapArr[x][y];
+                if (target == 1) {
+                    Solid s = new Solid(x*Solid.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height);
                     solids.add(s);
                 }
+                else if (target == 2) {
+                    Spike s = new Spike(x*Solid.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height, 0);
+                    spikes.add(s);
+                }
+                else if (target == 3) {
+                    Slab s = new Slab(x*Slab.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height);
+                    slabs.add(s);
+                }
+
             }
         }
 
@@ -75,8 +99,13 @@ public class Level {
 
 
     public ArrayList<Solid> getSolids() {
-
         return solids;
+    }
+    public ArrayList<Slab> getSlabs() {
+        return slabs;
+    }
+    public ArrayList<Spike> getSpikes() {
+        return spikes;
     }
 
     public void asciiPrint() {

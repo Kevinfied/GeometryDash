@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.awt.image.BufferedImage;
+
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
     static Player player;
 
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
+    ArrayList<Slab> lvl1slabs = new ArrayList<Slab>();
+    ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     public double stationaryX = 300;
 
     static boolean mouseDown = false;
@@ -23,7 +25,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/10, this);
+        timer = new Timer(1000/60, this);
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
 
@@ -32,6 +34,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         lvl1.loadMap();
         lvl1.makeMap();
         lvl1solids = lvl1.getSolids();
+        lvl1slabs = lvl1.getSlabs();
+        lvl1spikes = lvl1.getSpikes();
         lvl1.asciiPrint();
 
 
@@ -46,7 +50,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids);
+        player.move(lvl1solids, lvl1slabs, lvl1spikes);
         if(mouseDown) {
             player.cubeJump();
         }
@@ -118,6 +122,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         player.draw(g2d, playerOSY);
         for (Solid s: lvl1solids) {
             s.draw(g2d, offsetX, offsetY);
+        }
+        for (Slab s: lvl1slabs) {
+            s.draw(g2d, offsetX, offsetY);
+        }
+        for (Spike s: lvl1spikes) {
+            s.drawHitbox(g2d, offsetX, offsetY);
         }
         ground.fillRect(0, Globals.floor - Solid.height +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 

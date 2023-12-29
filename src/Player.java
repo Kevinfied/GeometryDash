@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -7,6 +6,9 @@ import java.util.ArrayList;
 
 
 public class Player{
+
+    private boolean debugDead = false;
+
     // hit box
     private double x, y;
     private double constantX;
@@ -16,10 +18,11 @@ public class Player{
     // vector
     private double g = 4.5; //gravity
     private double vy = 0;
-    private double vx = 15;
+    private double vx = 17;
     private double initY = -38;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;
+
 
     private ArrayList<Solid> ocupiedSolids = new ArrayList<Solid>();
 
@@ -47,7 +50,11 @@ public class Player{
     }
 
 
-    public void move(ArrayList<Solid> solids) {
+    public void move(ArrayList<Solid> solids, ArrayList<Slab> slabs, ArrayList<Spike> spikes) {
+        if (debugDead) {
+            return;
+        }
+
         py = y;
         px = x;
         y += vy;
@@ -64,6 +71,16 @@ public class Player{
                 ocupiedSolids.remove(s);
             }
         }
+
+        for (Slab s : slabs) {
+            collideSlab(s);
+
+        }
+
+        for (Spike s : spikes) {
+            collideSpike(s);
+        }
+
 //       System.out.println(ocupiedSolids);
 
 
@@ -152,8 +169,10 @@ public class Player{
                 if (playerBottom > solidBottom) {
 
 //                    System.out.println("collideYtop");
+
                     dies();
                     return;
+
                 }
                 else {
 //                    System.out.println("collideYbottom");
@@ -167,9 +186,40 @@ public class Player{
 
     }
 
-    public void collideHazard(Hazard hazard) {
-        Rectangle hazardHitbox = hazard.getRect();
-        if (getHitbox().intersects(hazardHitbox)) {
+    public void collideSlab(Slab slab) {
+        Rectangle slabHitbox = slab.getRect();
+        int slabBottom = (int)slab.getY()+slab.getHeight();
+        int playerBottom = (int)getY()+getHeight();
+
+        if (getHitbox().intersects(slabHitbox)) {
+//            System.out.println("collide");
+            if (!getPrevHitboxX().intersects(slabHitbox)) {
+//                System.out.println("collideX, dies");
+                dies();
+                return;
+            }
+
+            if (!getPrevHitboxY().intersects(slabHitbox)) {
+//                System.out.println("collideY");
+
+                // if top, dies
+                // if bottom, lands on solid and survives
+                if (playerBottom > slabBottom) {
+                    dies();
+                    return;
+                }
+                else {
+                    y = slab.getY() - height;
+                    vy = 0;
+                }
+
+            }
+        }
+    }
+
+    public void collideSpike(Spike spike) {
+        Rectangle spikeHitbox = spike.getHitbox();
+        if (getHitbox().intersects(spikeHitbox)) {
             dies();
         }
     }
@@ -179,9 +229,10 @@ public class Player{
 //        vy = 0;
 //        x = constantX;
 //        onSurface = true;
-        // stop all motion
-        vy = 0;
-        vx = 0;
+        // stop all motion - for debugging
+        debugDead = true;
+//        vy = 0;
+//        vx = 0;
 
     }
 

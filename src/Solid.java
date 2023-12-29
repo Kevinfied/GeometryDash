@@ -12,17 +12,18 @@ public class Solid {
     public static int width = 75;
     public static int height = 75;
 
-    private String type;
+//    private String type;
 
     private Image icon;
 
 
+
     // constructor
-    public Solid(int x, int y, String type) {
+    public Solid(int x, int y) {
 
         this.x = x;
         this.y = y;
-        this.type = type;
+//        this.type = type;
 
     }
 
@@ -30,7 +31,6 @@ public class Solid {
         Rectangle playerHitbox = player.getHitbox();
         if (playerHitbox.intersects(getRect())) {
             System.out.println("collide");
-
         }
 //        int playerX = (int)(rectangle.getX() + width/2);
 //        int playerY = (int)(rectangle.getY() + height/2);

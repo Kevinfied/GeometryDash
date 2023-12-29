@@ -1,38 +1,46 @@
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 
 // hazards kill the player on contact - Kevin
-public class Hazard {
+public class Spike {
 
     private int x, y;
-    private int ox, oy;
-    private int width, height;
-
-    private String type;
-    private Image icon;
+    private int width = 75, height = 75;
+    private int orientation; // 0 = up, 1 = down
+    private Image img;
 
     // constructor
-    public Hazard(int xx, int yy, String type) {
-
-        this.ox = xx;
-        this.oy = yy;
-        this.type = type;
-
+    public Spike(int xx, int yy, int orientation) {
         this.x = xx;
         this.y = yy;
+        this.orientation = orientation;
     }
 
-    public Rectangle getRect() {
+    public Rectangle getRect() { // bounding box
         return new Rectangle(x, y, height, width);
     }
+
+
+
+    public Rectangle getHitbox() { // hitbox for collision
+        /*
+            should be (30, 22) (44, 22) (30, 52) (44, 52) hitbox for both orientations
+         */
+        return new Rectangle(x + 30, y + 22, 15, 31);
+    }
+
+    public void drawHitbox(Graphics g, int offsetX, int offsetY) {
+        int x = this.x + offsetX;
+        int y = this.y + offsetY;
+        g.setColor(Color.RED);
+        g.drawRect(x + 30 , y + 22, 15, 31);
+    }
+
+
 
     public void draw(Graphics g) {
         g.setColor(Color.RED);
         g.fillRect(x, y, width, height);
-
     }
-
 
 
     public int getX() {
@@ -66,15 +74,5 @@ public class Hazard {
     public void setHeight(int h) {
         this.height = h;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-
 
 }

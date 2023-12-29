@@ -72,17 +72,6 @@ public class Player{
             }
         }
 
-//        for (int i = ocupiedSolids.size() - 1; i >= 0; i--) {
-//            Solid s = ocupiedSolids.get(i);
-//            if (!will_land_on(s)) {
-//                ocupiedSolids.remove(i); // Remove element at index i
-//            }
-//        }
-
-
-
-//        System.out.println( ocupiedSolids);
-
 
         for (Slab s : slabs) {
             collideSlab(s);
@@ -93,17 +82,13 @@ public class Player{
         }
 
 
-
-
 //       System.out.println(ocupiedSolids);
 
 
         onSurface = (onGround() || ! ocupiedSolids.isEmpty());
-//        onGround();
 
 
-
-        if(gamemode.equals ("cube")  || gamemode.equals ("ufo") ) {
+        if(gamemode.equals ("cube") ) {
             if(vy < 34 || vy > -34) {    //cube velocity change
                 vy += g;
             }
@@ -112,7 +97,7 @@ public class Player{
             }
         }
 
-        if(gamemode == "ship") {
+        if(gamemode.equals( "ship" ) ) {
             vy += shipG ;
             if (GamePanel.mouseDown) {        //ship movement if mouse pressed
                 vy += shipLift;
@@ -127,8 +112,24 @@ public class Player{
             else {
                 angle = Math.atan2( vy , vx );
             }
+        }
 
-            System.out.println(angle * 180 / Math.PI  + "    vy = " + vy + ",vx = " + vx);
+        if(gamemode.equals ("ufo") ) {
+            if(vy < 34 || vy > -34) {    //cube velocity change
+                vy += shipG;
+            }
+
+            System.out.println( vy );
+            if(! onSurface ) {
+
+                if (vy < 0 && angle < Math.PI / 7) {
+                    angle += 0.02;
+
+                } else if (vy > 0 && angle > -Math.PI / 7) {
+                    angle -= 0.02;
+                }
+
+            }
 
         }
 
@@ -159,12 +160,10 @@ public class Player{
 
 
     public void angleAdjust() {
-
-        System.out.println( gamemode);
         int floorR =(int)  (angle / (Math.PI /2 ));
 
         if (angle % (Math.PI / 2) != 0) {
-            if(gamemode.equals( "cube" ) ) {
+            if(gamemode.equals( "cube" ) || gamemode.equals( "ufo" )) {
                 angle += 0.1;
             }
             if(gamemode.equals( "ship" ))  {

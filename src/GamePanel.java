@@ -76,7 +76,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
         if(keys[KeyEvent.VK_3]) {
             player.setGamemode("ufo");
-            player.setInitY(-20);
+            player.setInitY( -12 );
+            player.setAngle( 0 );
         }
         if(keys[KeyEvent.VK_A]) {
             player.setVX( 0 );
@@ -118,6 +119,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
         player.draw(g2d, playerOSY);
+
         for (Solid s: lvl1solids) {
             s.draw(g2d, offsetX, offsetY);
         }

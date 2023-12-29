@@ -24,7 +24,8 @@ public class Player{
     private double shipLift = -2.008 * shipG;
 
 
-    private ArrayList<Solid> ocupiedSolids = new ArrayList<Solid>();
+    private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
+    private ArrayList<Slab> playerSlabs = new ArrayList<Slab>() ;
 
     // rotation
     private double angle = 0;
@@ -63,18 +64,25 @@ public class Player{
         for (Solid s : solids) {
             collideSolid(s);
 
-            if( onSolid(s) && !ocupiedSolids.contains(s)) {
-                ocupiedSolids.add(s);
+            if( onSolid(s) && !playerSolids.contains(s)) {
+                playerSolids.add(s);
             }
-            //if !onSolid(s) and is in ocupiedSolids, then remove it from the arraylist
-            if (!onSolid(s) && ocupiedSolids.contains(s)) {
-                ocupiedSolids.remove(s);
+            //if !onSolid(s) and is in playerSolids, then remove it from the arraylist
+            if (!onSolid(s) && playerSolids.contains(s)) {
+                playerSolids.remove(s);
             }
         }
 
 
         for (Slab s : slabs) {
             collideSlab(s);
+            if( onSlab(s) && !playerSlabs.contains(s)) {
+                playerSlabs.add(s);
+            }
+            //if !onSolid(s) and is in playerSolids, then remove it from the arraylist
+            if (!onSlab(s) && playerSlabs.contains(s)) {
+                playerSlabs.remove(s);
+            }
         }
 
         for (Spike s : spikes) {
@@ -82,10 +90,10 @@ public class Player{
         }
 
 
-//       System.out.println(ocupiedSolids);
+//       System.out.println(playerSolids);
 
 
-        onSurface = (onGround() || ! ocupiedSolids.isEmpty());
+        onSurface = (onGround() || ! playerSolids.isEmpty() || !playerSlabs.isEmpty() );
 
 
         if(gamemode.equals ("cube") ) {
@@ -146,6 +154,9 @@ public class Player{
     }
 
     public boolean onSolid(Solid s) {
+        return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
+    }
+    public boolean onSlab( Slab s) {
         return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
     }
 
@@ -209,8 +220,8 @@ public class Player{
 //                    System.out.println("collideYbottom");
                     y = solid.getY() - height;
                     vy = 0;
-//                    if(!ocupiedSolids.contains(solid)) {
-//                        ocupiedSolids.add(solid);
+//                    if(!playerSolids.contains(solid)) {
+//                        playerSolids.add(solid);
 //                    }
                 }
 
@@ -294,6 +305,7 @@ public class Player{
 
 
     public void draw(Graphics g, int offsetY) {
+
         g.setColor(new Color(110,110,222));
         drawHitbox(g);
 
@@ -305,7 +317,11 @@ public class Player{
         Graphics2D g2D = (Graphics2D)g;
         g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
 
+
         drawHitbox(g);
+
+        //debug hitbox
+        g.drawRect((int)constantX, (int) y + offsetY , width, height);
 
 
     }

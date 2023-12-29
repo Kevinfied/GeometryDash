@@ -67,7 +67,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void changeGamemode() { //debug stuff
         if(keys[KeyEvent.VK_1]) {
             player.setGamemode("cube");
-            player.setInitY(-30);
+            player.setInitY(-38);
         }
         if(keys[KeyEvent.VK_2]) {
             player.setGamemode("ship");
@@ -117,6 +117,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         else{
             offsetY -= 200;
         }
+
+//        offsetY = 0;
+//        playerOSY = 0;
 
         player.draw(g2d, playerOSY);
 

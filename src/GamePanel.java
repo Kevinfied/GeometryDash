@@ -14,6 +14,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<Slab> lvl1slabs = new ArrayList<Slab>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     public double stationaryX = 300;
+    private static int offsetX = 0;
+    private static int offsetY = 0;
 
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
@@ -28,7 +30,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         timer = new Timer(1000/60, this);
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
-
 
         Level lvl1 = new Level("assets/mapMaking/map1.png");
         lvl1.loadMap();
@@ -104,19 +105,27 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         debug.fillRect((int) 300, Globals.floor, 1, 100);
 
 
-        int offsetX = (int) (stationaryX - player.getX());
-        int offsetY = (int) (Globals.floor-Solid.height- player.getY());
+        offsetX = (int) (stationaryX - player.getX());
+//        int offsetY = (int) (Globals.floor- player.getY());
+//        offsetY = (int) (Globals.floor - player.getGroundLevel());
 
-//        System.out.println(offsetY);
-        int playerOSY = offsetY - 200;
+        if (player.getOffsetY() > offsetY + 150 ) {
+            offsetY += 5;
+        }
+        if (player.getOffsetY() < offsetY + 150 ) {
+            offsetY -= 5;
+        }
 
-        if(offsetY <200 && offsetY >-200 ){
-            playerOSY = 0;
-            offsetY = 0;
-        }
-        else{
-            offsetY -= 200;
-        }
+        System.out.println( player.getOffsetY() + "  " + offsetY);
+        int playerOSY = offsetY ;
+
+//        if(offsetY <200 && offsetY >-200 ){
+//            playerOSY = 0;
+//            offsetY = 0;
+//        }
+//        else{
+//            offsetY -= 200;
+//        }
 
 //        offsetY = 0;
 //        playerOSY = 0;
@@ -171,7 +180,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void keyTyped(KeyEvent e) { }
 
-
-
-
+    public static void setOffsetX( int n ) { offsetX = n ; }
+    public static void setOffsetY( int n ) { offsetY = n; }
 }

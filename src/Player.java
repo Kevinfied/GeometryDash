@@ -14,6 +14,8 @@ public class Player{
     private double constantX;
     private double px, py;
     private int width, height;
+    private int groundLevel;
+    private int offsetY = 0;
 
     // vector
     private double g = 4.5; //gravity
@@ -45,6 +47,8 @@ public class Player{
 
         this.width  = width;
         this.height = height;
+
+        this.groundLevel = (int) y + width;
 
         this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
 
@@ -141,6 +145,7 @@ public class Player{
 
         }
 
+        offsetY = Globals.floor - groundLevel;
 
         //rotation adjustment
         if(onSurface){
@@ -164,6 +169,7 @@ public class Player{
         if (y + width > Globals.floor) {
             y = Globals.floor - width;
             vy = 0;
+            groundLevel = Globals.floor ;
             return true;
         }
         return false;
@@ -178,7 +184,7 @@ public class Player{
                 angle += 0.1;
             }
             if(gamemode.equals( "ship" ))  {
-                angle += 0.001;
+                angle += 0.00001;
             }
         }
 
@@ -220,9 +226,7 @@ public class Player{
 //                    System.out.println("collideYbottom");
                     y = solid.getY() - height;
                     vy = 0;
-//                    if(!playerSolids.contains(solid)) {
-//                        playerSolids.add(solid);
-//                    }
+                    groundLevel = (int) solid.getY();
                 }
 
             }
@@ -256,6 +260,7 @@ public class Player{
                 else {
                     y = slab.getY() - height;
                     vy = 0;
+                    groundLevel = (int) slab.getY();
                 }
 
             }
@@ -356,6 +361,8 @@ public class Player{
     public double getY() {return y;}
     public double getVX() {return vx;}
     public double getVY() {return vy;}
+    public int getOffsetY() {return offsetY; }
+    public int getGroundLevel() { return groundLevel; }
     public void setAngle( double n ) { angle = n ;}
     public void setInitY( int n ) { initY = n;}
     public void setJumpRotate(){

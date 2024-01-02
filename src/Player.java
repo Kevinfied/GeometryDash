@@ -184,13 +184,20 @@ public class Player{
                 angle += 0.1;
             }
             if(gamemode.equals( "ship" ))  {
-                angle += 0.00001;
+                angle += 0.1;
             }
         }
 
-        if (angle > floorR) {
+        System.out.println(angle);
+
+        if (angle > floorR ) {
             angle = floorR * (Math.PI / 2);
         }
+
+        System.out.println(angle);
+
+        System.out.println();
+        System.out.println();
         angle = angle % ( 2 * Math.PI);
     }
 

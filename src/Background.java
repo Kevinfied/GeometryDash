@@ -29,7 +29,7 @@ public class Background {
             bg1x = bg2x + w;
         }
         if(bg2x + w < 0){
-            bg1x = bg1x + w;
+            bg2x = bg1x + w;
         }
     }
 

@@ -1,7 +1,14 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 public class Portal {
 
     private int x, y;
-    private int width, height;
+    public static int width = 75;
+    public static int height = 75;
 
     private String type;
 
@@ -13,6 +20,15 @@ public class Portal {
         this.type = type;
 
 
+    }
+
+    public Rectangle getRect() {
+        return new Rectangle(x, y, width, height);
+    }
+
+    public void draw( Graphics g, int offsetX, int offsetY) {
+        g.setColor(Color.YELLOW);
+        g.fillRect(x + offsetX, y + offsetY, width, height);
     }
 
 

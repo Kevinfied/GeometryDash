@@ -10,9 +10,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     static Player player;
 
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
+    ArrayList<String>  lvl1map = new ArrayList<String>();
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList<Slab> lvl1slabs = new ArrayList<Slab>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
+    ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -31,12 +33,18 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
 
-        Level lvl1 = new Level("assets/mapMaking/map1.png");
+
+
+
+        lvl1map.add("assets/mapMaking/stereo1.png");
+        lvl1map.add("assets/mapMaking/stereo2.png");
+        Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();
         lvl1solids = lvl1.getSolids();
         lvl1slabs = lvl1.getSlabs();
         lvl1spikes = lvl1.getSpikes();
+        lvl1portals = lvl1.getPortals();
         lvl1.asciiPrint();
 
 
@@ -109,14 +117,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        int offsetY = (int) (Globals.floor- player.getY());
 //        offsetY = (int) (Globals.floor - player.getGroundLevel());
 
-        if (player.getOffsetY() > offsetY + 150 ) {
+        if (player.getOffsetY() > offsetY ) {
             offsetY += 5;
         }
-        if (player.getOffsetY() < offsetY + 150 ) {
+        if (player.getOffsetY() < offsetY ) {
             offsetY -= 5;
         }
 
-        System.out.println( player.getOffsetY() + "  " + offsetY);
+//        System.out.println( player.getOffsetY() + "  " + offsetY);
         int playerOSY = offsetY ;
 
 //        if(offsetY <200 && offsetY >-200 ){
@@ -140,6 +148,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
         for (Spike s: lvl1spikes) {
             s.drawHitbox(g2d, offsetX, offsetY);
+        }
+        for (Portal p: lvl1portals) {
+            p.draw(g2d, offsetX, offsetY);
         }
         ground.fillRect(0, Globals.floor - Solid.height +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 

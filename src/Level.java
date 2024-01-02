@@ -2,27 +2,27 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Level {
-    String map;
-    private BufferedImage pic;
-    private int w, h;
+    ArrayList<String> map;
+    private int w = 1000;
+    private int h = 27;
+
     ArrayList<Solid> solids;
     ArrayList<Slab> slabs;
     ArrayList<Spike> spikes;
+    ArrayList<Portal> portals;
     int[][] mapArr;
 
 
     // constructor
-    public Level(String map) {
+    public Level(ArrayList<String> map) {
         this.map = map;
-        pic = Util.loadBuffImage(map);
-        w = pic.getWidth();
-        h = pic.getHeight();
-        System.out.printf("width: %d\n", w);
-        System.out.printf("height: %d\n", h);
+
+
         solids = new ArrayList<Solid>();
         slabs = new ArrayList<Slab>();
         spikes = new ArrayList<Spike>();
-        mapArr = new int[w][h];
+        portals = new ArrayList<Portal>();
+        mapArr = new int[1000][27];
     }
 
 
@@ -32,28 +32,36 @@ public class Level {
             1 - Solids
             2 - Spike (upright)
             3 - Slabs
+            4 - Portals
          */
+        int wIndex = 0;
+        for (String s: map) {
+            BufferedImage pic = Util.loadBuffImage(s);
+            int tempw = pic.getWidth();
+            int temph = pic.getHeight();
+            System.out.printf("width: %d\n", tempw);
+            System.out.printf("height: %d\n", temph);
 
-        for(int x=0; x<w; x++){
-            for(int y=0; y<h; y++){
-                int c = pic.getRGB(x, y);
-                int v=0;
-                if (c==0xFF0026FF){
+
+            for (int x = wIndex; x < tempw + wIndex; x++) {
+                for (int y = 0; y < temph; y++) {
+                    int c = pic.getRGB(x - wIndex, y);
+                    int v = 0;
+                    if (c == 0xFF0026FF) {
 //                    solids[y][x] = new Solid( x*50, y*50, "solid");
-                    v = 1;
+                        v = 1;
+                    } else if (c == 0xFFFF0000) {
+                        v = 2;
+                    } else if (c == 0xFF00FFFF) {
+                        v = 3;
+                    } else if (c == 0xFF00FF21) {
+                        v = 4;
+                    }
+                    mapArr[x][y] = v;
                 }
-                else if (c == 0xFFFF0000) {
-                    v = 2;
-                }
-
-                else if (c == 0xFF00FFFF) {
-                    v = 3;
-                }
-//                if(c==0xFFFFFF00){
-//                    v = 2;
-//                }
-                mapArr[x][y]=v;
             }
+
+            wIndex += tempw;
         }
 //        return map;
     }
@@ -81,7 +89,14 @@ public class Level {
                     slabs.add(s);
                 }
 
+                else if (target == 4) {
+                    Portal p = new Portal( x* Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "toShip" );
+                    portals.add(p);
+                }
+
             }
+
+            System.out.println(portals);
         }
 
 
@@ -107,6 +122,7 @@ public class Level {
     public ArrayList<Spike> getSpikes() {
         return spikes;
     }
+    public ArrayList<Portal> getPortals() {return portals;}
 
     public void asciiPrint() {
         for (int y=0; y<h; y++) {

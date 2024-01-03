@@ -20,7 +20,7 @@ public class Player{
     // vector
     private double g = 4.5; //gravity
     private double vy = 0;
-    private double vx = 17;
+    private double vx = 18;
     private double initY = -38;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;

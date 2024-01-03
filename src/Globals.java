@@ -4,4 +4,8 @@ public class Globals {
     public static final int SCREEN_HEIGHT = 800;
 
     public static final int floor = SCREEN_HEIGHT-150;
+
+    public static final int gridWidth = 75;
+
+
 }

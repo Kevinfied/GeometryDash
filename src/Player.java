@@ -27,7 +27,7 @@ public class Player{
 
 
     private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
-    private ArrayList<Slab> playerSlabs = new ArrayList<Slab>() ;
+    private ArrayList<Slab> playerSlabs = new ArrayList<Slab>();
 
     // rotation
     private double angle = 0;

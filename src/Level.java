@@ -32,7 +32,10 @@ public class Level {
             1 - Solids
             2 - Spike (upright)
             3 - Slabs
-            4 - Portals
+            4 - small spike (upright)
+            5 - Spike (downwards)
+            6 - small spike (downwards)
+            10 - Portals
          */
         int wIndex = 0;
         for (String s: map) {
@@ -47,12 +50,28 @@ public class Level {
                     if (c == 0xFF0026FF) {
 //                    solids[y][x] = new Solid( x*50, y*50, "solid");
                         v = 1;
-                    } else if (c == 0xFFFF0000) {
+                    }
+
+                    else if (c == 0xFFFF0000) {
                         v = 2;
-                    } else if (c == 0xFF00FFFF) {
+                    }
+
+                    else if (c == 0xFF00FFFF) {
                         v = 3;
-                    } else if (c == 0xFF00FF21) {
+                    }
+
+                    else if (c == 0xFFFF00DC) {
                         v = 4;
+                    }
+
+                    else if (c == 0xFF7F0000) {
+                        v = 5;
+                    }
+                    else if (c == 0xFF7F006E) {
+                        v = 6;
+                    }
+                    else if (c == 0xFF00FF21) {
+                        v = 10;
                     }
                     mapArr[x][y] = v;
                 }
@@ -78,18 +97,32 @@ public class Level {
                     solids.add(s);
                 }
                 else if (target == 2) {
-                    Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0);
+                    Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0, "normal");
                     spikes.add(s);
                 }
                 else if (target == 3) {
                     Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.slabWidth, Globals.slabHeight);
                     solids.add(s);
                 }
-
                 else if (target == 4) {
-                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "toShip" );
+                    Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0, "small");
+                    spikes.add(s);
+                }
+
+                else if (target == 5) {
+                    Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 1, "normal");
+                    spikes.add(s);
+                }
+
+                else if (target == 6) {
+                    Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 1, "small");
+                    spikes.add(s);
+                }
+                else if (target == 10) {
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "ship" );
                     portals.add(p);
                 }
+
 
             }
 

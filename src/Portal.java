@@ -8,7 +8,7 @@ public class Portal {
 
     private int x, y;
     public static int width = 75;
-    public static int height = 75;
+    public static int height = 225;
 
     private String type;
 

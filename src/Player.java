@@ -252,6 +252,12 @@ public class Player{
             dies();
         }
     }
+    public void collidePortal(Portal portal) {
+        Rectangle portalHitbox = portal.getRect();
+        if (getHitbox().intersects(portalHitbox)) {
+            gamemode = portal.getType();
+        }
+    }
 
     public void dies(){
 //        y = 400;

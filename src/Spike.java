@@ -7,12 +7,14 @@ public class Spike {
     private int width = 75, height = 75;
     private int orientation; // 0 = up, 1 = down
     private Image img;
+    private String type;
 
     // constructor
-    public Spike(int xx, int yy, int orientation) {
+    public Spike(int xx, int yy, int orientation, String type) {
         this.x = xx;
         this.y = yy;
         this.orientation = orientation;
+        this.type = type;
     }
 
     public Rectangle getRect() { // bounding box
@@ -23,16 +25,43 @@ public class Spike {
 
     public Rectangle getHitbox() { // hitbox for collision
         /*
+        normal size
             should be (30, 22) (44, 22) (30, 52) (44, 52) hitbox for both orientations
          */
-        return new Rectangle(x + 30, y + 22, 15, 31);
+        if (type == "normal") {
+
+            return new Rectangle(x + 30, y + 22, 15, 31);
+        }
+        else if (type == "small"){
+            if (orientation == 0) {
+                return new Rectangle(x + 28, y+52, 19, 18);
+            }
+            else if (orientation == 1) {
+                return new Rectangle(x + 28, y+5, 19, 18);
+            }
+        }
+
+
+        return null;
     }
+
+
 
     public void drawHitbox(Graphics g, int offsetX, int offsetY) {
         int x = this.x + offsetX;
         int y = this.y + offsetY;
         g.setColor(Color.RED);
-        g.drawRect(x + 30 , y + 22, 15, 31);
+        if (type == "normal") {
+            g.drawRect(x + 30 , y + 22, 15, 31);
+        }
+        else if (type == "small"){
+            if (orientation == 0) {
+                g.drawRect(x + 28, y+52, 19, 18);
+            }
+            else if (orientation == 1) {
+                g.drawRect(x + 28, y+5, 19, 18);
+            }
+        }
     }
 
 

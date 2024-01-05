@@ -27,6 +27,8 @@ public class Player{
 
 
     private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
+    private int curSolidIndex = 0;
+    private int curSpikeIndex = 0;
 
     // rotation
     private double angle = 0;
@@ -54,7 +56,7 @@ public class Player{
     }
 
 
-    public void move(ArrayList<Solid> solids, ArrayList<Slab> slabs, ArrayList<Spike> spikes) {
+    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes) {
         if (debugDead) {
             return;
         }
@@ -64,33 +66,37 @@ public class Player{
         y += vy;
         x += vx;
 
-        for (Solid s : solids) {
-            collideSolid(s);
 
-            if( onSolid(s) && !playerSolids.contains(s)) {
+        for ( int i = curSolidIndex ; i < Math.min(curSolidIndex + 60, solids.size() ); i++) {
+            Solid s = solids.get( i );
+            if ( landOnSolid( s , solids ) && ! playerSolids.contains( s ) ) {
                 playerSolids.add(s);
             }
-            //if !onSolid(s) and is in playerSolids, then remove it from the arraylist
-            if (!onSolid(s) && playerSolids.contains(s)) {
-                playerSolids.remove(s);
-            }
         }
+
 
         for (Spike s : spikes) {
             collideSpike(s);
         }
 
+        for( int i = 0 ; i < playerSolids.size() ; i++ ) {
+            Solid s = playerSolids.get( i );
+            if (! onSolid( s ) && playerSolids.contains(s)) {
+                playerSolids.remove(s);
+            }
+        }
 
 
         onSurface = (onGround() || ! playerSolids.isEmpty()  );
+        System.out.println(curSolidIndex);
 
-        // i really don't know why this line is necessary, but it is !!!!!! DON'T DELETE THIS LINE
-        if(! playerSolids.isEmpty()) {
-            groundLevel = (int) playerSolids.get(0).getY();
-        }
+        // i really don't know why this line is necessary, but it is !!!!!! DON'T DELETE THIS LINE, oh wait
+        //oh wait we actually might not need it yayy
+//        if(! playerSolids.isEmpty()) {
+//            groundLevel = (int) playerSolids.get(0).getY();
+//        }
 
         if(onSurface) { y = groundLevel - height;}
-
 
 
         if(gamemode.equals ("cube") ) {
@@ -147,14 +153,7 @@ public class Player{
 
     }
 
-    public boolean will_land_on( Solid s ) {
-        return x + width > s.getX() && x < s.getX() + s.getWidth();
-    }
-
-    public boolean onSolid(Solid s) {
-        return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
-    }
-    public boolean onSlab( Slab s) {
+    public boolean onSolid(Solid s) {  // don't delete this function
         return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
     }
 
@@ -188,6 +187,17 @@ public class Player{
         angle = angle % ( 2 * Math.PI);
     }
 
+//    public void findSpikeIndex( Level l, ArrayList<Spike> spikes) {
+//        int levelcolumn = (int) x / Globals.solidWidth - 1;
+//        for( int c = Math.max( 0, levelcolumn -1) ; c < Math.min( levelcolumn + 1, l.mapArr.length) ; c++ ) {
+//            for ( int h = 0 ; h < l.getHeight() ; h++ ) {
+//                if ( l.mapArr[c][h] == l.aSpike) {
+//                    curSpikeIndex = spikes.indexOf()
+//                }
+//            }
+//        }
+//
+//    }
 
 
 //    public void collideSolid(Solid solid) {
@@ -220,29 +230,32 @@ public class Player{
 //
 //    }
 
-    public void collideSolid(Solid solid) {
-        Rectangle solidHitbox = solid.getRect();
+    public boolean landOnSolid(Solid s , ArrayList< Solid > lis ) {
+        Rectangle solidHitbox = s.getRect();
         int px = (int) x;
         int py = (int) y;
-        int sx = (int) solid.getX();
-        int sy = (int) solid.getY();
+        int sx = (int) s.getX();
+        int sy = (int) s.getY();
         int pRightSide = (int) x + width;
         int pBottom = (int) y + height;
-        int sRightSide = (int) sx + solid.getWidth();
-        int sBottom = (int) sy + solid.getHeight();
+        int sRightSide = (int) sx + s.getWidth();
+        int sBottom = (int) sy + s.getHeight();
 
-
-        if (getHitbox().intersects(solidHitbox)) {
+        if (getHitbox().intersects(solidHitbox) ) {
             if (pRightSide - sx > pBottom - sy) {
-                y = solid.getY() - height;
+                y = s.getY() - height;
                 vy = 0;
-                groundLevel = (int) solid.getY();
+                groundLevel = (int) s.getY();
+                curSolidIndex = lis.indexOf( s ) ;
+                return true;
             }
             else {
                 dies();
+                return false;
             }
 
         }
+        return false;
     }
 
 
@@ -336,8 +349,6 @@ public class Player{
     public Rectangle getPrevHitboxX() {
         return new Rectangle((int) px, (int) y, width, height);
     }
-
-
 
 
     public void setX(int x) { this.x = x;}

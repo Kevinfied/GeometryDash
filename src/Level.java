@@ -10,13 +10,17 @@ public class Level {
     ArrayList<Slab> slabs;
     ArrayList<Spike> spikes;
     ArrayList<Portal> portals;
+    public int aSolid = 1;
+    public int aSpike = 2;
+    public int aSlab = 3;
+    public int aPortal = 4;
+
     int[][] mapArr;
 
 
     // constructor
     public Level(ArrayList<String> map) {
         this.map = map;
-
 
         solids = new ArrayList<Solid>();
         slabs = new ArrayList<Slab>();
@@ -46,13 +50,13 @@ public class Level {
                     int v = 0;
                     if (c == 0xFF0026FF) {
 //                    solids[y][x] = new Solid( x*50, y*50, "solid");
-                        v = 1;
+                        v = aSolid;
                     } else if (c == 0xFFFF0000) {
-                        v = 2;
+                        v = aSpike;
                     } else if (c == 0xFF00FFFF) {
-                        v = 3;
+                        v = aSlab;
                     } else if (c == 0xFF00FF21) {
-                        v = 4;
+                        v = aPortal;
                     }
                     mapArr[x][y] = v;
                 }
@@ -69,24 +73,25 @@ public class Level {
 
         // h * 50 = bottom
 
+
         // h - y
-        for (int y=0; y<h; y++) {
-            for (int x=0; x<w; x++) {
+        for (int x=0; x<w; x++) {
+            for (int y=0; y<h; y++) {
                 int target = mapArr[x][y];
-                if (target == 1) {
+                if (target == aSolid) {
                     Solid s = new Solid(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.solidWidth, Globals.solidHeight);
                     solids.add(s);
                 }
-                else if (target == 2) {
+                else if (target == aSpike) {
                     Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0);
                     spikes.add(s);
                 }
-                else if (target == 3) {
+                else if (target == aSlab) {
                     Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.slabWidth, Globals.slabHeight);
                     solids.add(s);
                 }
 
-                else if (target == 4) {
+                else if (target == aPortal) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "toShip" );
                     portals.add(p);
                 }
@@ -107,6 +112,14 @@ public class Level {
 
     public int[][] getMapArr() {
         return mapArr;
+    }
+
+    public int getWidth() {
+        return w ;
+    }
+
+    public int getHeight() {
+        return h ;
     }
 
 

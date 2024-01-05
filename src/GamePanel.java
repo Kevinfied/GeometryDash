@@ -60,11 +60,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1slabs, lvl1spikes);
+        player.move(lvl1solids, lvl1spikes);
         if(mouseDown) {
             player.cubeJump();
         }
-        
+
     }
 
     public void changeGamemode() { //debug stuff
@@ -121,13 +121,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        System.out.println( player.getOffsetY() + "  " + offsetY);
         int playerOSY = offsetY ;
 
-
         player.draw(g2d, playerOSY);
 
         for (Solid s: lvl1solids) {
-            s.draw(g2d, offsetX, offsetY);
-        }
-        for (Slab s: lvl1slabs) {
             s.draw(g2d, offsetX, offsetY);
         }
         for (Spike s: lvl1spikes) {
@@ -138,15 +134,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
         ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 
-
     }
-
 
 
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
         player.ufoJump();
-        //give mouse coordinate on panel
+        //get mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
         System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");

@@ -37,10 +37,10 @@ public class Slab {
 
 
         // if player is on tis solid, make it light blueee, for testing
-        if(GamePanel.player.onSlab( this )) {
-            g.setColor(new Color(38, 238, 221, 145) );
-            g.fillRect(x + offsetX, y + offsetY, width, height);
-        }
+//        if(GamePanel.player.onSlab( this )) {
+//            g.setColor(new Color(38, 238, 221, 145) );
+//            g.fillRect(x + offsetX, y + offsetY, width, height);
+//        }
 
     }
 

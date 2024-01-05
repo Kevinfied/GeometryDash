@@ -6,6 +6,10 @@ public class Globals {
     public static final int floor = SCREEN_HEIGHT-150;
 
     public static final int gridWidth = 75;
+    public static final int slabWidth = 75;
+    public static final int slabHeight = 37;
+    public static final int solidWidth = 75;
+    public static final int solidHeight = 75;
 
 
 }

@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 public class Solid {
 
     private int x, y;
-    public static int width = 75;
-    public static int height = 75;
+    public int width;
+    public int height;
 
 //    private String type;
 
@@ -19,52 +19,15 @@ public class Solid {
 
 
     // constructor
-    public Solid(int x, int y) {
-
+    public Solid(int x, int y, int width, int height) {
+        this.width = width;
+        this.height = height;
         this.x = x;
         this.y = y;
 //        this.type = type;
 
     }
 
-    public void collide(Player player) {
-        Rectangle playerHitbox = player.getHitbox();
-        if (playerHitbox.intersects(getRect())) {
-            System.out.println("collide");
-        }
-//        int playerX = (int)(rectangle.getX() + width/2);
-//        int playerY = (int)(rectangle.getY() + height/2);
-//        int distX = Math.abs(playerX - x);
-//        int distY = Math.abs(playerY - y);
-//        if (rectangle.intersects(getRect())) {
-//            System.out.println("collide");
-//            if (distX > distY) { // survives. landed on top of the solid
-//                if (playerX > x) {
-//                    rectangle.setLocation((int)(rectangle.getX() + distX - distY), (int)rectangle.getY());
-//                }
-//
-//                else {
-//                    rectangle.setLocation((int)(rectangle.getX() - distX + distY), (int)rectangle.getY());
-//                }
-//
-//                System.out.println("collide");
-//
-//            }
-//            else { // dies. hit the side of the solid
-//                if (playerY > y) {
-//                    rectangle.setLocation((int)rectangle.getX(), (int)(rectangle.getY() + distY - distX));
-//                }
-//
-//                else {
-//                    rectangle.setLocation((int)rectangle.getX(), (int)(rectangle.getY() - distY + distX));
-//                }
-//                System.out.println("dies");
-////                dies();
-//            }
-//
-//        }
-
-    }
 
 
     public Rectangle getRect() {
@@ -79,6 +42,8 @@ public class Solid {
         Rectangle d = getRect();
     //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
         g.fillRect(x + offsetX, y + offsetY, width, height);
+        g.setColor(Color.RED);
+        g.drawRect(x + offsetX, y + offsetY, width, height);
 
 
         // if player is on tis solid, make it light blueee, for testing

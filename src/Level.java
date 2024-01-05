@@ -39,9 +39,6 @@ public class Level {
             BufferedImage pic = Util.loadBuffImage(s);
             int tempw = pic.getWidth();
             int temph = pic.getHeight();
-            System.out.printf("width: %d\n", tempw);
-            System.out.printf("height: %d\n", temph);
-
 
             for (int x = wIndex; x < tempw + wIndex; x++) {
                 for (int y = 0; y < temph; y++) {
@@ -77,20 +74,20 @@ public class Level {
             for (int x=0; x<w; x++) {
                 int target = mapArr[x][y];
                 if (target == 1) {
-                    Solid s = new Solid(x*Solid.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height);
+                    Solid s = new Solid(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.solidWidth, Globals.solidHeight);
                     solids.add(s);
                 }
                 else if (target == 2) {
-                    Spike s = new Spike(x*Solid.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height, 0);
+                    Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0);
                     spikes.add(s);
                 }
                 else if (target == 3) {
-                    Slab s = new Slab(x*Slab.width , Globals.floor - ((h-y-7) * Solid.height) - Solid.height);
-                    slabs.add(s);
+                    Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.slabWidth, Globals.slabHeight);
+                    solids.add(s);
                 }
 
                 else if (target == 4) {
-                    Portal p = new Portal( x* Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "toShip" );
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "toShip" );
                     portals.add(p);
                 }
 

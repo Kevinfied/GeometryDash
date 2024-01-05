@@ -20,7 +20,7 @@ public class Player{
     // vector
     private double g = 4.5; //gravity
     private double vy = 0;
-    private double vx = 18;
+    private double vx = 19;
     private double initY = -38;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;
@@ -98,10 +98,18 @@ public class Player{
 
 
         onSurface = (onGround() || ! playerSolids.isEmpty() || !playerSlabs.isEmpty() );
+        if(! playerSolids.isEmpty()) {
+            groundLevel = (int) playerSolids.get(0).getY();
+        }
+        if(! playerSlabs.isEmpty()) {
+            groundLevel = (int) playerSlabs.get(0).getY();
+        }
+        if(onSurface) { y = groundLevel - height;}
+        System.out.println("groundLevel: " + groundLevel);
 
 
         if(gamemode.equals ("cube") ) {
-            if(vy < 34 || vy > -34) {    //cube velocity change
+            if(vy < 37 || vy > -37) {    //cube velocity change
                 vy += g;
             }
             if(!onSurface) {      //cube rotation
@@ -188,16 +196,11 @@ public class Player{
             }
         }
 
-        System.out.println(angle);
 
         if (angle > floorR ) {
             angle = floorR * (Math.PI / 2);
         }
 
-        System.out.println(angle);
-
-        System.out.println();
-        System.out.println();
         angle = angle % ( 2 * Math.PI);
     }
 
@@ -211,26 +214,17 @@ public class Player{
         if (getHitbox().intersects(solidHitbox)) {
 //            System.out.println("collide");
             if (!getPrevHitboxX().intersects(solidHitbox)) {
-//                System.out.println("collideX, dies");
                 dies();
                 return;
             }
 
             if (!getPrevHitboxY().intersects(solidHitbox)) {
-//                System.out.println("collideY");
-
-                // if top, dies
-                // if bottom, lands on solid and survives
-                if (playerBottom > solidBottom) {
-
-//                    System.out.println("collideYtop");
-
+//
+                if (playerBottom > solidBottom + 40) {
                     dies();
-                    return;
 
                 }
                 else {
-//                    System.out.println("collideYbottom");
                     y = solid.getY() - height;
                     vy = 0;
                     groundLevel = (int) solid.getY();
@@ -250,17 +244,17 @@ public class Player{
         if (getHitbox().intersects(slabHitbox)) {
 //            System.out.println("collide");
             if (!getPrevHitboxX().intersects(slabHitbox)) {
-//                System.out.println("collideX, dies");
+                System.out.println("collideX of slab, dies");
                 dies();
                 return;
             }
 
             if (!getPrevHitboxY().intersects(slabHitbox)) {
-//                System.out.println("collideY");
 
                 // if top, dies
                 // if bottom, lands on solid and survives
-                if (playerBottom > slabBottom) {
+                if (playerBottom > slabBottom + 40) {
+                    System.out.println("collideY, dies");
                     dies();
                     return;
                 }
@@ -334,7 +328,12 @@ public class Player{
 
         //debug hitbox
         g.drawRect((int)constantX, (int) y + offsetY , width, height);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(new Color(248, 248, 4));
+        g2.setStroke(new BasicStroke(10)); // Sets the stroke width to 10
+        g2.drawLine((int) constantX, groundLevel + offsetY, (int) constantX + 100, groundLevel + offsetY);
 
+        g2.setStroke(new BasicStroke(1));
 
     }
 

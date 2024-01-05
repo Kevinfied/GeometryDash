@@ -31,15 +31,18 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         timer = new Timer(1000/60, this);
         double stationaryX = 300;
-        player = new Player(stationaryX, Globals.floor-Solid.height, 75, 75);
+        player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
 
 
 
 
-        lvl1map.add("assets/mapMaking/stereo1.png");
-        lvl1map.add("assets/mapMaking/stereo2.png");
-        lvl1map.add("assets/mapMaking/stereo3.png");
-        lvl1map.add("assets/mapMaking/stereo7.png");
+//        lvl1map.add("assets/mapMaking/dbugSlab.png");
+        for ( int i = 1; i <= 3; i++ ) {
+            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
+            lvl1map.add(s);
+        }
+
+
         Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();
@@ -129,16 +132,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        System.out.println( player.getOffsetY() + "  " + offsetY);
         int playerOSY = offsetY ;
 
-//        if(offsetY <200 && offsetY >-200 ){
-//            playerOSY = 0;
-//            offsetY = 0;
-//        }
-//        else{
-//            offsetY -= 200;
-//        }
-
-//        offsetY = 0;
-//        playerOSY = 0;
 
         player.draw(g2d, playerOSY);
 
@@ -154,7 +147,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);
         }
-        ground.fillRect(0, Globals.floor - Solid.height +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
+        ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 
 
     }
@@ -167,7 +160,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         //give mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
-//        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
     }
 
     public void mouseReleased(MouseEvent e) {

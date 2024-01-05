@@ -32,6 +32,15 @@ public class Slab {
 //        g.drawImage(img, x, y, null);
         g.setColor(Color.GREEN);
         g.fillRect(x + offsetX, y + offsetY, width, height);
+        g.setColor(Color.RED);
+        g.drawRect(x + offsetX, y + offsetY, width, height);
+
+
+        // if player is on tis solid, make it light blueee, for testing
+        if(GamePanel.player.onSlab( this )) {
+            g.setColor(new Color(38, 238, 221, 145) );
+            g.fillRect(x + offsetX, y + offsetY, width, height);
+        }
 
     }
 

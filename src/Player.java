@@ -27,7 +27,6 @@ public class Player{
 
 
     private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
-    private ArrayList<Slab> playerSlabs = new ArrayList<Slab>();
 
     // rotation
     private double angle = 0;
@@ -77,35 +76,21 @@ public class Player{
             }
         }
 
-
-        for (Slab s : slabs) {
-            collideSlab(s);
-            if( onSlab(s) && !playerSlabs.contains(s)) {
-                playerSlabs.add(s);
-            }
-            //if !onSolid(s) and is in playerSolids, then remove it from the arraylist
-            if (!onSlab(s) && playerSlabs.contains(s)) {
-                playerSlabs.remove(s);
-            }
-        }
-
         for (Spike s : spikes) {
             collideSpike(s);
         }
 
 
-//       System.out.println(playerSolids);
 
+        onSurface = (onGround() || ! playerSolids.isEmpty()  );
 
-        onSurface = (onGround() || ! playerSolids.isEmpty() || !playerSlabs.isEmpty() );
+        // i really don't know why this line is necessary, but it is !!!!!! DON'T DELETE THIS LINE
         if(! playerSolids.isEmpty()) {
             groundLevel = (int) playerSolids.get(0).getY();
         }
-        if(! playerSlabs.isEmpty()) {
-            groundLevel = (int) playerSlabs.get(0).getY();
-        }
+
         if(onSurface) { y = groundLevel - height;}
-        System.out.println("groundLevel: " + groundLevel);
+
 
 
         if(gamemode.equals ("cube") ) {
@@ -196,7 +181,6 @@ public class Player{
             }
         }
 
-
         if (angle > floorR ) {
             angle = floorR * (Math.PI / 2);
         }
@@ -206,67 +190,61 @@ public class Player{
 
 
 
+//    public void collideSolid(Solid solid) {
+//        Rectangle solidHitbox = solid.getRect();
+//        int solidBottom = (int)solid.getY()+solid.getHeight();
+//        int playerBottom = (int)getY()+getHeight();
+//
+//        if (getHitbox().intersects(solidHitbox)) {
+////            System.out.println("collide");
+//            if (!getPrevHitboxX().intersects(solidHitbox)) {
+//                dies();
+//                return;
+//            }
+//
+//            if (!getPrevHitboxY().intersects(solidHitbox)) {
+////
+//                if (playerBottom > solidBottom + 40) {
+//                    dies();
+//
+//                }
+//                else {
+//                    y = solid.getY() - height;
+//                    vy = 0;
+//                    groundLevel = (int) solid.getY();
+//                }
+//
+//            }
+//
+//        }
+//
+//    }
+
     public void collideSolid(Solid solid) {
         Rectangle solidHitbox = solid.getRect();
-        int solidBottom = (int)solid.getY()+solid.getHeight();
-        int playerBottom = (int)getY()+getHeight();
+        int px = (int) x;
+        int py = (int) y;
+        int sx = (int) solid.getX();
+        int sy = (int) solid.getY();
+        int pRightSide = (int) x + width;
+        int pBottom = (int) y + height;
+        int sRightSide = (int) sx + solid.getWidth();
+        int sBottom = (int) sy + solid.getHeight();
+
 
         if (getHitbox().intersects(solidHitbox)) {
-//            System.out.println("collide");
-            if (!getPrevHitboxX().intersects(solidHitbox)) {
-                dies();
-                return;
+            if (pRightSide - sx > pBottom - sy) {
+                y = solid.getY() - height;
+                vy = 0;
+                groundLevel = (int) solid.getY();
             }
-
-            if (!getPrevHitboxY().intersects(solidHitbox)) {
-//
-                if (playerBottom > solidBottom + 40) {
-                    dies();
-
-                }
-                else {
-                    y = solid.getY() - height;
-                    vy = 0;
-                    groundLevel = (int) solid.getY();
-                }
-
+            else {
+                dies();
             }
 
         }
-
     }
 
-    public void collideSlab(Slab slab) {
-        Rectangle slabHitbox = slab.getRect();
-        int slabBottom = (int)slab.getY()+slab.getHeight();
-        int playerBottom = (int)getY()+getHeight();
-
-        if (getHitbox().intersects(slabHitbox)) {
-//            System.out.println("collide");
-            if (!getPrevHitboxX().intersects(slabHitbox)) {
-                System.out.println("collideX of slab, dies");
-                dies();
-                return;
-            }
-
-            if (!getPrevHitboxY().intersects(slabHitbox)) {
-
-                // if top, dies
-                // if bottom, lands on solid and survives
-                if (playerBottom > slabBottom + 40) {
-                    System.out.println("collideY, dies");
-                    dies();
-                    return;
-                }
-                else {
-                    y = slab.getY() - height;
-                    vy = 0;
-                    groundLevel = (int) slab.getY();
-                }
-
-            }
-        }
-    }
 
     public void collideSpike(Spike spike) {
         Rectangle spikeHitbox = spike.getHitbox();

@@ -30,19 +30,15 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         requestFocus();
 
         timer = new Timer(1000/60, this);
+
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
 
 
-
-
-//        lvl1map.add("assets/mapMaking/dbugSlab.png");
         for ( int i = 1; i <= 3; i++ ) {
             String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
             lvl1map.add(s);
         }
-
-
         Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();
@@ -68,14 +64,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if(mouseDown) {
             player.cubeJump();
         }
-
-        for(Solid s: solids) {
-            player.collideSolid(s);
-        }
-        for (Solid s: lvl1solids) {
-            player.collideSolid(s);
-        }
-
+        
     }
 
     public void changeGamemode() { //debug stuff

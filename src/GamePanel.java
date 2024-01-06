@@ -60,7 +60,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1spikes);
+        player.move(lvl1solids, lvl1spikes, lvl1portals);
         if(mouseDown) {
             player.cubeJump();
         }

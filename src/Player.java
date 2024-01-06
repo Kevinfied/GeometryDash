@@ -37,7 +37,8 @@ public class Player{
     private String gamemode;
     private final BufferedImage icon;
     public boolean onSurface = true;
-
+    private final BufferedImage shipIcon;
+    private final BufferedImage ufoIcon;
 
     public Player(double x, double y, int width, int height) {
         this.gamemode = "cube";
@@ -51,12 +52,14 @@ public class Player{
 
         this.groundLevel = (int) y + width;
 
-        this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
 
+        this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
+        this.shipIcon = Util.resize( Util.loadBuffImage("assets/icons/Ship001.png" ), width, height);
+        this.ufoIcon = Util.resize( Util.loadBuffImage("assets/icons/UFO001.png" ), width, height);
     }
 
 
-    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes) {
+    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals) {
         if (debugDead) {
             return;
         }
@@ -86,6 +89,9 @@ public class Player{
             }
         }
 
+        for (Portal p : portals) {
+            collidePortal(p);
+        }
 
         onSurface = (onGround() || ! playerSolids.isEmpty()  );
         System.out.println(curSolidIndex);
@@ -269,7 +275,10 @@ public class Player{
         Rectangle portalHitbox = portal.getRect();
         if (getHitbox().intersects(portalHitbox)) {
             gamemode = portal.getType();
+
         }
+
+        System.out.printf("Gamemode: %s\n", gamemode);
     }
 
     public void dies(){
@@ -278,7 +287,7 @@ public class Player{
 //        x = constantX;
 //        onSurface = true;
         // stop all motion - for debugging
-        debugDead = true;
+//        debugDead = true;
 //        vy = 0;
 //        vx = 0;
 
@@ -308,17 +317,27 @@ public class Player{
 
 
     public void draw(Graphics g, int offsetY) {
-
-        g.setColor(new Color(110,110,222));
-        drawHitbox(g);
-
-        AffineTransform rot = new AffineTransform();
-
-        rot.rotate(angle,(double) width/2,(double) height/2);
-        AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
-        // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         Graphics2D g2D = (Graphics2D)g;
-        g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
+        if (gamemode == "cube") {
+            g.setColor(new Color(110,110,222));
+            drawHitbox(g);
+
+            AffineTransform rot = new AffineTransform();
+
+            rot.rotate(angle,(double) width/2,(double) height/2);
+            AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
+            // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
+            g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
+
+        }
+
+        else if (gamemode == "ship") {
+            g2D.drawImage(shipIcon, (int) constantX, (int) y + offsetY, null);
+        }
+
+        else if (gamemode == "ufo") {
+            g2D.drawImage(ufoIcon, (int) constantX, (int) y + offsetY, null);
+        }
 
 
         drawHitbox(g);

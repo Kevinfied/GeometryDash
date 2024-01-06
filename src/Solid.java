@@ -15,16 +15,25 @@ public class Solid {
 //    private String type;
 
     private Image icon;
-
+    private String type;
 
 
     // constructor
-    public Solid(int x, int y, int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Solid(int x, int y, String type) {
+
         this.x = x;
         this.y = y;
 //        this.type = type;
+        this.type = type;
+
+        if (type == "solid") {
+            this.width = 75;
+            this.height = 75;
+        }
+        else if (type == "slab") {
+            this.width = 75;
+            this.height = 37;
+        }
 
     }
 
@@ -42,13 +51,13 @@ public class Solid {
         Rectangle d = getRect();
     //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
         g.fillRect(x + offsetX, y + offsetY, width, height);
-        g.setColor(Color.RED);
+        g.setColor(new Color(0, 208, 255, 255) );
         g.drawRect(x + offsetX, y + offsetY, width, height);
 
 
         // if player is on tis solid, make it light blueee, for testing
         if(GamePanel.player.onSolid( this )) {
-            g.setColor(new Color(0, 255, 226, 145) );
+            g.setColor(new Color(0, 118, 102, 75) );
             g.fillRect(x + offsetX, y + offsetY, width, height);
         }
     //        d.translate(offset, 0);
@@ -63,12 +72,4 @@ public class Solid {
 
 
 
-
-
 }
-
-
-/*
-    if (player.coolide(solid)) {
-        if (
- */

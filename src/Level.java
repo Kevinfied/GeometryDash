@@ -73,6 +73,7 @@ public class Level {
                     }
                     else if (c == 0xFF7F006E) {
                         v = 6;
+                        System.out.println("portal found");
                     }
                     else if (c == 0xFF00FF21) {
                         v = 10;
@@ -97,16 +98,16 @@ public class Level {
         for (int x=0; x<w; x++) {
             for (int y=0; y<h; y++) {
                 int target = mapArr[x][y];
-                if (target == aSolid) {
-                    Solid s = new Solid(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.solidWidth, Globals.solidHeight);
+                if (target == 1) {
+                    Solid s = new Solid(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "solid");
                     solids.add(s);
                 }
                 else if (target == 2) {
                     Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0, "normal");
                     spikes.add(s);
                 }
-                else if (target == aSlab) {
-                    Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.slabWidth, Globals.slabHeight);
+                else if (target == 3) {
+                    Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "slab");
                     solids.add(s);
                 }
                 else if (target == 4) {
@@ -124,14 +125,11 @@ public class Level {
                     spikes.add(s);
                 }
                 else if (target == 10) {
-                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Portal.height) - Portal.height, "ship" );
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "ship" );
                     portals.add(p);
+                    System.out.println("portal made");
                 }
-
-
             }
-
-            System.out.println(portals);
         }
 
 

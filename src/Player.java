@@ -115,8 +115,11 @@ public class Player{
         }
 
         if(gamemode.equals( "ship" ) ) {
-            vy += shipG ;
-            if (GamePanel.mouseDown) {        //ship movement if mouse pressed
+            if( vy < 75 ) {
+                vy += shipG ;
+            }
+
+            if (GamePanel.mouseDown && vy >= -75) {        //ship movement if mouse pressed
                 vy += shipLift;
             }
 
@@ -317,30 +320,9 @@ public class Player{
 
 
     public void draw(Graphics g, int offsetY) {
-        Graphics2D g2D = (Graphics2D)g;
-        if (gamemode == "cube") {
-            g.setColor(new Color(110,110,222));
-            drawHitbox(g);
-
-            AffineTransform rot = new AffineTransform();
-
-            rot.rotate(angle,(double) width/2,(double) height/2);
-            AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
-            // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
-            g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
-
-        }
-
-        else if (gamemode == "ship") {
-            g2D.drawImage(shipIcon, (int) constantX, (int) y + offsetY, null);
-        }
-
-        else if (gamemode == "ufo") {
-            g2D.drawImage(ufoIcon, (int) constantX, (int) y + offsetY, null);
-        }
-
-
+        g.setColor(new Color(110,110,222));
         drawHitbox(g);
+        drawSprite( g, offsetY);
 
         //debug hitbox
         g.drawRect((int)constantX, (int) y + offsetY , width, height);
@@ -351,6 +333,26 @@ public class Player{
 
         g2.setStroke(new BasicStroke(1));
 
+    }
+
+    public void drawSprite( Graphics g, int offsetY) {
+        Graphics2D g2D = (Graphics2D)g;
+        AffineTransform rot = new AffineTransform();
+        rot.rotate(angle,(double) width/2,(double) height/2);
+        AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
+        // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
+        if (gamemode == "cube") {
+            g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
+
+        }
+
+        else if (gamemode == "ship") {
+            g2D.drawImage(shipIcon, rotOp, (int) constantX, (int) y + offsetY);
+        }
+
+        else if (gamemode == "ufo") {
+            g2D.drawImage(ufoIcon, rotOp, (int) constantX, (int) y + offsetY);
+        }
     }
 
     public void drawHitbox(Graphics g) {

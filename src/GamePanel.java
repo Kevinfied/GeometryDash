@@ -111,10 +111,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        int offsetY = (int) (Globals.floor- player.getY());
 //        offsetY = (int) (Globals.floor - player.getGroundLevel());
 
-        if (player.getOffsetY() > offsetY ) {
+        if (player.getOffsetY() > offsetY + 150 ) {
             offsetY += 5;
         }
-        if (player.getOffsetY() < offsetY ) {
+        if (player.getOffsetY() < offsetY + 150 ) {
             offsetY -= 5;
         }
 

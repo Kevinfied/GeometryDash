@@ -39,7 +39,9 @@ public class Level {
             4 - small spike (upright)
             5 - Spike (downwards)
             6 - small spike (downwards)
-            10 - Portals
+            7 - slab (down)
+            10 - ship portal
+            11 - cube portal
          */
         int wIndex = 0;
         for (String s: map) {
@@ -75,8 +77,14 @@ public class Level {
                         v = 6;
                         System.out.println("portal found");
                     }
+                    else if (c == 0xFF007F7F) {
+                        v = 7;
+                    }
                     else if (c == 0xFF00FF21) {
                         v = 10;
+                    }
+                    else if (c == 0xFF007F0E) {
+                        v = 11;
                     }
                     mapArr[x][y] = v;
                 }
@@ -107,7 +115,7 @@ public class Level {
                     spikes.add(s);
                 }
                 else if (target == 3) {
-                    Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "slab");
+                    Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "slabUp");
                     solids.add(s);
                 }
                 else if (target == 4) {
@@ -124,8 +132,17 @@ public class Level {
                     Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 1, "small");
                     spikes.add(s);
                 }
+                else if (target == 7) {
+                    Solid s = new Solid(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "slabDown");
+                    solids.add(s);
+                }
                 else if (target == 10) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "ship" );
+                    portals.add(p);
+                    System.out.println("portal made");
+                }
+                else if (target == 11) {
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "cube" );
                     portals.add(p);
                     System.out.println("portal made");
                 }

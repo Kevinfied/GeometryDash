@@ -35,10 +35,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
 
 
-        for ( int i = 1; i <= 3; i++ ) {
-            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
-            lvl1map.add(s);
-        }
+//        for ( int i = 1; i <= 3; i++ ) {
+//            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
+//            lvl1map.add(s);
+//        }
+        lvl1map.add("assets/mapMaking/stereoMadness.png");
         Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();
@@ -75,7 +76,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if(keys[KeyEvent.VK_2]) {
             player.setGamemode("ship");
             player.setAngle( 0 );
-
         }
         if(keys[KeyEvent.VK_3]) {
             player.setGamemode("ufo");

@@ -27,7 +27,13 @@ public class Portal {
     }
 
     public void draw( Graphics g, int offsetX, int offsetY) {
-        g.setColor(Color.YELLOW);
+        if (type == "ship") {
+            g.setColor(Color.YELLOW);
+        }
+        else if (type == "cube") {
+            g.setColor(Color.GREEN);
+        }
+
         g.fillRect(x + offsetX, y + offsetY, width, height);
     }
 

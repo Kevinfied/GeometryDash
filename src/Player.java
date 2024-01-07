@@ -37,6 +37,7 @@ public class Player{
     private String gamemode;
     private final BufferedImage icon;
     public boolean onSurface = true;
+    public boolean prevOnSurface = true;
     private final BufferedImage shipIcon;
     private final BufferedImage ufoIcon;
 
@@ -92,15 +93,17 @@ public class Player{
         for (Portal p : portals) {
             collidePortal(p);
         }
-
+        prevOnSurface = onSurface;
         onSurface = (onGround() || ! playerSolids.isEmpty()  );
-        System.out.println(curSolidIndex);
 
-        // i really don't know why this line is necessary, but it is !!!!!! DON'T DELETE THIS LINE, oh wait
-        //oh wait we actually might not need it yayy
-//        if(! playerSolids.isEmpty()) {
-//            groundLevel = (int) playerSolids.get(0).getY();
+        // dbug things for the hold bug
+//        int solidr = 0; int solidl = 0;
+//        if(! playerSolids.isEmpty() ) {
+//            solidl = (int) playerSolids.get(0).getX();
+//            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
 //        }
+//        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
+
 
         if(onSurface) { y = groundLevel - height;}
 
@@ -281,7 +284,6 @@ public class Player{
 
         }
 
-        System.out.printf("Gamemode: %s\n", gamemode);
     }
 
     public void dies(){
@@ -290,7 +292,7 @@ public class Player{
 //        x = constantX;
 //        onSurface = true;
         // stop all motion - for debugging
-//        debugDead = true;
+        debugDead = true;
 //        vy = 0;
 //        vx = 0;
 
@@ -299,7 +301,7 @@ public class Player{
 
     public void cubeJump() {
         if (gamemode == "cube" ) {
-            if (onSurface) {
+            if (onSurface  || prevOnSurface) {
                 vy = initY; //initial y-velocity when jumping
             }
         }

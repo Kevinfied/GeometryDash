@@ -1,0 +1,68 @@
+
+//    public boolean landOnSolidHighVelcity(Solid s , ArrayList< Solid > lis) {
+//        double p1x = x;
+//        double np1x = p1x + vx;
+//        double p2x = x + width;
+//        double np2x = p2x + vx;
+//
+//        double py = y;
+//        double npy = y + vy;
+//
+//        double sx1 = s.getX();
+//        double sx2 = sx1 + s.getWidth();
+//
+//        double sy1 = s.getY();
+//        double sy2 = sy1 + s.getHeight();
+//
+//        if ( ! ( x >= s.getX() &&  x < s.getX() + s.getWidth()) || (x + width >= s.getX() &&  x + width < s.getX() + s.getWidth()) ) { // if x axis of player and solid don't intersect
+//            return false;
+//        }
+//
+//        if( ! ( y + width < s.getY() &&  y + width < s.getY()) || ( y + width > s.getY() &&  y + width > s.getY())  ) {
+//            return false;
+//        }
+//
+//        System.out.println(s.getY() + "  "+ (s.getY() + s.getWidth())+"   " + y + "  "+ ( y + height + vy));
+//
+//        if( y < y + vy ) { //going down
+//
+//            if( s.getY() >= y && s.getY() <= y + height + vy ) { // if player's line intersect top solid, land on the solid
+//                y = s.getY() - height;
+//                vy = 0;
+//                groundLevel = (int) s.getY();
+//                curSolidIndex = lis.indexOf( s ) ;
+//
+//                System.out.println( " landed ");
+//                return true;
+//            }
+//            if (sy1 >= y + height) {
+//                return false;
+//            }
+//            if( s.getY() > y && s.getY() + s.getHeight() < y + height + vy ) {
+//                dies();
+//                return false;
+//            }
+//
+//            else{
+//                dies();
+//                System.out.println(" going down dies");
+//                return false;
+//            }
+//
+//        }
+//
+//        else if ( y > y + vy) { // going up
+//            if ( sy1 > y + height ) { // if player is above, lives
+//                System.out.println( "going up, above solid");
+//                return false;
+//            }
+//           else{
+//               System.out.println( "going up, died colliding");
+//               dies();
+//            }
+//
+//        }
+//
+//        return false;
+//    }
+

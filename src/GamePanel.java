@@ -12,9 +12,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
     ArrayList<String>  lvl1map = new ArrayList<String>();
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
-    ArrayList<Slab> lvl1slabs = new ArrayList<Slab>();
+//    ArrayList<Slab> lvl1slabs = new ArrayList<Slab>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
+    ArrayList<Barrier> lvl1barriers = new ArrayList<Barrier>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -29,7 +30,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/60, this);
+        timer = new Timer(1000/62, this);
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -40,13 +41,15 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            lvl1map.add(s);
 //        }
         lvl1map.add("assets/mapMaking/stereoMadness.png");
+//        lvl1map.add("assets/mapMaking/dbugBarrier.png");
         Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();
-        lvl1solids = lvl1.getSolids();
-        lvl1slabs = lvl1.getSlabs();
-        lvl1spikes = lvl1.getSpikes();
-        lvl1portals = lvl1.getPortals();
+        lvl1solids = lvl1.solids;
+//        lvl1slabs = lvl1.getSlabs();
+        lvl1spikes = lvl1.spikes;
+        lvl1portals = lvl1.portals;
+        lvl1barriers = lvl1.barriers;
         lvl1.asciiPrint();
 
 
@@ -61,7 +64,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1spikes, lvl1portals);
+        player.move(lvl1solids, lvl1spikes, lvl1portals, lvl1barriers);
         if(mouseDown) {
             player.cubeJump();
         }
@@ -111,10 +114,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        int offsetY = (int) (Globals.floor- player.getY());
 //        offsetY = (int) (Globals.floor - player.getGroundLevel());
 
-        if (player.getOffsetY() > offsetY + 150 ) {
+        if (player.getOffsetY() > offsetY + 100 ) {
             offsetY += 5;
         }
-        if (player.getOffsetY() < offsetY + 150 ) {
+        if (player.getOffsetY() < offsetY + 100 ) {
             offsetY -= 5;
         }
 
@@ -131,6 +134,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);
+        }
+        for (Barrier b : lvl1barriers) {
+            b.draw( g2d, offsetX, offsetY);
         }
         ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 

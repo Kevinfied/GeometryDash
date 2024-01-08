@@ -27,6 +27,7 @@ public class Player{
 
 
     private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
+    private ArrayList<Barrier> playersBarrier = new ArrayList<Barrier>();
     private int curSolidIndex = 0;
     private int curSpikeIndex = 0;
 
@@ -38,6 +39,7 @@ public class Player{
     private final BufferedImage icon;
     public boolean onSurface = true;
     public boolean prevOnSurface = true;
+    public boolean onCeiling = false;
     private final BufferedImage shipIcon;
     private final BufferedImage ufoIcon;
 
@@ -60,7 +62,7 @@ public class Player{
     }
 
 
-    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals) {
+    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals, ArrayList<Barrier> barriers) {
         if (debugDead) {
             return;
         }
@@ -83,6 +85,11 @@ public class Player{
             collideSpike(s);
         }
 
+        for (Barrier b: barriers) {
+            collideBarrier(b);
+        }
+
+
         for( int i = 0 ; i < playerSolids.size() ; i++ ) {
             Solid s = playerSolids.get( i );
             if (! onSolid( s ) && playerSolids.contains(s)) {
@@ -95,14 +102,16 @@ public class Player{
         }
         prevOnSurface = onSurface;
         onSurface = (onGround() || ! playerSolids.isEmpty()  );
+        onCeiling =  !playersBarrier.isEmpty();
+//        System.out.println(playersBarrier + " " + onCeiling);
 
-        // dbug things for the hold bug
-//        int solidr = 0; int solidl = 0;
-//        if(! playerSolids.isEmpty() ) {
-//            solidl = (int) playerSolids.get(0).getX();
-//            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
-//        }
-//        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
+//         dbug things for the hold bug
+        int solidr = 0; int solidl = 0;
+        if(! playerSolids.isEmpty() ) {
+            solidl = (int) playerSolids.get(0).getX();
+            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
+        }
+        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
 
 
         if(onSurface) { y = groundLevel - height;}
@@ -133,8 +142,9 @@ public class Player{
                 angle = -Math.PI / 4;
             }
             else {
-                angle = Math.atan2( vy , vx );
+                angle = 0.9 * Math.atan2( vy , vx );
             }
+
         }
 
         if(gamemode.equals ("ufo") ) {
@@ -156,12 +166,17 @@ public class Player{
 
         }
 
-        offsetY = Globals.floor - groundLevel;
+        int newOffsetY = Globals.floor - groundLevel;
+        if ( Math.abs(newOffsetY - offsetY) > 100 ) {
+            offsetY = Globals.floor - groundLevel;
+        }
+
 
         //rotation adjustment
-        if(onSurface){
+        if(onSurface || onCeiling){
             angleAdjust();
         }
+
 
     }
 
@@ -184,12 +199,7 @@ public class Player{
         int floorR =(int)  (angle / (Math.PI /2 ));
 
         if (angle % (Math.PI / 2) != 0) {
-            if(gamemode.equals( "cube" ) || gamemode.equals( "ufo" )) {
-                angle += 0.1;
-            }
-            if(gamemode.equals( "ship" ))  {
-                angle += 0.1;
-            }
+            angle += 0.1;
         }
 
         if (angle > floorR ) {
@@ -244,17 +254,20 @@ public class Player{
 
     public boolean landOnSolid(Solid s , ArrayList< Solid > lis ) {
         Rectangle solidHitbox = s.getRect();
-        int px = (int) x;
-        int py = (int) y;
-        int sx = (int) s.getX();
-        int sy = (int) s.getY();
         int pRightSide = (int) x + width;
         int pBottom = (int) y + height;
-        int sRightSide = (int) sx + s.getWidth();
-        int sBottom = (int) sy + s.getHeight();
+
 
         if (getHitbox().intersects(solidHitbox) ) {
-            if (pRightSide - sx > pBottom - sy) {
+            if( s.getY() + s.getWidth() >y &&  s.getY() + s.getWidth() < y + width) {
+                dies();
+                return false;
+            }
+            if (!getPrevHitboxX().intersects(solidHitbox)) {
+                dies();
+                return false;
+            }
+            if (pRightSide - s.getX() > pBottom - s.getY()) {
                 y = s.getY() - height;
                 vy = 0;
                 groundLevel = (int) s.getY();
@@ -281,9 +294,24 @@ public class Player{
         Rectangle portalHitbox = portal.getRect();
         if (getHitbox().intersects(portalHitbox)) {
             gamemode = portal.getType();
-
         }
 
+    }
+
+    public void collideBarrier( Barrier b) {
+        if ( getHitbox().intersects(b.getRect())) {
+            if( y < b.getY() + b.getHeight()); {
+                y = b.getY() + b.getHeight();
+                if ( !playersBarrier.contains(b) ) {
+                    playersBarrier.add(b);
+                }
+            }
+        }
+        else{
+            if ( playersBarrier.contains(b) ) {
+                playersBarrier.remove(b);
+            }
+        }
     }
 
     public void dies(){

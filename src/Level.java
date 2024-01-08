@@ -7,9 +7,10 @@ public class Level {
     private int h = 27;
 
     ArrayList<Solid> solids;
-    ArrayList<Slab> slabs;
+//    ArrayList<Slab> slabs;
     ArrayList<Spike> spikes;
     ArrayList<Portal> portals;
+    ArrayList<Barrier> barriers;
     public int aSolid = 1;
     public int aSpike = 2;
     public int aSlab = 3;
@@ -23,9 +24,10 @@ public class Level {
         this.map = map;
 
         solids = new ArrayList<Solid>();
-        slabs = new ArrayList<Slab>();
+//        slabs = new ArrayList<Slab>();
         spikes = new ArrayList<Spike>();
         portals = new ArrayList<Portal>();
+        barriers = new ArrayList<Barrier>();
         mapArr = new int[1000][27];
     }
 
@@ -85,6 +87,9 @@ public class Level {
                     }
                     else if (c == 0xFF007F0E) {
                         v = 11;
+                    }
+                    else if ( c == 0xFFFF6A00) {
+                        v = 12;
                     }
                     mapArr[x][y] = v;
                 }
@@ -146,6 +151,10 @@ public class Level {
                     portals.add(p);
                     System.out.println("portal made");
                 }
+                else if (target == 12) {
+                    Barrier b = new Barrier(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.solidHeight, Globals.solidHeight);
+                    barriers.add(b);
+                }
             }
         }
 
@@ -174,9 +183,9 @@ public class Level {
     public ArrayList<Solid> getSolids() {
         return solids;
     }
-    public ArrayList<Slab> getSlabs() {
-        return slabs;
-    }
+//    public ArrayList<Slab> getSlabs() {
+//        return slabs;
+//    }
     public ArrayList<Spike> getSpikes() {
         return spikes;
     }

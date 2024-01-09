@@ -67,7 +67,7 @@ public class Solid {
 
         // if player is on tis solid, make it light blueee, for testing
         if(GamePanel.player.onSolid( this )) {
-            g.setColor(new Color(0, 118, 102, 75) );
+            g.setColor(new Color(0, 255, 219, 255) );
             g.fillRect(x + offsetX, yy + offsetY, width, height);
         }
     //        d.translate(offset, 0);

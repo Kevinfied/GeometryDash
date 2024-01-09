@@ -27,9 +27,7 @@ public class Player{
 
 
     private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
-    private ArrayList<Barrier> playersBarrier = new ArrayList<Barrier>();
     private int curSolidIndex = 0;
-    private int curSpikeIndex = 0;
 
     // rotation
     private double angle = 0;
@@ -62,7 +60,7 @@ public class Player{
     }
 
 
-    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals, ArrayList<Barrier> barriers) {
+    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals) {
         if (debugDead) {
             return;
         }
@@ -85,10 +83,6 @@ public class Player{
             collideSpike(s);
         }
 
-        for (Barrier b: barriers) {
-            collideBarrier(b);
-        }
-
 
         for( int i = 0 ; i < playerSolids.size() ; i++ ) {
             Solid s = playerSolids.get( i );
@@ -100,10 +94,10 @@ public class Player{
         for (Portal p : portals) {
             collidePortal(p);
         }
+
+        onCeiling = ceilingCheck();
         prevOnSurface = onSurface;
         onSurface = (onGround() || ! playerSolids.isEmpty()  );
-        onCeiling =  !playersBarrier.isEmpty();
-//        System.out.println(playersBarrier + " " + onCeiling);
 
 //         dbug things for the hold bug
         int solidr = 0; int solidl = 0;
@@ -167,8 +161,11 @@ public class Player{
         }
 
         int newOffsetY = Globals.floor - groundLevel;
-        if ( Math.abs(newOffsetY - offsetY) > 100 ) {
+        if ( Math.abs(newOffsetY - offsetY) > 100 && !gamemode.equals("ship") ) {
             offsetY = Globals.floor - groundLevel;
+        }
+        if (gamemode.equals("ship")) {
+            offsetY = 210;
         }
 
 
@@ -181,7 +178,13 @@ public class Player{
     }
 
     public boolean onSolid(Solid s) {  // don't delete this function
-        return x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY();
+        if(  x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY()) {
+            return true;
+        }
+        if( s.getX() + s.getWidth() > x && s.getX() + s.getWidth() < x + width && y + height <= s.getY() && y + height +vy >= s.getY() ) {
+            return true;
+        }
+        return false;
     }
 
     public boolean onGround() {
@@ -189,6 +192,15 @@ public class Player{
             y = Globals.floor - width;
             vy = 0;
             groundLevel = Globals.floor ;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean ceilingCheck() {
+        if(  gamemode.equals("ship") && y < Globals.SHIP_CEILING) {
+            y = Globals.SHIP_CEILING;
+            vy = 0;
             return true;
         }
         return false;
@@ -209,17 +221,7 @@ public class Player{
         angle = angle % ( 2 * Math.PI);
     }
 
-//    public void findSpikeIndex( Level l, ArrayList<Spike> spikes) {
-//        int levelcolumn = (int) x / Globals.solidWidth - 1;
-//        for( int c = Math.max( 0, levelcolumn -1) ; c < Math.min( levelcolumn + 1, l.mapArr.length) ; c++ ) {
-//            for ( int h = 0 ; h < l.getHeight() ; h++ ) {
-//                if ( l.mapArr[c][h] == l.aSpike) {
-//                    curSpikeIndex = spikes.indexOf()
-//                }
-//            }
-//        }
-//
-//    }
+
 
 
 //    public void collideSolid(Solid solid) {
@@ -259,13 +261,17 @@ public class Player{
 
 
         if (getHitbox().intersects(solidHitbox) ) {
-            if( s.getY() + s.getWidth() >y &&  s.getY() + s.getWidth() < y + width) {
+            if( s.getY() + s.getHeight() >y &&  s.getY() + s.getHeight() < y + height) {
                 dies();
+                System.out.println("a");
                 return false;
             }
             if (!getPrevHitboxX().intersects(solidHitbox)) {
-                dies();
-                return false;
+                y = s.getY() - height;
+                vy = 0;
+                groundLevel = (int) s.getY();
+                curSolidIndex = lis.indexOf( s ) ;
+                return true;
             }
             if (pRightSide - s.getX() > pBottom - s.getY()) {
                 y = s.getY() - height;
@@ -275,6 +281,7 @@ public class Player{
                 return true;
             }
             else {
+                System.out.println("a");
                 dies();
                 return false;
             }
@@ -297,23 +304,6 @@ public class Player{
         }
 
     }
-
-    public void collideBarrier( Barrier b) {
-        if ( getHitbox().intersects(b.getRect())) {
-            if( y < b.getY() + b.getHeight()); {
-                y = b.getY() + b.getHeight();
-                if ( !playersBarrier.contains(b) ) {
-                    playersBarrier.add(b);
-                }
-            }
-        }
-        else{
-            if ( playersBarrier.contains(b) ) {
-                playersBarrier.remove(b);
-            }
-        }
-    }
-
     public void dies(){
 //        y = 400;
 //        vy = 0;
@@ -362,6 +352,7 @@ public class Player{
         g2.drawLine((int) constantX, groundLevel + offsetY, (int) constantX + 100, groundLevel + offsetY);
 
         g2.setStroke(new BasicStroke(1));
+
 
     }
 

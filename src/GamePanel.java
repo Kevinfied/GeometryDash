@@ -12,10 +12,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
     ArrayList<String>  lvl1map = new ArrayList<String>();
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
-//    ArrayList<Slab> lvl1slabs = new ArrayList<Slab>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
-    ArrayList<Barrier> lvl1barriers = new ArrayList<Barrier>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -49,7 +47,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        lvl1slabs = lvl1.getSlabs();
         lvl1spikes = lvl1.spikes;
         lvl1portals = lvl1.portals;
-        lvl1barriers = lvl1.barriers;
         lvl1.asciiPrint();
 
 
@@ -64,7 +61,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1spikes, lvl1portals, lvl1barriers);
+        player.move(lvl1solids, lvl1spikes, lvl1portals);
         if(mouseDown) {
             player.cubeJump();
         }
@@ -135,10 +132,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);
         }
-        for (Barrier b : lvl1barriers) {
-            b.draw( g2d, offsetX, offsetY);
-        }
         ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
+
+        if( player.getGamemode().equals( "ship" )) {
+            g.fillRect(0, Globals.SHIP_CEILING + offsetY , Globals.SCREEN_WIDTH, 1 );
+        }
 
     }
 

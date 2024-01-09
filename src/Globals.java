@@ -11,5 +11,6 @@ public class Globals {
     public static final int solidWidth = 75;
     public static final int solidHeight = 75;
 
+    public static final int SHIP_CEILING =Globals.floor - Globals.solidHeight * 11 + 35;
 
 }

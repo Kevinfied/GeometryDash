@@ -80,7 +80,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 s.move();
             }
         }
-
     }
 
     public void create() {
@@ -162,7 +161,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             s.draw(g2d, offsetX, offsetY);
         }
         for (Spike s: lvl1spikes) {
-            s.drawHitbox(g2d, offsetX, offsetY);
+            s.draw(g2d, offsetX, offsetY);
         }
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);

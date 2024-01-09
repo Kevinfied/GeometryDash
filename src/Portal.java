@@ -26,7 +26,13 @@ public class Portal {
 //        shipPortalIcon = Util.resize(Util.loadBuffImage("assets/portal/ship.png"), width, height);
         System.out.println("assets/portals/" + type + ".png");
 //        portalIcon = Util.resize(Util.loadBuffImage("assets/portal/" + type + ".png"), width, height);
-        portalIcon = Util.loadBuffImage("assets/portals/ship.png");
+        if (type == "cube"){
+            portalIcon = Util.loadBuffImage("assets/portals/cube.png");
+        }
+        else if (type == "ship") {
+            portalIcon = Util.loadBuffImage("assets/portals/ship.png");
+        }
+        portalIcon = Util.resize(portalIcon, width, height);
     }
 
     public Rectangle getRect() {

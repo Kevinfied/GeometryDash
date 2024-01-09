@@ -1,4 +1,8 @@
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 // hazards kill the player on contact - Kevin
 public class Spike {
@@ -6,7 +10,7 @@ public class Spike {
     private int x, y;
     private int width = 75, height = 75;
     private int orientation; // 0 = up, 1 = down
-    private Image img;
+    private BufferedImage img;
     private String type;
 
     // constructor
@@ -15,6 +19,25 @@ public class Spike {
         this.y = yy;
         this.orientation = orientation;
         this.type = type;
+
+        if (type == "normal") {
+
+            if (orientation == 0) {
+                img = Util.loadBuffImage("assets/spikes/normalUpright.png");
+            }
+            else if (orientation == 1) {
+                img = Util.loadBuffImage("assets/spikes/normalDown.png");
+            }
+        }
+        else if (type == "small") {
+            if (orientation == 0) {
+                img = Util.loadBuffImage("assets/spikes/smallUpright.png");
+            }
+            else if (orientation == 1) {
+                img = Util.loadBuffImage("assets/spikes/smallDown.png");
+            }
+        }
+        img = Util.resize(img, width, height);
     }
 
     public Rectangle getRect() { // bounding box
@@ -66,9 +89,9 @@ public class Spike {
 
 
 
-    public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
+    public void draw(Graphics g, int offsetX, int offsetY) {
+        g.drawImage(img, x + offsetX, y + offsetY, null);
+        drawHitbox(g, offsetX, offsetY);
     }
 
 

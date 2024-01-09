@@ -1,4 +1,8 @@
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Solid {
 
@@ -8,7 +12,7 @@ public class Solid {
 
 //    private String type;
 
-    private Image icon;
+    private BufferedImage img;
     private String type;
 
 
@@ -23,13 +27,18 @@ public class Solid {
         if (type == "solid") {
             this.width = 75;
             this.height = 75;
+            img = Util.loadBuffImage("assets/solids/block.png");
         }
         else if (type == "slabUp" || type == "slabDown") {
             this.width = 75;
             this.height = 37;
+            img = Util.loadBuffImage("assets/solids/block.png");
         }
 
 
+
+
+        img = Util.resize(img, 75, 75);
     }
 
 

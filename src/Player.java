@@ -100,12 +100,12 @@ public class Player{
         onSurface = (onGround() || ! playerSolids.isEmpty()  );
 
 //         dbug things for the hold bug
-        int solidr = 0; int solidl = 0;
-        if(! playerSolids.isEmpty() ) {
-            solidl = (int) playerSolids.get(0).getX();
-            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
-        }
-        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
+//        int solidr = 0; int solidl = 0;
+//        if(! playerSolids.isEmpty() ) {
+//            solidl = (int) playerSolids.get(0).getX();
+//            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
+//        }
+//        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
 
 
         if(onSurface) { y = groundLevel - height;}

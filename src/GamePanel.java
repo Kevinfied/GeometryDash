@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
@@ -14,6 +15,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
+
+    ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -21,7 +24,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
-    ArrayList<Solid> solids = new ArrayList<Solid>();
+
     public GamePanel() {
         setFocusable(true);
         addKeyListener(this);
@@ -50,11 +53,17 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         lvl1.asciiPrint();
 
 
+
         timer.start();
     }
 
     public void actionPerformed(ActionEvent e) {
         move();
+
+        // for cosmetics
+        create();
+        destroy();
+
         changeGamemode();
         repaint();
     }
@@ -66,6 +75,34 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.cubeJump();
         }
 
+        if (! playerSquareParticles.isEmpty()) {
+            for (SquareParticle s: playerSquareParticles) {
+                s.move();
+            }
+        }
+
+    }
+
+    public void create() {
+        if (playerSquareParticles.size() < 100) {
+            if( player.getGamemode().equals("cube") && player.onSurface == true) {
+                Random rand = new Random();
+                double min = 0; // Minimum value (pi/2)
+                double max = Math.PI;     // Maximum value (pi)
+
+                playerSquareParticles.add ( new SquareParticle( player.getX(), player.getY() + player.getWidth(), min + Math.random() * (max - min) ,rand.nextInt(6) + 4,-4));
+            }
+        }
+    }
+
+    public void destroy() {
+        for (int i = playerSquareParticles.size() - 1 ; i>=0; i--) {
+            SquareParticle s = playerSquareParticles.get(i);
+           if (Math.pow(s.x - s.startX, 2) + Math.pow(s.y-s.startY, 2) > Math.pow(s.maxdist, 2)) {
+               playerSquareParticles.remove(i);
+           }
+        }
+        System.out.println(playerSquareParticles);
     }
 
     public void changeGamemode() { //debug stuff
@@ -108,8 +145,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
         offsetX = (int) (stationaryX - player.getX());
-//        int offsetY = (int) (Globals.floor- player.getY());
-//        offsetY = (int) (Globals.floor - player.getGroundLevel());
 
         if (player.getOffsetY() > offsetY + 100 ) {
             offsetY += 5;
@@ -132,6 +167,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);
         }
+
+
+        for (int i = 0; i< playerSquareParticles.size(); i++) {
+           SquareParticle s = playerSquareParticles.get(i);
+           s.draw(g2d, offsetX, offsetY);
+        }
+
         ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
 
         if( player.getGamemode().equals( "ship" )) {

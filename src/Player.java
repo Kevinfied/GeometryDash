@@ -18,7 +18,7 @@ public class Player{
     private int offsetY = 0;
 
     // vector
-    private double g = 4.5; //gravity
+    private double g = 4.8; //gravity
     private double vy = 0;
     private double vx = 19;
     private double initY = -38;
@@ -261,10 +261,13 @@ public class Player{
 
 
         if (getHitbox().intersects(solidHitbox) ) {
-            if( s.getY() + s.getHeight() >y &&  s.getY() + s.getHeight() < y + height) {
-                dies();
-                System.out.println("a");
-                return false;
+
+            if (pRightSide - s.getX() > pBottom - s.getY() || s.getX() + s.getWidth() - x > y + height - s.getX()) {
+                y = s.getY() - height;
+                vy = 0;
+                groundLevel = (int) s.getY();
+                curSolidIndex = lis.indexOf( s ) ;
+                return true;
             }
             if (!getPrevHitboxX().intersects(solidHitbox)) {
                 y = s.getY() - height;
@@ -273,12 +276,10 @@ public class Player{
                 curSolidIndex = lis.indexOf( s ) ;
                 return true;
             }
-            if (pRightSide - s.getX() > pBottom - s.getY()) {
-                y = s.getY() - height;
-                vy = 0;
-                groundLevel = (int) s.getY();
-                curSolidIndex = lis.indexOf( s ) ;
-                return true;
+            if( s.getY() + s.getHeight() >y &&  s.getY() + s.getHeight() < y + height) {
+                dies();
+                System.out.println("a");
+                return false;
             }
             else {
                 System.out.println("a");

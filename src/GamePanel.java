@@ -17,6 +17,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
 
     ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
+    ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -81,16 +82,34 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
+        if (! shipSquareParticles.isEmpty()) {
+            for (SquareParticle s: shipSquareParticles) {
+                s.move();
+            }
+        }
+
+        System.out.println(player.getVY());
+
     }
 
     public void create() {
+        Random rand = new Random();
+        double min = 0; // Minimum value (pi/2)
+        double max = Math.PI;     // Maximum value (pi)
         if (playerSquareParticles.size() < 100) {
             if( player.getGamemode().equals("cube") && player.onSurface == true) {
-                Random rand = new Random();
-                double min = 0; // Minimum value (pi/2)
-                double max = Math.PI;     // Maximum value (pi)
 
-                playerSquareParticles.add ( new SquareParticle( player.getX(), player.getY() + player.getWidth(), min + Math.random() * (max - min) ,rand.nextInt(6) + 4,-4));
+                playerSquareParticles.add ( new SquareParticle( player.getX(), player.getY() + player.getWidth(), min + Math.random() * (max - min) ,rand.nextInt(4) + 4,-4, 20));
+            }
+
+            if (player.getGamemode().equals("ship")) {
+                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) ,rand.nextInt(3) + 4,-4, 50));
+            }
+        }
+
+        if ( player.getGamemode().equals("ship")) {
+            if (shipSquareParticles.size() < 500) {
+                shipSquareParticles.add(new SquareParticle(rand.nextInt(1200) + player.getX() - 200, rand.nextInt(800) + player.getY() - 200, min + Math.random() * (max - min) ,rand.nextInt(7) + 4,-2, 50 ));
             }
         }
     }
@@ -102,7 +121,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                playerSquareParticles.remove(i);
            }
         }
-        System.out.println(playerSquareParticles);
+        for (int i = shipSquareParticles.size() - 1 ; i>=0; i--) {
+            SquareParticle s = shipSquareParticles.get(i);
+            if (Math.pow(s.x - s.startX, 2) + Math.pow(s.y-s.startY, 2) > Math.pow(s.maxdist, 2)) {
+                shipSquareParticles.remove(i);
+            }
+        }
     }
 
     public void changeGamemode() { //debug stuff
@@ -172,6 +196,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (int i = 0; i< playerSquareParticles.size(); i++) {
            SquareParticle s = playerSquareParticles.get(i);
            s.draw(g2d, offsetX, offsetY);
+        }
+        for (int i = 0; i< shipSquareParticles.size(); i++) {
+            SquareParticle s = shipSquareParticles.get(i);
+            s.draw(g2d, offsetX, offsetY);
         }
 
         ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);

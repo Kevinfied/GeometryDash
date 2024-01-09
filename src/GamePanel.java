@@ -82,14 +82,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-        if (! shipSquareParticles.isEmpty()) {
-            for (SquareParticle s: shipSquareParticles) {
-                s.move();
-            }
-        }
 
-        System.out.println(player.getVY());
-
+    
     }
 
     public void create() {
@@ -186,7 +180,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             s.draw(g2d, offsetX, offsetY);
         }
         for (Spike s: lvl1spikes) {
-            s.drawHitbox(g2d, offsetX, offsetY);
+            s.draw(g2d, offsetX, offsetY);
         }
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);

@@ -41,8 +41,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
 //            lvl1map.add(s);
 //        }
-        lvl1map.add("assets/mapMaking/stereoMadness.png");
-//        lvl1map.add("assets/mapMaking/dbugBarrier.png");
+        lvl1map.add("assets/maps/stereoMadness.png");
+//        lvl1map.add("assets/maps/dbugBarrier.png");
         Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();

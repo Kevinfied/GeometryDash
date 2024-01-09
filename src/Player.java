@@ -112,9 +112,9 @@ public class Player{
 
 
         if(gamemode.equals ("cube") ) {
-            if(vy < 37 || vy > -37) {    //cube velocity change
+//            if(vy < 37 || vy > -37) {    //cube velocity change
                 vy += g;
-            }
+//            }
             if(!onSurface) {      //cube rotation
                 angle += jumpRotate;
             }

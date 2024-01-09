@@ -11,6 +11,9 @@ public class Portal {
     public static int height = 225;
 
     private String type;
+    private BufferedImage cubePortalIcon;
+    private BufferedImage shipPortalIcon;
+    private BufferedImage portalIcon;
 
     // constructor
     public Portal(int x, int y, String type) {
@@ -19,7 +22,11 @@ public class Portal {
         this.y = y;
         this.type = type;
 
-
+//        cubePortalIcon = Util.resize(Util.loadBuffImage("assets/portal/cube.png"), width, height);
+//        shipPortalIcon = Util.resize(Util.loadBuffImage("assets/portal/ship.png"), width, height);
+        System.out.println("assets/portals/" + type + ".png");
+//        portalIcon = Util.resize(Util.loadBuffImage("assets/portal/" + type + ".png"), width, height);
+        portalIcon = Util.loadBuffImage("assets/portals/ship.png");
     }
 
     public Rectangle getRect() {
@@ -27,14 +34,18 @@ public class Portal {
     }
 
     public void draw( Graphics g, int offsetX, int offsetY) {
-        if (type == "ship") {
-            g.setColor(Color.YELLOW);
-        }
-        else if (type == "cube") {
-            g.setColor(Color.GREEN);
-        }
-
-        g.fillRect(x + offsetX, y + offsetY, width, height);
+//        if (type == "ship") {
+////            g.setColor(Color.YELLOW);
+//            g.drawImage(shipPortalIcon, x + offsetX, y + offsetY, null);
+//        }
+//
+//        else if (type == "cube") {
+////            g.setColor(Color.GREEN);
+//            g.drawImage(cubePortalIcon, x + offsetX, y + offsetY, null);
+//        }
+//        portalIcon = Util.resize(Util.loadBuffImage("assets/portal/" + type + ".png"), width, height);
+        g.drawImage(portalIcon, x + offsetX, y + offsetY, null);
+//        g.fillRect(x + offsetX, y + offsetY, width, height);
     }
 
 

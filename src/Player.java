@@ -164,6 +164,9 @@ public class Player{
         if ( Math.abs(newOffsetY - offsetY) > 100 && !gamemode.equals("ship") ) {
             offsetY = Globals.floor - groundLevel;
         }
+        else if ( vx > 27) {
+            offsetY = Globals.floor - groundLevel;
+        }
         if (gamemode.equals("ship")) {
             offsetY = 210;
         }

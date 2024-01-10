@@ -15,8 +15,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
-
+    ArrayList <Checkpoint> checkPoints = new ArrayList<Checkpoint>();
     ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
+    Level lvl1 = new Level(lvl1map);
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -43,7 +44,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        }
         lvl1map.add("assets/maps/stereoMadness.png");
 //        lvl1map.add("assets/maps/dbugBarrier.png");
-        Level lvl1 = new Level(lvl1map);
         lvl1.loadMap();
         lvl1.makeMap();
         lvl1solids = lvl1.solids;
@@ -126,6 +126,34 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
         player.setJumpRotate();
+
+        if (keys[KeyEvent.VK_SPACE]) {
+            player.ufoJump();
+        }
+
+        if (keys[KeyEvent.VK_W]) {
+            player.ufoJump();
+        }
+
+        if (keys[KeyEvent.VK_P]) {
+            player.practiceMode = true;
+        }
+
+        if (keys[KeyEvent.VK_Z]) {
+            if (player.practiceMode) {
+                Level.checkpoints.add(new Checkpoint((int) player.getX(), (int) player.getY(), player.getGamemode()));
+            }
+        }
+        if (keys[KeyEvent.VK_X]) {
+
+            if (player.practiceMode) {
+                if (!Level.checkpoints.isEmpty()) {
+                    Level.checkpoints.remove(checkPoints.size() - 1);
+                }
+            }
+        }
+
+
     }
 
     @Override
@@ -167,6 +195,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             p.draw(g2d, offsetX, offsetY);
         }
 
+        for (Checkpoint c: Level.checkpoints) {
+            c.draw(g2d, offsetX, offsetY);
+        }
 
         for (int i = 0; i< playerSquareParticles.size(); i++) {
            SquareParticle s = playerSquareParticles.get(i);

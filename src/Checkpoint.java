@@ -1,18 +1,17 @@
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-public class checkPoint {
+public class Checkpoint {
 
     private int x, y;
-    private int width = 75, height = 75;
+    private int width = 30, height = 60;
+
+//    private
     private BufferedImage img;
     private String type;
-
+    private String gamemode;
     // constructor
-    public checkPoint(int xx, int yy) {
+    public Checkpoint(int xx, int yy, String gamemode) {
         this.x = xx;
         this.y = yy;
 
@@ -33,5 +32,8 @@ public class checkPoint {
 
     public int getY() {
         return y;
+    }
+    public String getGamemode() {
+        return gamemode;
     }
 }

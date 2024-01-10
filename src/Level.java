@@ -11,6 +11,7 @@ public class Level {
     ArrayList<Spike> spikes;
     ArrayList<Portal> portals;
     ArrayList<Barrier> barriers;
+    public static ArrayList<Checkpoint> checkpoints;
     public int aSolid = 1;
     public int aSpike = 2;
     public int aSlab = 3;
@@ -28,6 +29,7 @@ public class Level {
         spikes = new ArrayList<Spike>();
         portals = new ArrayList<Portal>();
         barriers = new ArrayList<Barrier>();
+        checkpoints = new ArrayList<Checkpoint>();
         mapArr = new int[1000][27];
     }
 
@@ -190,7 +192,7 @@ public class Level {
         return spikes;
     }
     public ArrayList<Portal> getPortals() {return portals;}
-
+    public static ArrayList<Checkpoint> getCheckpoints() {return checkpoints;}
     public void asciiPrint() {
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {

@@ -38,6 +38,8 @@ public class Player{
     public boolean onSurface = true;
     public boolean prevOnSurface = true;
     public boolean onCeiling = false;
+
+    public boolean practiceMode;
     private final BufferedImage shipIcon;
     private final BufferedImage ufoIcon;
 
@@ -53,7 +55,7 @@ public class Player{
 
         this.groundLevel = (int) y + width;
 
-
+        practiceMode = false;
         this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
         this.shipIcon = Util.resize( Util.loadBuffImage("assets/icons/Ship001.png" ), width, height);
         this.ufoIcon = Util.resize( Util.loadBuffImage("assets/icons/UFO001.png" ), width, height);
@@ -73,7 +75,7 @@ public class Player{
 
         for ( int i = curSolidIndex ; i < Math.min(curSolidIndex + 60, solids.size() ); i++) {
             Solid s = solids.get( i );
-            if ( landOnSolid( s , solids ) && ! playerSolids.contains( s ) ) {
+            if ( landOnSolid( s , solids) && ! playerSolids.contains( s ) ) {
                 playerSolids.add(s);
             }
         }
@@ -254,7 +256,7 @@ public class Player{
 //
 //    }
 
-    public boolean landOnSolid(Solid s , ArrayList< Solid > lis ) {
+    public boolean landOnSolid(Solid s , ArrayList< Solid > lis) {
         Rectangle solidHitbox = s.getRect();
         int pRightSide = (int) x + width;
         int pBottom = (int) y + height;
@@ -304,17 +306,45 @@ public class Player{
         }
 
     }
-    public void dies(){
-//        y = 400;
-//        vy = 0;
-//        x = constantX;
-//        onSurface = true;
+    public void dies() {
+        if (practiceMode) {
+            if (Level.checkpoints.isEmpty()) {
+    //            dies();
+                gamemode = "cube";
+                y = Globals.floor - height;
+                vy = 0;
+
+                x = constantX;
+                onSurface = true;
+            }
+            else {
+                Checkpoint lastCheckpoint = Level.checkpoints.get( Level.checkpoints.size() - 1 );
+                x = lastCheckpoint.getX();
+                y = lastCheckpoint.getY();
+                gamemode = lastCheckpoint.getGamemode();
+                vy = 0;
+                angle = 0;
+                groundLevel = (int) y + width;
+                playerSolids.clear();
+                curSolidIndex = 0;
+            }
+        }
+        else {
+            gamemode = "cube";
+            y = Globals.floor - height;
+            vy = 0;
+            x = constantX;
+            onSurface = true;
+        }
+
         // stop all motion - for debugging
-        debugDead = true;
-//        vy = 0;
-//        vx = 0;
+//        debugDead = true;
+
+
+
 
     }
+
 
 
     public void cubeJump() {

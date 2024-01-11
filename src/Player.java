@@ -18,7 +18,7 @@ public class Player{
     private int offsetY = 0;
 
     // vector
-    private double g = 4.5; //gravity
+    private double g = 4.6; //gravity
     private double vy = 0;
     private double vx = 19;
     private double initY = -38;
@@ -73,8 +73,14 @@ public class Player{
         x += vx;
 
 
-        for ( int i = curSolidIndex ; i < Math.min(curSolidIndex + 60, solids.size() ); i++) {
-            Solid s = solids.get( i );
+//        for ( int i = curSolidIndex ; i < Math.min(curSolidIndex + 60, solids.size() ); i++) {
+//            Solid s = solids.get( i );
+//            if ( landOnSolid( s , solids) && ! playerSolids.contains( s ) ) {
+//                playerSolids.add(s);
+//            }
+//        }
+
+        for ( Solid s : solids) {
             if ( landOnSolid( s , solids) && ! playerSolids.contains( s ) ) {
                 playerSolids.add(s);
             }
@@ -148,7 +154,6 @@ public class Player{
                 vy += shipG;
             }
 
-            System.out.println( vy );
             if(! onSurface ) {
 
                 if (vy < 0 && angle < Math.PI / 7) {
@@ -163,11 +168,11 @@ public class Player{
         }
 
         int newOffsetY = Globals.floor - groundLevel;
-        if ( Math.abs(newOffsetY - offsetY) > 100 && !gamemode.equals("ship") ) {
+        if ( Math.abs(newOffsetY - offsetY) > 150 && !gamemode.equals("ship") ) {
             offsetY = Globals.floor - groundLevel;
         }
-        else if ( vx > 27) {
-            offsetY = Globals.floor - groundLevel;
+        else if ( vy > 0 && Math.abs(py - y) > 38) {
+            offsetY = Globals.floor - groundLevel - 30;
         }
         if (gamemode.equals("ship")) {
             offsetY = 210;
@@ -181,12 +186,9 @@ public class Player{
 
 
     }
-
+//&& y + height <= s.getY() && y + height +vy >= s.getY()
     public boolean onSolid(Solid s) {  // don't delete this function
-        if(  x + width > s.getX() && x < s.getX() + s.getWidth() && y + height <= s.getY() && y + height +vy >= s.getY()) {
-            return true;
-        }
-        if( s.getX() + s.getWidth() > x && s.getX() + s.getWidth() < x + width && y + height <= s.getY() && y + height +vy >= s.getY() ) {
+        if(  Math.max( s.getX(), x) <= Math.min(s.getX() + s.getWidth() , x + width) && y + height <= s.getY() && y + height +vy >= s.getY()) {
             return true;
         }
         return false;
@@ -261,38 +263,19 @@ public class Player{
 
     public boolean landOnSolid(Solid s , ArrayList< Solid > lis) {
         Rectangle solidHitbox = s.getRect();
-        int pRightSide = (int) x + width;
-        int pBottom = (int) y + height;
-
-
-        if (getHitbox().intersects(solidHitbox) ) {
-            if( s.getY() + s.getHeight() >y &&  s.getY() + s.getHeight() < y + height) {
-                dies();
-                System.out.println("a");
-                return false;
-            }
-            if (!getPrevHitboxX().intersects(solidHitbox)) {
-                y = s.getY() - height;
+        if (solidHitbox . intersects(getHitbox())) {
+            if(  x + width > s.getX() && x < s.getX() + s.getWidth() || s.getX() + s.getWidth() > x && s.getX() + s.getWidth() < x + width ) {
                 vy = 0;
+                y = s.getY() - height;
                 groundLevel = (int) s.getY();
-                curSolidIndex = lis.indexOf( s ) ;
                 return true;
             }
-            if (pRightSide - s.getX() > pBottom - s.getY()) {
-                y = s.getY() - height;
-                vy = 0;
-                groundLevel = (int) s.getY();
-                curSolidIndex = lis.indexOf( s ) ;
-                return true;
-            }
-            else {
-                System.out.println("a");
-                dies();
-                return false;
-            }
-
+            dies();
+            return false;
         }
+
         return false;
+
     }
 
 
@@ -310,42 +293,40 @@ public class Player{
 
     }
     public void dies() {
-        if (practiceMode) {
-            if (Level.checkpoints.isEmpty()) {
-    //            dies();
-                gamemode = "cube";
-                y = Globals.floor - height;
-                vy = 0;
-
-                x = constantX;
-                onSurface = true;
-            }
-            else {
-                Checkpoint lastCheckpoint = Level.checkpoints.get( Level.checkpoints.size() - 1 );
-                x = lastCheckpoint.getX();
-                y = lastCheckpoint.getY();
-                gamemode = lastCheckpoint.getGamemode();
-                vy = 0;
-                angle = 0;
-                groundLevel = (int) y + width;
-                playerSolids.clear();
-                curSolidIndex = 0;
-            }
-        }
-        else {
-            gamemode = "cube";
-            y = Globals.floor - height;
-            vy = 0;
-            x = constantX;
-            onSurface = true;
-        }
+//        if (practiceMode) {
+//            if (Level.checkpoints.isEmpty()) {
+//    //            dies();
+//                gamemode = "cube";
+//                y = Globals.floor - height;
+//                vy = 0;
+//
+//                x = constantX;
+//                onSurface = true;
+//            }
+//            else {
+//                Checkpoint lastCheckpoint = Level.checkpoints.get( Level.checkpoints.size() - 1 );
+//                x = lastCheckpoint.getX();
+//                y = lastCheckpoint.getY();
+//                gamemode = lastCheckpoint.getGamemode();
+//                vy = 0;
+//                angle = 0;
+//                groundLevel = (int) y + width;
+//                playerSolids.clear();
+//                curSolidIndex = 0;
+//            }
+//        }
+//        else {
+//            gamemode = "cube";
+//            y = Globals.floor - height;
+//            vy = 0;
+//            x = constantX;
+//            onSurface = true;
+//        }
 
         // stop all motion - for debugging
 //        debugDead = true;
 
-
-
-
+    vx = 0;
     }
 
 

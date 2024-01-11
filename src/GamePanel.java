@@ -89,7 +89,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-        System.out.println(player.getVY());
 
 
     }
@@ -200,10 +199,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         offsetX = (int) (stationaryX - player.getX());
 
-        if (player.getOffsetY() > offsetY + 100 ) {
-            offsetY += 5;
+        if (player.getOffsetY() > offsetY + 200 ) {
+                offsetY += 5;
         }
-        if (player.getOffsetY() < offsetY + 100 ) {
+        if (player.getOffsetY() < offsetY + 200 ) {
             offsetY -= 5;
         }
 

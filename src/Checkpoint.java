@@ -14,7 +14,7 @@ public class Checkpoint {
     public Checkpoint(int xx, int yy, String gamemode) {
         this.x = xx;
         this.y = yy;
-
+        this.gamemode = gamemode;
         img = Util.loadBuffImage("assets/checkpoint/checkpoint.png");
         img = Util.resize(img, width, height);
     }
@@ -36,4 +36,9 @@ public class Checkpoint {
     public String getGamemode() {
         return gamemode;
     }
+
+    public String toString() {
+        return "<Checkpoint: " + x + ", " + y + ", " + gamemode + ">";
+    }
+
 }

@@ -9,7 +9,7 @@ import java.util.Random;
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
     static Player player;
-
+    boolean pressFlag = false;
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
     ArrayList<String>  lvl1map = new ArrayList<String>();
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
@@ -161,23 +161,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.ufoJump();
         }
 
-        if (keys[KeyEvent.VK_P]) {
-            player.practiceMode = true;
-        }
 
-        if (keys[KeyEvent.VK_Z]) {
-            if (player.practiceMode) {
-                Level.checkpoints.add(new Checkpoint((int) player.getX(), (int) player.getY(), player.getGamemode()));
-            }
-        }
-        if (keys[KeyEvent.VK_X]) {
-
-            if (player.practiceMode) {
-                if (!Level.checkpoints.isEmpty()) {
-                    Level.checkpoints.remove(checkPoints.size() - 1);
-                }
-            }
-        }
 
 
     }
@@ -221,10 +205,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             p.draw(g2d, offsetX, offsetY);
         }
 
+        System.out.print("[");
         for (Checkpoint c: Level.checkpoints) {
             c.draw(g2d, offsetX, offsetY);
+            System.out.print(c.toString() + ", ");
         }
-
+        System.out.println("]");
         for (int i = 0; i< playerSquareParticles.size(); i++) {
            SquareParticle s = playerSquareParticles.get(i);
            s.draw(g2d, offsetX, offsetY);
@@ -265,15 +251,43 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_P) {
+            if (keys[code] == false) {
+                player.practiceMode = true;
+            }
+        }
+
+        if (code == KeyEvent.VK_Z) {
+            if (keys[code] == false) {
+                if (player.practiceMode) {
+                    Level.checkpoints.add(new Checkpoint((int) player.getX(), (int) player.getY(), player.getGamemode()));
+                }
+            }
+        }
+        if (code == KeyEvent.VK_X) {
+            if (keys[code] == false){
+//                System.out.println("HIHIHIHIHIHIHI");
+                if (player.practiceMode) {
+                    if (!Level.checkpoints.isEmpty()) {
+                        Level.checkpoints.remove(Level.checkpoints.size() - 1);
+                    }
+                }
+            }
+        }
+
         keys[code] = true;
+
+
     }
 
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
         keys[code] = false;
+
     }
 
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {}
 
     public static void setOffsetX( int n ) { offsetX = n ; }
     public static void setOffsetY( int n ) { offsetY = n; }

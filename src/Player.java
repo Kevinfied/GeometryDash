@@ -293,40 +293,40 @@ public class Player{
 
     }
     public void dies() {
-//        if (practiceMode) {
-//            if (Level.checkpoints.isEmpty()) {
-//    //            dies();
-//                gamemode = "cube";
-//                y = Globals.floor - height;
-//                vy = 0;
-//
-//                x = constantX;
-//                onSurface = true;
-//            }
-//            else {
-//                Checkpoint lastCheckpoint = Level.checkpoints.get( Level.checkpoints.size() - 1 );
-//                x = lastCheckpoint.getX();
-//                y = lastCheckpoint.getY();
-//                gamemode = lastCheckpoint.getGamemode();
-//                vy = 0;
-//                angle = 0;
-//                groundLevel = (int) y + width;
-//                playerSolids.clear();
-//                curSolidIndex = 0;
-//            }
-//        }
-//        else {
-//            gamemode = "cube";
-//            y = Globals.floor - height;
-//            vy = 0;
-//            x = constantX;
-//            onSurface = true;
-//        }
+        if (practiceMode) {
+            if (Level.checkpoints.isEmpty()) {
+    //            dies();
+                gamemode = "cube";
+                y = Globals.floor - height;
+                vy = 0;
+
+                x = constantX;
+                onSurface = true;
+            }
+            else {
+                Checkpoint lastCheckpoint = Level.checkpoints.get( Level.checkpoints.size() - 1 );
+                x = lastCheckpoint.getX();
+                y = lastCheckpoint.getY();
+                gamemode = lastCheckpoint.getGamemode();
+                vy = 0;
+                angle = 0;
+                groundLevel = (int) y + width;
+                playerSolids.clear();
+                curSolidIndex = 0;
+            }
+        }
+        else {
+            gamemode = "cube";
+            y = Globals.floor - height;
+            vy = 0;
+            x = constantX;
+            onSurface = true;
+        }
 
         // stop all motion - for debugging
 //        debugDead = true;
 
-    vx = 0;
+//    vx = 0;
     }
 
 
@@ -395,7 +395,10 @@ public class Player{
         g.drawRect((int) x, (int) y , width, height);
     }
 
-    public String getGamemode() { return gamemode; }
+    public String getGamemode() {
+//        System.out.println(gamemode);
+        return gamemode;
+    }
     public void setGamemode(String e) { gamemode = e;}
 
     public Rectangle getPrevHitboxY() {

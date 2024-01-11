@@ -18,9 +18,9 @@ public class Player{
     private int offsetY = 0;
 
     // vector
-    private double g = 4.6; //gravity
+    private double g = 5.8; //gravity
     private double vy = 0;
-    private double vx = 19;
+    private double vx = 24;
     private double initY = -38;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;
@@ -69,35 +69,51 @@ public class Player{
 
         py = y;
         px = x;
-        y += vy;
-        x += vx;
+//        y += vy;
+//        x += vx;
+
+        onSurface = false;
 
 
-//        for ( int i = curSolidIndex ; i < Math.min(curSolidIndex + 60, solids.size() ); i++) {
-//            Solid s = solids.get( i );
+        for (int i=0; i<Math.abs(vy); i++) {
+            if (vy < 0) {
+                y -= 1;
+            }
+            else {
+                y += 1;
+            }
+            for (Solid s : solids) {
+                collideSolid(s);
+            }
+        }
+        for (int j=0; j<vx; j++) {
+            x += 1;
+            for (Solid s : solids) {
+                collideSolid(s);
+            }
+        }
+//        for ( Solid s : solids) {
 //            if ( landOnSolid( s , solids) && ! playerSolids.contains( s ) ) {
 //                playerSolids.add(s);
 //            }
 //        }
 
-        for ( Solid s : solids) {
-            if ( landOnSolid( s , solids) && ! playerSolids.contains( s ) ) {
-                playerSolids.add(s);
-            }
-        }
+
+//        for (Solid s: solids) {
+//            collideSolid(s);
+//        }
 
 
         for (Spike s : spikes) {
             collideSpike(s);
         }
 
-
-        for( int i = 0 ; i < playerSolids.size() ; i++ ) {
-            Solid s = playerSolids.get( i );
-            if (! onSolid( s ) && playerSolids.contains(s)) {
-                playerSolids.remove(s);
-            }
-        }
+//        for( int i = 0 ; i < playerSolids.size() ; i++ ) {
+//            Solid s = playerSolids.get( i );
+//            if (! onSolid( s ) && playerSolids.contains(s)) {
+//                playerSolids.remove(s);
+//            }
+//        }
 
         for (Portal p : portals) {
             collidePortal(p);
@@ -105,7 +121,7 @@ public class Player{
 
         onCeiling = ceilingCheck();
         prevOnSurface = onSurface;
-        onSurface = (onGround() || ! playerSolids.isEmpty()  );
+//        onSurface = (onGround() || ! playerSolids.isEmpty()  );
 
 //         dbug things for the hold bug
 //        int solidr = 0; int solidl = 0;
@@ -114,7 +130,9 @@ public class Player{
 //            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
 //        }
 //        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
-
+        if (! onSurface) {
+            onSurface = onGround();
+        }
 
         if(onSurface) { y = groundLevel - height;}
 
@@ -187,12 +205,12 @@ public class Player{
 
     }
 //&& y + height <= s.getY() && y + height +vy >= s.getY()
-    public boolean onSolid(Solid s) {  // don't delete this function
-        if(  Math.max( s.getX(), x) <= Math.min(s.getX() + s.getWidth() , x + width) && y + height <= s.getY() && y + height +vy >= s.getY()) {
-            return true;
-        }
-        return false;
-    }
+//    public boolean onSolid(Solid s) {  // don't delete this function
+//        if(  Math.max( s.getX(), x) <= Math.min(s.getX() + s.getWidth() , x + width) && y + height <= s.getY() && y + height +vy >= s.getY()) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     public boolean onGround() {
         if (y + width > Globals.floor) {
@@ -228,55 +246,79 @@ public class Player{
         angle = angle % ( 2 * Math.PI);
     }
 
-
-
-
-//    public void collideSolid(Solid solid) {
-//        Rectangle solidHitbox = solid.getRect();
-//        int solidBottom = (int)solid.getY()+solid.getHeight();
-//        int playerBottom = (int)getY()+getHeight();
-//
-//        if (getHitbox().intersects(solidHitbox)) {
-////            System.out.println("collide");
-//            if (!getPrevHitboxX().intersects(solidHitbox)) {
-//                dies();
-//                return;
-//            }
-//
-//            if (!getPrevHitboxY().intersects(solidHitbox)) {
-////
-//                if (playerBottom > solidBottom + 40) {
-//                    dies();
-//
-//                }
-//                else {
-//                    y = solid.getY() - height;
-//                    vy = 0;
-//                    groundLevel = (int) solid.getY();
-//                }
-//
-//            }
-//
-//        }
-//
-//    }
-
-    public boolean landOnSolid(Solid s , ArrayList< Solid > lis) {
-        Rectangle solidHitbox = s.getRect();
-        if (solidHitbox . intersects(getHitbox())) {
-            if(  x + width > s.getX() && x < s.getX() + s.getWidth() || s.getX() + s.getWidth() > x && s.getX() + s.getWidth() < x + width ) {
-                vy = 0;
-                y = s.getY() - height;
-                groundLevel = (int) s.getY();
-                return true;
-            }
-            dies();
-            return false;
-        }
-
-        return false;
+    public void collide() {
 
     }
+
+    public void collideSolid( Solid solid) {
+
+        Rectangle sHitbox = solid.getRect();
+
+        Rectangle bottom = new Rectangle( (int) solid.getX(), (int) solid.getY() + solid.getHeight() - 1, solid.getWidth(), 1 );
+        Rectangle top = new Rectangle((int)solid.getX(),(int) solid.getY(), solid.getWidth(), 1);
+        boolean collideUp = false;
+        boolean collideDown = false;
+        boolean collideX = false;
+
+//        for ( int i = 0; i<= Math.abs(vy) ; i++) {
+/*            if (vy < 0) {
+                i = -i;
+            }*/
+//            double ty = y + i;
+            if( sHitbox.intersects(getHitbox())) {
+
+                if (getHitbox().intersects(top)) {
+                    collideUp = true;
+                }
+                else if (getHitbox().intersects(bottom)) {
+                    collideDown = true;
+                }
+
+            }
+//        }
+
+//        for ( int i = 0; i<= vx; i++) {
+//            double tx = x + i;
+            if( sHitbox.intersects(getHitbox())) {
+                collideX = true;
+            }
+//        }
+
+
+        if (gamemode == "cube" ) {
+            if (collideUp) {
+                vy = 0;
+                y = solid.getY() - height;
+                groundLevel = (int) solid.getY();
+                onSurface = true;
+            }
+            else if (collideDown || collideX) {
+                dies();
+            }
+
+        }
+        else {
+
+            if (collideUp) {
+                vy = 0;
+                y = solid.getY() - height;
+                groundLevel = (int) solid.getY();
+                onSurface = true;
+            }
+            else if (collideX) {
+                dies();
+            }
+            else if (collideDown) {
+                vy = 0;
+            }
+
+        }
+
+    }
+
+
+
+
 
 
     public void collideSpike(Spike spike) {

@@ -9,6 +9,10 @@ public class Background {
     private BufferedImage BG1, BG2;
     private int w, h;
     private int v = 2;
+    private int blue = 255;
+    private int red = 100;
+    private int green = 1;
+    int counter = 0;
     private int bg1x, bg2x;
 //    BufferedImage BG1 = Util.loadBuffImage("assets/background/stereoBG.png" );
 //    BufferedImage BG2 = Util.loadBuffImage("assets/background/stereoBG.png" );
@@ -33,9 +37,24 @@ public class Background {
         }
     }
 
-    public void draw( Graphics g) {
+    public void draw(Graphics g) {
+
+
         g.drawImage(BG1, bg1x, 0, w, h, null);
         g.drawImage(BG2, bg2x, 0, w, h, null);
+        g.setColor(new Color(red, green, blue, 77));
+        g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+        if ( counter % 100 == 0) {
+            red = (int) (0.97 * red);
+            blue = (int) (0.97 * blue);
+            green = (int) (1.02 * green );
+            if (green> 255) {
+                green = 255;
+            }
+            counter = 1;
+        }
+        counter += 1;
+
     }
 
 

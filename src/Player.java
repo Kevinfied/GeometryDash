@@ -13,6 +13,7 @@ public class Player{
     private double x, y;
     private double constantX;
     private double px, py;
+    private String collidingOrb = "none";
     private int width, height;
     private int groundLevel;
     private int offsetY = 0;
@@ -350,7 +351,8 @@ public class Player{
                 x = lastCheckpoint.getX();
                 y = lastCheckpoint.getY();
                 gamemode = lastCheckpoint.getGamemode();
-                vy = 0;
+                vy = lastCheckpoint.getVy();
+                vx = lastCheckpoint.getVx();
                 angle = 0;
                 groundLevel = (int) y + width;
                 playerSolids.clear();

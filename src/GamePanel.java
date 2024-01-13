@@ -261,7 +261,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if (code == KeyEvent.VK_Z) {
             if (keys[code] == false) {
                 if (player.practiceMode) {
-                    Level.checkpoints.add(new Checkpoint((int) player.getX(), (int) player.getY(), player.getGamemode()));
+                    Level.checkpoints.add(new Checkpoint(player.getX(), player.getY(), player.getVX(), player.getVY(), player.getGamemode()));
                 }
             }
         }

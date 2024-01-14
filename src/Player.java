@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Player{
 
     private boolean debugDead = false;
+    public boolean orbActivate = false;
 
     // hit box
     private double x, y;
@@ -63,7 +64,7 @@ public class Player{
     }
 
 
-    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals, ArrayList<Pad> pads) {
+    public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals, ArrayList<Pad> pads, ArrayList<Orb> orbs) {
         if (debugDead) {
             return;
         }
@@ -103,6 +104,7 @@ public class Player{
         }
 
 
+
         onCeiling = ceilingCheck();
         prevOnSurface = onSurface;
 //        onSurface = (onGround() || ! playerSolids.isEmpty()  );
@@ -116,14 +118,29 @@ public class Player{
 //        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
 
         groundCheck();
+
         if (!pads.isEmpty()) {
             for (Pad p: pads) {
                 collidePad(p);
             }
         }
 
+        if ( ! onSurface && !GamePanel.mouseDown) {
+            orbActivate = true;
+        }
 
-        if(onSurface) { y = groundLevel - height;}
+        if(onSurface) {
+            y = groundLevel - height;
+            orbActivate = false;
+        }
+
+        if (!orbs.isEmpty()) {
+            for (Orb o : orbs) {
+                collideOrb(o);
+            }
+        }
+
+
 
         if(gamemode.equals ("cube") ) {
 //            if(vy < 37 || vy > -37) {    //cube velocity change
@@ -291,17 +308,21 @@ public class Player{
             }
 
         }
-
-
     }
-
-
 
 
     public void collidePad( Pad pad) {
         Rectangle padHitbox = pad.getRect();
-        if (getHitbox().intersects(padHitbox) && x + width >= pad.getX() + pad.getWidth()/2) {
-            vy -= 45;
+        if (getHitbox().intersects(padHitbox) ) {
+            vy = -50;
+            onSurface = false;
+        }
+    }
+
+    public void collideOrb( Orb o) {
+        Rectangle orbHitbox = o.getHitbox();
+        if (getHitbox().intersects(orbHitbox) && orbActivate && GamePanel.mouseDown) {
+            vy = -45;
             onSurface = false;
         }
     }
@@ -324,6 +345,7 @@ public class Player{
             if (Level.checkpoints.isEmpty()) {
     //            dies();
                 gamemode = "cube";
+                setInitY(-38);
                 y = Globals.floor - height;
                 vy = 0;
 

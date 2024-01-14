@@ -15,6 +15,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
+    ArrayList <Orb> lvl1orbs = new ArrayList<Orb>();
     ArrayList <Checkpoint> checkPoints = new ArrayList<Checkpoint>();
     ArrayList <Pad> lvl1pads = new ArrayList<Pad>();
     ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
@@ -52,6 +53,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         lvl1spikes = lvl1.spikes;
         lvl1portals = lvl1.portals;
         lvl1pads = lvl1.pads;
+        lvl1orbs = lvl1.orbs;
         lvl1.asciiPrint();
 
 
@@ -72,7 +74,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1spikes, lvl1portals, lvl1pads);
+        player.move(lvl1solids, lvl1spikes, lvl1portals, lvl1pads, lvl1orbs);
         if(mouseDown) {
             player.cubeJump();
         }
@@ -83,12 +85,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-
         if (! shipSquareParticles.isEmpty()) {
             for (SquareParticle s: shipSquareParticles) {
                 s.move();
             }
         }
+
+        System.out.println(player.orbActivate);
 
 
 
@@ -101,11 +104,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if (playerSquareParticles.size() < 100) {
             if( player.getGamemode().equals("cube") && player.onSurface == true) {
 
-                playerSquareParticles.add ( new SquareParticle( player.getX(), player.getY() + player.getWidth(), min + Math.random() * (max - min) ,rand.nextInt(4) + 4,-4, 20));
+                playerSquareParticles.add ( new SquareParticle( player.getX(), player.getY() + player.getWidth(), min + Math.random() * (max - min) ,rand.nextInt(4) + 4,-2, 20));
             }
 
             if (player.getGamemode().equals("ship")) {
-                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) ,rand.nextInt(3) + 4,-4, 50));
+                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) ,rand.nextInt(3) + 4,-2, 50));
             }
         }
 
@@ -162,9 +165,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.ufoJump();
         }
 
-
-
-
     }
 
     @Override
@@ -210,7 +210,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 p.draw(g, offsetX, offsetY);
             }
         }
-        System.out.println(lvl1pads);
+        if( !lvl1orbs.isEmpty()) {
+            for (Orb o: lvl1orbs) {
+                o.draw(g, offsetX, offsetY);
+            }
+        }
 
 //        System.out.print("[");
 //        for (Checkpoint c: Level.checkpoints) {
@@ -238,7 +242,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
-        player.ufoJump();
         //get mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();

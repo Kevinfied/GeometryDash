@@ -11,6 +11,7 @@ public class Level {
     ArrayList<Spike> spikes;
     ArrayList<Portal> portals;
     ArrayList<Barrier> barriers;
+    ArrayList<Orb> orbs;
     ArrayList<Pad> pads;
     public static ArrayList<Checkpoint> checkpoints;
     public int aSolid = 1;
@@ -32,6 +33,7 @@ public class Level {
         barriers = new ArrayList<Barrier>();
         checkpoints = new ArrayList<Checkpoint>();
         pads = new ArrayList<Pad>();
+        orbs = new ArrayList<Orb>();
         mapArr = new int[1000][27];
     }
 
@@ -97,6 +99,9 @@ public class Level {
                     }
                     else if ( c == 0xFFB200FF) {
                         v = 13;
+                    }
+                    else if (c == 0xFFFFD800) {
+                        v = 14;
                     }
                     mapArr[x][y] = v;
                 }
@@ -165,6 +170,11 @@ public class Level {
                 else if (target == 13) {
                     Pad p = new Pad(x * Globals.slabWidth + 25 , Globals.floor - ((h-y-7) * Globals.solidHeight) - 30, Globals.solidWidth - 25, 30);
                     pads.add(p);
+                }
+                else if ( target == 14) {
+                    Orb o = new Orb(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "yes" );
+                    orbs.add(o);
+
                 }
             }
         }

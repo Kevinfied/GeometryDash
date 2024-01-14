@@ -20,16 +20,18 @@ public class Orb {
 
 
     public Rectangle getHitbox() {
-        return new Rectangle(x, y, width, height);
+
+        return new Rectangle(x -10, y -10, width+20, height+20);
     }
 
     public void drawHitbox(Graphics g, int offsetX, int offsetY) {
         g.setColor(Color.GREEN);
-        g.drawRect(x + offsetX, y + offsetY, width, height);
+        g.drawRect(x + offsetX -10, y + offsetY -10, width + 20, height+ 20);
+        g.drawRect(x+offsetX, y + offsetY, width, height);
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {
-        g.drawImage(img, x + offsetX, y + offsetY, null);
+//        g.drawImage(img, x + offsetX, y + offsetY, null);
         drawHitbox(g, offsetX, offsetY);
     }
 

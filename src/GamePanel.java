@@ -16,6 +16,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
     ArrayList <Checkpoint> checkPoints = new ArrayList<Checkpoint>();
+    ArrayList <Pad> lvl1pads = new ArrayList<Pad>();
     ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
     Level lvl1 = new Level(lvl1map);
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
@@ -33,7 +34,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/40, this);
+        timer = new Timer(1000/20, this);
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -48,9 +49,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         lvl1.loadMap();
         lvl1.makeMap();
         lvl1solids = lvl1.solids;
-//        lvl1slabs = lvl1.getSlabs();
         lvl1spikes = lvl1.spikes;
         lvl1portals = lvl1.portals;
+        lvl1pads = lvl1.pads;
         lvl1.asciiPrint();
 
 
@@ -71,7 +72,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1spikes, lvl1portals);
+        player.move(lvl1solids, lvl1spikes, lvl1portals, lvl1pads);
         if(mouseDown) {
             player.cubeJump();
         }
@@ -204,13 +205,19 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (Portal p: lvl1portals) {
             p.draw(g2d, offsetX, offsetY);
         }
-
-        System.out.print("[");
-        for (Checkpoint c: Level.checkpoints) {
-            c.draw(g2d, offsetX, offsetY);
-            System.out.print(c.toString() + ", ");
+        if( !lvl1pads.isEmpty()) {
+            for (Pad p: lvl1pads) {
+                p.draw(g, offsetX, offsetY);
+            }
         }
-        System.out.println("]");
+        System.out.println(lvl1pads);
+
+//        System.out.print("[");
+//        for (Checkpoint c: Level.checkpoints) {
+//            c.draw(g2d, offsetX, offsetY);
+//            System.out.print(c.toString() + ", ");
+//        }
+//        System.out.println("]");
         for (int i = 0; i< playerSquareParticles.size(); i++) {
            SquareParticle s = playerSquareParticles.get(i);
            s.draw(g2d, offsetX, offsetY);

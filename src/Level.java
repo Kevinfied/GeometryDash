@@ -168,7 +168,7 @@ public class Level {
                     barriers.add(b);
                 }
                 else if (target == 13) {
-                    Pad p = new Pad(x * Globals.slabWidth + 25 , Globals.floor - ((h-y-7) * Globals.solidHeight) - 30, Globals.solidWidth - 25, 30);
+                    Pad p = new Pad(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - 30, Globals.solidWidth, 30);
                     pads.add(p);
                 }
                 else if ( target == 14) {

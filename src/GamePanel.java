@@ -134,7 +134,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         for (int i = 0; i<padParticles.size(); i++) {
             ArrayList lis = padParticles.get(i);
-            if(lis.size() <300){
+            if(lis.size() < 700){
                 lis.add(new SquareParticle(lvl1pads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvl1pads.get(i).getY() + lvl1pads.get(i).getHeight(), Math.PI/2, rand.nextInt(7) + 4,-10, rand.nextInt(50) + 100 ));
             }
         }

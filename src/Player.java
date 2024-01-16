@@ -314,7 +314,7 @@ public class Player{
     public void collidePad( Pad pad) {
         Rectangle padHitbox = pad.getRect();
         if (getHitbox().intersects(padHitbox) ) {
-            vy = -50;
+            vy = -60;
             onSurface = false;
         }
     }

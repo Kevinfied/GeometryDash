@@ -132,7 +132,12 @@ public class Player{
         }
 
         if(onSurface) {
-            y = groundLevel - height;
+            if(!reverse) {
+                y = groundLevel - height;
+            }
+//            if(reverse){
+//                y = groundLevel;
+//            }
             orbActivate = false;
         }
 

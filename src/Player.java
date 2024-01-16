@@ -9,6 +9,7 @@ public class Player{
 
     private boolean debugDead = false;
     public boolean orbActivate = false;
+    public boolean changeYdirection = false;
 
     // hit box
     private double x, y;
@@ -34,6 +35,7 @@ public class Player{
     // rotation
     private double angle = 0;
     private double jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump
+    public boolean reverse = false;
 
     private String gamemode;
     private final BufferedImage icon;
@@ -69,12 +71,14 @@ public class Player{
             return;
         }
 
+
         py = y;
         px = x;
 //        y += vy;
 //        x += vx;
 
         onSurface = false;
+        System.out.println(reverse);
 
 
         for (int i=0; i<Math.abs(vy); i++) {
@@ -107,17 +111,13 @@ public class Player{
 
         onCeiling = ceilingCheck();
         prevOnSurface = onSurface;
-//        onSurface = (onGround() || ! playerSolids.isEmpty()  );
-
-//         dbug things for the hold bug
-//        int solidr = 0; int solidl = 0;
-//        if(! playerSolids.isEmpty() ) {
-//            solidl = (int) playerSolids.get(0).getX();
-//            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
-//        }
-//        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
 
         groundCheck();
+
+        if(changeYdirection) {
+            upsideDown();
+            changeYdirection = false;
+        }
 
         if (!pads.isEmpty()) {
             for (Pad p: pads) {
@@ -130,7 +130,12 @@ public class Player{
         }
 
         if(onSurface) {
-            y = groundLevel - height;
+//            if(!reverse) {
+//                y = groundLevel - height;
+//            }
+//            if(reverse){
+//                y = groundLevel;
+//            }
             orbActivate = false;
         }
 
@@ -218,6 +223,9 @@ public class Player{
 //    }
 
     public void groundCheck() {
+        if(reverse){
+            return;
+        }
         if (y + width > Globals.floor) {
             y = Globals.floor - width;
             vy = 0;
@@ -228,6 +236,12 @@ public class Player{
 
     public boolean ceilingCheck() {
         if(  gamemode.equals("ship") && y < Globals.SHIP_CEILING) {
+            y = Globals.SHIP_CEILING;
+            vy = 0;
+            return true;
+        }
+
+        else if (reverse && y< Globals.SHIP_CEILING) {
             y = Globals.SHIP_CEILING;
             vy = 0;
             return true;
@@ -252,6 +266,20 @@ public class Player{
 
     public void collide() {
 
+    }
+
+    public void upsideDown() {
+        g *= -1; //gravity
+//        vy *= -1;
+        initY *= -1;
+        shipG *= -1;
+        shipLift *= -1;
+        if (reverse) {
+            reverse = false;
+        }
+        else{
+            reverse = true;
+        }
     }
 
     public void collideSolid( Solid solid) {
@@ -281,13 +309,23 @@ public class Player{
 
 
         if (gamemode == "cube" ) {
-            if (collideUp) {
+            if (collideUp && !reverse) {
                 vy = 0;
                 y = solid.getY() - height;
                 groundLevel = (int) solid.getY();
                 onSurface = true;
             }
-            else if (collideDown || collideX) {
+            else if( collideDown && reverse) {
+                vy = 0;
+                y = solid.getY() + solid.getHeight();
+                groundLevel = (int) solid.getY() + solid.getHeight();
+                onSurface = true;
+                System.out.println((solid.getY() + solid.getHeight()) + ",  " + y );
+            }
+            else if (!reverse && (collideDown || collideX)) {
+                dies();
+            }
+            else if (reverse && (collideUp || collideX)) {
                 dies();
             }
 

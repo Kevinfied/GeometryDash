@@ -46,7 +46,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
 //            lvl1map.add(s);
 //        }
-        lvl1map.add("assets/maps/baseAfterBase.png");
+        lvl1map.add("assets/maps/dbugBarrier.png");
 //        lvl1map.add("assets/maps/dbugBarrier.png");
         lvl1.loadMap();
         lvl1.makeMap();
@@ -106,10 +106,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-        System.out.println(player.orbActivate);
-
-
-
     }
 
     public void create() {
@@ -159,7 +155,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             for (int j = lis.size()-1; j>=0; j--) {
                 SquareParticle s = lis.get(j);
                 if (Math.pow(s.x - s.startX, 2) + Math.pow(s.y-s.startY, 2) > Math.pow(s.maxdist, 2)) {
-                    System.out.println(s.y - s.startY);
                     lis.remove(j);
                 }
             }
@@ -198,6 +193,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.ufoJump();
         }
 
+        if(keys[KeyEvent.VK_4]) {
+            player.upsideDown();
+        }
+
     }
 
     @Override
@@ -223,6 +222,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if (player.getOffsetY() < offsetY + 200 ) {
             offsetY -= 5;
         }
+
+        offsetY = 0;
 
 //        System.out.println( player.getOffsetY() + "  " + offsetY);
         int playerOSY = offsetY ;

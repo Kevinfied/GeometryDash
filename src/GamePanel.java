@@ -194,7 +194,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
         if(keys[KeyEvent.VK_4]) {
-            player.upsideDown();
+            player.changeYdirection = true;;
         }
 
     }
@@ -223,7 +223,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             offsetY -= 5;
         }
 
-        offsetY = 0;
+//        offsetY = 0;
 
 //        System.out.println( player.getOffsetY() + "  " + offsetY);
         int playerOSY = offsetY ;

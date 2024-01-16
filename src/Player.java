@@ -9,6 +9,7 @@ public class Player{
 
     private boolean debugDead = false;
     public boolean orbActivate = false;
+    public boolean changeYdirection = false;
 
     // hit box
     private double x, y;
@@ -70,6 +71,7 @@ public class Player{
             return;
         }
 
+
         py = y;
         px = x;
 //        y += vy;
@@ -109,17 +111,13 @@ public class Player{
 
         onCeiling = ceilingCheck();
         prevOnSurface = onSurface;
-//        onSurface = (onGround() || ! playerSolids.isEmpty()  );
-
-//         dbug things for the hold bug
-//        int solidr = 0; int solidl = 0;
-//        if(! playerSolids.isEmpty() ) {
-//            solidl = (int) playerSolids.get(0).getX();
-//            solidr = (int) playerSolids.get(0).getX() + (int) playerSolids.get(0).getWidth();
-//        }
-//        System.out.println(prevOnSurface+ "    " + onSurface+ "    "+ playerSolids + "    "+ "(" + solidl + ", " + solidr + ")     (" + x + ", " + (x+width) + ")");
 
         groundCheck();
+
+        if(changeYdirection) {
+            upsideDown();
+            changeYdirection = false;
+        }
 
         if (!pads.isEmpty()) {
             for (Pad p: pads) {
@@ -132,9 +130,9 @@ public class Player{
         }
 
         if(onSurface) {
-            if(!reverse) {
-                y = groundLevel - height;
-            }
+//            if(!reverse) {
+//                y = groundLevel - height;
+//            }
 //            if(reverse){
 //                y = groundLevel;
 //            }
@@ -324,7 +322,10 @@ public class Player{
                 onSurface = true;
                 System.out.println((solid.getY() + solid.getHeight()) + ",  " + y );
             }
-            else if ((collideDown || collideX)) {
+            else if (!reverse && (collideDown || collideX)) {
+                dies();
+            }
+            else if (reverse && (collideUp || collideX)) {
                 dies();
             }
 

@@ -320,9 +320,9 @@ public class Player{
             else if( collideDown && reverse) {
                 vy = 0;
                 y = solid.getY() + solid.getHeight();
-                groundLevel = (int) solid.getY() + 2* solid.getHeight();
+                groundLevel = (int) solid.getY() + solid.getHeight();
                 onSurface = true;
-                System.out.println((solid.getY() + 2* solid.getHeight()) + ",  " + y );
+                System.out.println((solid.getY() + solid.getHeight()) + ",  " + y );
             }
             else if ((collideDown || collideX)) {
                 dies();

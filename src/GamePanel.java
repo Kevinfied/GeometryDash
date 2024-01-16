@@ -36,7 +36,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/15, this);
+        timer = new Timer(1000/40, this);
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);

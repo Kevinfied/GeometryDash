@@ -36,7 +36,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/40, this);
+        timer = new Timer(1000/15, this);
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -46,7 +46,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
 //            lvl1map.add(s);
 //        }
-        lvl1map.add("assets/maps/dbugBarrier.png");
+        lvl1map.add("assets/maps/baseAfterBase.png");
 //        lvl1map.add("assets/maps/dbugBarrier.png");
         lvl1.loadMap();
         lvl1.makeMap();

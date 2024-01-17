@@ -297,7 +297,7 @@ public class Player{
             if (getHitbox().intersects(top)) {
                 collideUp = true;
             }
-            else if (getHitbox().intersects(bottom)) {
+            if (getHitbox().intersects(bottom)) {
                 collideDown = true;
             }
 
@@ -309,13 +309,16 @@ public class Player{
 
 
         if (gamemode == "cube" ) {
-            if (collideUp && !reverse) {
+            if(collideUp && collideDown) {
+                dies();
+            }
+            else if (collideUp && !reverse && !collideDown) {
                 vy = 0;
                 y = solid.getY() - height;
                 groundLevel = (int) solid.getY();
                 onSurface = true;
             }
-            else if( collideDown && reverse) {
+            else if( collideDown && reverse && !collideUp) {
                 vy = 0;
                 y = solid.getY() + solid.getHeight();
                 groundLevel = (int) solid.getY() + solid.getHeight();
@@ -328,6 +331,7 @@ public class Player{
             else if (reverse && (collideUp || collideX)) {
                 dies();
             }
+
 
         }
         else {

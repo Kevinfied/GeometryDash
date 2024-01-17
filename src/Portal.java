@@ -9,19 +9,19 @@ public class Portal {
     private int x, y;
     public static int width = 75;
     public static int height = 225;
-
+    private static int gravity; // 0 no switch, 1 upside down, 2 up
     private String type;
     private BufferedImage cubePortalIcon;
     private BufferedImage shipPortalIcon;
     private BufferedImage portalIcon;
 
     // constructor
-    public Portal(int x, int y, String type) {
+    public Portal(int x, int y, String type, int gravity) {
 
         this.x = x;
         this.y = y;
         this.type = type;
-
+        this.gravity = gravity;
 //        cubePortalIcon = Util.resize(Util.loadBuffImage("assets/portal/cube.png"), width, height);
 //        shipPortalIcon = Util.resize(Util.loadBuffImage("assets/portal/ship.png"), width, height);
         System.out.println("assets/portals/" + type + ".png");
@@ -90,6 +90,10 @@ public class Portal {
 
     public String getType() {
         return type;
+    }
+
+    public int getGravity() {
+        return gravity;
     }
 
     public void setType(String type) {

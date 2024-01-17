@@ -251,10 +251,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
 //        System.out.print("[");
-//        for (Checkpoint c: Level.checkpoints) {
-//            c.draw(g2d, offsetX, offsetY);
+        for (Checkpoint c: Level.checkpoints) {
+            c.draw(g2d, offsetX, offsetY);
 //            System.out.print(c.toString() + ", ");
-//        }
+        }
 //        System.out.println("]");
         for (int i = 0; i< playerSquareParticles.size(); i++) {
            SquareParticle s = playerSquareParticles.get(i);

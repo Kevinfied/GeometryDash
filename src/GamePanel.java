@@ -36,7 +36,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/15, this);
+        timer = new Timer(1000/60, this);
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -46,7 +46,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
 //            lvl1map.add(s);
 //        }
-        lvl1map.add("assets/maps/baseAfterBase.png");
+        lvl1map.add("assets/maps/empty.png");
 //        lvl1map.add("assets/maps/dbugBarrier.png");
         lvl1.loadMap();
         lvl1.makeMap();
@@ -317,6 +317,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 }
             }
         }
+
         if (code == KeyEvent.VK_X) {
             if (keys[code] == false){
 //                System.out.println("HIHIHIHIHIHIHI");

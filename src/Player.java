@@ -71,6 +71,8 @@ public class Player{
             return;
         }
 
+        System.out.println(angle + " ,  " + onSurface);
+
 
         py = y;
         px = x;
@@ -78,8 +80,6 @@ public class Player{
 //        x += vx;
 
         onSurface = false;
-        System.out.println(reverse);
-
 
         for (int i=0; i<Math.abs(vy); i++) {
             if (vy < 0) {
@@ -92,6 +92,7 @@ public class Player{
                 collideSolid(s);
             }
         }
+
         for (int j=0; j<vx; j++) {
             x += 1;
             for (Solid s : solids) {
@@ -108,16 +109,19 @@ public class Player{
         }
 
 
-
         onCeiling = ceilingCheck();
         prevOnSurface = onSurface;
 
         groundCheck();
 
+        System.out.println(angle + " ,  " + onSurface);
+
         if(changeYdirection) {
             upsideDown();
             changeYdirection = false;
         }
+
+        System.out.println(angle + " ,  " + onSurface);
 
         if (!pads.isEmpty()) {
             for (Pad p: pads) {
@@ -125,17 +129,13 @@ public class Player{
             }
         }
 
+        System.out.println(angle + "  ," + onSurface + "     ,reverse +" + reverse);
+
         if ( ! onSurface && !GamePanel.mouseDown) {
             orbActivate = true;
         }
 
         if(onSurface) {
-//            if(!reverse) {
-//                y = groundLevel - height;
-//            }
-//            if(reverse){
-//                y = groundLevel;
-//            }
             orbActivate = false;
         }
 
@@ -148,10 +148,12 @@ public class Player{
 
 
         if(gamemode.equals ("cube") ) {
+            System.out.println(onSurface);
+            jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
 //            if(vy < 37 || vy > -37) {    //cube velocity change
                 vy += g;
 //            }
-            if(!onSurface) {      //cube rotation
+            if(!onSurface) {     //cube rotation
                 angle += jumpRotate;
             }
         }
@@ -178,9 +180,9 @@ public class Player{
         }
 
         if(gamemode.equals ("ufo") ) {
-            if(vy < 34 || vy > -34) {    //cube velocity change
+//            if(vy < 34 || vy > -34) {    //cube velocity change
                 vy += shipG;
-            }
+//            }
 
             if(! onSurface ) {
 
@@ -207,20 +209,11 @@ public class Player{
         }
 
 
-        //rotation adjustment
+//        rotation adjustment
         if(onSurface || onCeiling){
             angleAdjust();
         }
-
-
     }
-//&& y + height <= s.getY() && y + height +vy >= s.getY()
-//    public boolean onSolid(Solid s) {  // don't delete this function
-//        if(  Math.max( s.getX(), x) <= Math.min(s.getX() + s.getWidth() , x + width) && y + height <= s.getY() && y + height +vy >= s.getY()) {
-//            return true;
-//        }
-//        return false;
-//    }
 
     public void groundCheck() {
         if(reverse){
@@ -251,15 +244,23 @@ public class Player{
 
 
     public void angleAdjust() {
-        int floorR =(int)  (angle / (Math.PI /2 ));
+        int floorR = (int) Math.floor( (angle / (Math.PI /2 )) );
+        int next = floorR + 1;
+        double incre = 0.5;
+//        if (Math.abs(floorR - (angle / (Math.PI /2 ))) > Math.abs( next - (angle / (Math.PI /2 )))) {
+//            incre *= -1;
+//        }
 
         if (angle % (Math.PI / 2) != 0) {
-            angle += 0.1;
+            angle += incre;
         }
 
-        if (angle > floorR ) {
-            angle = floorR * (Math.PI / 2);
+        if (angle > (floorR) * (Math.PI / 2) ) {
+            angle = (floorR) * (Math.PI / 2);
         }
+//        else if ( angle > (next) * (Math.PI / 2) ) {
+//            angle = (next) * (Math.PI / 2);
+//        }
 
         angle = angle % ( 2 * Math.PI);
     }
@@ -285,6 +286,7 @@ public class Player{
     public void collideSolid( Solid solid) {
 
         Rectangle sHitbox = solid.getRect();
+        Rectangle pHitbox = new Rectangle((int)px, (int)py, width, height);
 
         Rectangle bottom = new Rectangle( (int) solid.getX(), (int) solid.getY() + solid.getHeight() - 1, solid.getWidth(), 1 );
         Rectangle top = new Rectangle((int)solid.getX(),(int) solid.getY(), solid.getWidth(), 1);
@@ -294,7 +296,10 @@ public class Player{
 
         if( sHitbox.intersects(getHitbox())) {
 
-            if (getHitbox().intersects(top)) {
+            if (getHitbox().intersects(top) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= y + height - solid.getY() -10)) {
+                collideUp = true;
+            }
+            if(getHitbox().intersects(top) && !pHitbox.intersects(top)) {
                 collideUp = true;
             }
             if (getHitbox().intersects(bottom)) {
@@ -323,7 +328,6 @@ public class Player{
                 y = solid.getY() + solid.getHeight();
                 groundLevel = (int) solid.getY() + solid.getHeight();
                 onSurface = true;
-                System.out.println((solid.getY() + solid.getHeight()) + ",  " + y );
             }
             else if (!reverse && (collideDown || collideX)) {
                 dies();

@@ -13,7 +13,7 @@ public class Checkpoint {
     private String gamemode;
     private boolean upsideDown;
     // constructor
-    public Checkpoint(double xx, double yy, double vx, double vy, String gamemode, boolean upsideDown) {
+    public Checkpoint(double xx, double yy, double vx, double vy, String gamemode) {
         this.x = xx;
         this.y = yy;
         this.vx = vx;

@@ -34,7 +34,7 @@ public class Level {
         checkpoints = new ArrayList<Checkpoint>();
         pads = new ArrayList<Pad>();
         orbs = new ArrayList<Orb>();
-        mapArr = new int[1000][27];
+        mapArr = new int[6000][27];
     }
 
 
@@ -154,12 +154,12 @@ public class Level {
                     solids.add(s);
                 }
                 else if (target == 10) {
-                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "ship" );
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "ship", 0 );
                     portals.add(p);
                     System.out.println("portal made");
                 }
                 else if (target == 11) {
-                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "cube" );
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "cube", 0 );
                     portals.add(p);
                     System.out.println("portal made");
                 }

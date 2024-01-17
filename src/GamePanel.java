@@ -25,7 +25,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
-
+    public static String screen;
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
@@ -37,7 +37,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         requestFocus();
 
         timer = new Timer(1000/60, this);
-
+//<<<<<<< HEAD
+//
+//=======
+//        screen = "main menu";
+//>>>>>>> ba6b5571fc908968e93cf0a3d51391fdff020943
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
 
@@ -69,13 +73,24 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void actionPerformed(ActionEvent e) {
-        move();
 
-        // for cosmetics
-        create();
-        destroy();
+        if (screen == "main menu") {
+            if (keys[KeyEvent.VK_ENTER]) {
+                screen = "game";
+            }
 
-        changeGamemode();
+        }
+
+        else if (screen == "game") {
+            move();
+
+            // for cosmetics
+            create();
+            destroy();
+
+            changeGamemode();
+        }
+
         repaint();
     }
 
@@ -202,83 +217,92 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2d = (Graphics2D)(g);
-        bg.draw(g2d);
+
+        if (screen == "main menu") {
+
+            Graphics2D menu = (Graphics2D) (g);
+            menu.drawImage(Util.loadBuffImage("assets/background/stereoBG.png"), 0, 0, null);
+
+        }
+
+        if (screen == "game") {
+            Graphics2D g2d = (Graphics2D) (g);
+            bg.draw(g2d);
 
 
-        Graphics ground = (Graphics2D)(g);
-        ground.setColor(Color.WHITE);
+            Graphics ground = (Graphics2D) (g);
+            ground.setColor(Color.WHITE);
 
-        Graphics debug = (Graphics2D)(g);
-        debug.setColor(Color.RED);
-        debug.fillRect((int) 300, Globals.floor, 1, 100);
+            Graphics debug = (Graphics2D) (g);
+            debug.setColor(Color.RED);
+            debug.fillRect((int) 300, Globals.floor, 1, 100);
 
 
-        offsetX = (int) (stationaryX - player.getX());
+            offsetX = (int) (stationaryX - player.getX());
 
-        if (player.getOffsetY() > offsetY + 200 ) {
+            if (player.getOffsetY() > offsetY + 200) {
                 offsetY += 5;
-        }
-        if (player.getOffsetY() < offsetY + 200 ) {
-            offsetY -= 5;
-        }
+            }
+            if (player.getOffsetY() < offsetY + 200) {
+                offsetY -= 5;
+            }
 
 //        offsetY = 0;
 
 //        System.out.println( player.getOffsetY() + "  " + offsetY);
-        int playerOSY = offsetY ;
+            int playerOSY = offsetY;
 
-        player.draw(g2d, playerOSY);
+            player.draw(g2d, playerOSY);
 
-        for (Solid s: lvl1solids) {
-            s.draw(g2d, offsetX, offsetY);
-        }
-        for (Spike s: lvl1spikes) {
-            s.draw(g2d, offsetX, offsetY);
-        }
-        for (Portal p: lvl1portals) {
-            p.draw(g2d, offsetX, offsetY);
-        }
-        if( !lvl1pads.isEmpty()) {
-            for (Pad p: lvl1pads) {
-                p.draw(g, offsetX, offsetY);
-            }
-        }
-        if( !lvl1orbs.isEmpty()) {
-            for (Orb o: lvl1orbs) {
-                o.draw(g, offsetX, offsetY);
-            }
-        }
-
-//        System.out.print("[");
-        for (Checkpoint c: Level.checkpoints) {
-            c.draw(g2d, offsetX, offsetY);
-//            System.out.print(c.toString() + ", ");
-        }
-//        System.out.println("]");
-        for (int i = 0; i< playerSquareParticles.size(); i++) {
-           SquareParticle s = playerSquareParticles.get(i);
-           s.draw(g2d, offsetX, offsetY);
-        }
-        for (int i = 0; i< shipSquareParticles.size(); i++) {
-            SquareParticle s = shipSquareParticles.get(i);
-            s.draw(g2d, offsetX, offsetY);
-        }
-
-        for (int i = 0; i<padParticles.size(); i++) {
-            ArrayList<SquareParticle> lis = padParticles.get(i);
-            for (int j = lis.size()-1; j>=0; j--) {
-                SquareParticle s = lis.get(j);
+            for (Solid s : lvl1solids) {
                 s.draw(g2d, offsetX, offsetY);
             }
+            for (Spike s : lvl1spikes) {
+                s.draw(g2d, offsetX, offsetY);
+            }
+            for (Portal p : lvl1portals) {
+                p.draw(g2d, offsetX, offsetY);
+            }
+            if (!lvl1pads.isEmpty()) {
+                for (Pad p : lvl1pads) {
+                    p.draw(g, offsetX, offsetY);
+                }
+            }
+            if (!lvl1orbs.isEmpty()) {
+                for (Orb o : lvl1orbs) {
+                    o.draw(g, offsetX, offsetY);
+                }
+            }
+
+//        System.out.print("[");
+            for (Checkpoint c : Level.checkpoints) {
+                c.draw(g2d, offsetX, offsetY);
+//            System.out.print(c.toString() + ", ");
+            }
+//        System.out.println("]");
+            for (int i = 0; i < playerSquareParticles.size(); i++) {
+                SquareParticle s = playerSquareParticles.get(i);
+                s.draw(g2d, offsetX, offsetY);
+            }
+            for (int i = 0; i < shipSquareParticles.size(); i++) {
+                SquareParticle s = shipSquareParticles.get(i);
+                s.draw(g2d, offsetX, offsetY);
+            }
+
+            for (int i = 0; i < padParticles.size(); i++) {
+                ArrayList<SquareParticle> lis = padParticles.get(i);
+                for (int j = lis.size() - 1; j >= 0; j--) {
+                    SquareParticle s = lis.get(j);
+                    s.draw(g2d, offsetX, offsetY);
+                }
+            }
+
+            ground.fillRect(0, Globals.floor - Globals.solidHeight + player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
+
+            if (player.getGamemode().equals("ship")) {
+                g.fillRect(0, Globals.SHIP_CEILING + offsetY, Globals.SCREEN_WIDTH, 1);
+            }
         }
-
-        ground.fillRect(0, Globals.floor - Globals.solidHeight +player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
-
-        if( player.getGamemode().equals( "ship" )) {
-            g.fillRect(0, Globals.SHIP_CEILING + offsetY , Globals.SCREEN_WIDTH, 1 );
-        }
-
     }
 
 

@@ -47,8 +47,8 @@ public class Background {
         if ( counter % 100 == 0) {
             red = (int) (0.97 * red);
             blue = (int) (0.97 * blue);
-            green = (int) (1.02 * green );
-            if (green> 255) {
+            green = (int) (1.02 * green);
+            if (green > 255) {
                 green = 255;
             }
             counter = 1;

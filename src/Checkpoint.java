@@ -19,7 +19,7 @@ public class Checkpoint {
         this.vx = vx;
         this.vy = vy;
         this.gamemode = gamemode;
-        this.upsideDown = upsideDown;
+//        this.upsideDown = upsideDown;
         img = Util.loadBuffImage("assets/checkpoint/checkpoint.png");
         img = Util.resize(img, width, height);
     }

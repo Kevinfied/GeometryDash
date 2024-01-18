@@ -48,7 +48,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
 //            lvl1map.add(s);
 //        }
-        lvl1map.add("assets/maps/empty.png");
+        lvl1map.add("assets/maps/baseAfterBase.png");
 //        lvl1map.add("assets/maps/dbugBarrier.png");
         lvl1.loadMap();
         lvl1.makeMap();
@@ -343,7 +343,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if (code == KeyEvent.VK_Z) {
             if (keys[code] == false) {
                 if (player.practiceMode) {
-                    Level.checkpoints.add(new Checkpoint(player.getX(), player.getY(), player.getVX(), player.getVY(), player.getGamemode()));
+                    Level.checkpoints.add(new Checkpoint(player.getX(), player.getY(), player.getVX(), player.getVY(), player.getGamemode(), player.reverse));
                 }
             }
         }

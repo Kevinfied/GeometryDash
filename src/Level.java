@@ -106,6 +106,9 @@ public class Level {
                     else if (c == 0xFF63FFA4) {
                         v = 999;
                     }
+                    else if ( c == 0xFFD67FFF) {
+                        v = 15;
+                    }
                     mapArr[x][y] = v;
                 }
             }
@@ -181,6 +184,10 @@ public class Level {
                 }
                 else if (target == 999) {
                     startpos = new Startpos(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight);
+                }
+                else if (target == 15) {
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "reverse", 0 );
+                    portals.add(p);
                 }
             }
         }

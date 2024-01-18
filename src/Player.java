@@ -412,7 +412,16 @@ public class Player{
     public void collidePortal(Portal portal) {
         Rectangle portalHitbox = portal.getRect();
         if (getHitbox().intersects(portalHitbox)) {
-            gamemode = portal.getType();
+            if( portal.getType() == "cube") {
+                gamemode = "cube";
+            }
+            else if (portal.getType() == "ship") {
+                gamemode = "ship";
+            }
+            else if ( portal.getType() == "reverse"){
+               upsideDown();
+            }
+
         }
 
     }

@@ -11,9 +11,10 @@ public class Checkpoint {
     private double vx, vy;
     private String type;
     private String gamemode;
+    private boolean reverse;
     private boolean upsideDown;
     // constructor
-    public Checkpoint(double xx, double yy, double vx, double vy, String gamemode) {
+    public Checkpoint(double xx, double yy, double vx, double vy, String gamemode, boolean reverse) {
         this.x = xx;
         this.y = yy;
         this.vx = vx;
@@ -22,6 +23,7 @@ public class Checkpoint {
 //        this.upsideDown = upsideDown;
         img = Util.loadBuffImage("assets/checkpoint/checkpoint.png");
         img = Util.resize(img, width, height);
+        this.reverse = reverse;
     }
 
 

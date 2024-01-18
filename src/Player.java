@@ -21,10 +21,10 @@ public class Player{
     private int offsetY = 0;
 
     // vector
-    private double g = 5.8; //gravity
+    private double g = 5.2; //gravity
     private double vy = 0;
-    private double vx = 24;
-    private double initY = -38;
+    private double vx = 22;
+    private double initY = -41.5;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;
 
@@ -78,6 +78,73 @@ public class Player{
         px = x;
 //        y += vy;
 //        x += vx;
+
+        if(gamemode.equals ("cube") ) {
+            System.out.println(onSurface);
+            jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
+//            if(vy < 37 || vy > -37) {    //cube velocity change
+            vy += g;
+//            }
+            if(!onSurface) {     //cube rotation
+                angle += jumpRotate;
+            }
+        }
+
+        if(gamemode.equals( "ship" ) ) {
+            if( vy < 75 ) {
+                vy += shipG ;
+            }
+
+            if (GamePanel.mouseDown && vy >= -75) {        //ship movement if mouse pressed
+                vy += shipLift;
+            }
+
+            if ( vy >= Math.tan( Math.PI / 4) * vx ) {
+                angle = Math.PI /4 ;
+            }
+            else if ( vy <= Math.tan( - Math.PI / 4) * vx ) {
+                angle = -Math.PI / 4;
+            }
+            else {
+                angle = 0.9 * Math.atan2( vy , vx );
+            }
+
+        }
+
+        if(gamemode.equals ("ufo") ) {
+//            if(vy < 34 || vy > -34) {    //cube velocity change
+            vy += shipG;
+//            }
+
+            if(! onSurface ) {
+
+                if (vy < 0 && angle < Math.PI / 7) {
+                    angle += 0.02;
+
+                } else if (vy > 0 && angle > -Math.PI / 7) {
+                    angle -= 0.02;
+                }
+
+            }
+
+        }
+
+        int newOffsetY = Globals.floor - groundLevel;
+        if ( Math.abs(newOffsetY - offsetY) > 150 && !gamemode.equals("ship") ) {
+            offsetY = Globals.floor - groundLevel;
+        }
+        else if ( vy > 0 && Math.abs(py - y) > 38) {
+            offsetY = Globals.floor - groundLevel - 30;
+        }
+        if (gamemode.equals("ship")) {
+            offsetY = 210;
+        }
+
+
+//        rotation adjustment
+        if(onSurface || onCeiling){
+            angleAdjust();
+        }
 
         onSurface = false;
 
@@ -147,72 +214,7 @@ public class Player{
 
 
 
-        if(gamemode.equals ("cube") ) {
-            System.out.println(onSurface);
-            jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
-//            if(vy < 37 || vy > -37) {    //cube velocity change
-                vy += g;
-//            }
-            if(!onSurface) {     //cube rotation
-                angle += jumpRotate;
-            }
-        }
 
-        if(gamemode.equals( "ship" ) ) {
-            if( vy < 75 ) {
-                vy += shipG ;
-            }
-
-            if (GamePanel.mouseDown && vy >= -75) {        //ship movement if mouse pressed
-                vy += shipLift;
-            }
-
-            if ( vy >= Math.tan( Math.PI / 4) * vx ) {
-                angle = Math.PI /4 ;
-            }
-            else if ( vy <= Math.tan( - Math.PI / 4) * vx ) {
-                angle = -Math.PI / 4;
-            }
-            else {
-                angle = 0.9 * Math.atan2( vy , vx );
-            }
-
-        }
-
-        if(gamemode.equals ("ufo") ) {
-//            if(vy < 34 || vy > -34) {    //cube velocity change
-                vy += shipG;
-//            }
-
-            if(! onSurface ) {
-
-                if (vy < 0 && angle < Math.PI / 7) {
-                    angle += 0.02;
-
-                } else if (vy > 0 && angle > -Math.PI / 7) {
-                    angle -= 0.02;
-                }
-
-            }
-
-        }
-
-        int newOffsetY = Globals.floor - groundLevel;
-        if ( Math.abs(newOffsetY - offsetY) > 150 && !gamemode.equals("ship") ) {
-            offsetY = Globals.floor - groundLevel;
-        }
-        else if ( vy > 0 && Math.abs(py - y) > 38) {
-            offsetY = Globals.floor - groundLevel - 30;
-        }
-        if (gamemode.equals("ship")) {
-            offsetY = 210;
-        }
-
-
-//        rotation adjustment
-        if(onSurface || onCeiling){
-            angleAdjust();
-        }
     }
 
     public void groundCheck() {
@@ -246,17 +248,20 @@ public class Player{
     public void angleAdjust() {
         int floorR = (int) Math.floor( (angle / (Math.PI /2 )) );
         int next = floorR + 1;
-        double incre = 0.5;
-//        if (Math.abs(floorR - (angle / (Math.PI /2 ))) > Math.abs( next - (angle / (Math.PI /2 )))) {
-//            incre *= -1;
-//        }
+        double incre = 0.3;
+        if (Math.abs(floorR - (angle / (Math.PI /2 ))) <= Math.abs( next - (angle / (Math.PI /2 )))) {
+            incre *= -1;
+        }
 
         if (angle % (Math.PI / 2) != 0) {
             angle += incre;
         }
 
-        if (angle > (floorR) * (Math.PI / 2) ) {
-            angle = (floorR) * (Math.PI / 2);
+        if (angle > (next) * (Math.PI / 2) ) {
+            angle = (next) * (Math.PI / 2);
+        }
+        else if (angle < (floorR) * (Math.PI / 2)) {
+            angle = (floorR) * (Math.PI / 2) ;
         }
 //        else if ( angle > (next) * (Math.PI / 2) ) {
 //            angle = (next) * (Math.PI / 2);
@@ -368,7 +373,7 @@ public class Player{
     public void collideOrb( Orb o) {
         Rectangle orbHitbox = o.getHitbox();
         if (getHitbox().intersects(orbHitbox) && orbActivate && GamePanel.mouseDown) {
-            vy = -45;
+            vy = -40;
             onSurface = false;
         }
     }
@@ -387,6 +392,13 @@ public class Player{
 
     }
     public void dies() {
+        if (Level.startpos != null) {
+            gamemode = "cube";
+            y = Level.startpos.getY();
+            vy = 0;
+            x = Level.startpos.getX();
+            onSurface = true;
+        }
         if (practiceMode) {
             if (Level.checkpoints.isEmpty()) {
     //            dies();

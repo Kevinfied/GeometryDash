@@ -5,7 +5,7 @@ public class Level {
     ArrayList<String> map;
     private int w = 1000;
     private int h = 27;
-
+    public static Startpos startpos;
     ArrayList<Solid> solids;
 //    ArrayList<Slab> slabs;
     ArrayList<Spike> spikes;
@@ -103,6 +103,9 @@ public class Level {
                     else if (c == 0xFFFFD800) {
                         v = 14;
                     }
+                    else if (c == 0xFF63FFA4) {
+                        v = 999;
+                    }
                     mapArr[x][y] = v;
                 }
             }
@@ -175,6 +178,9 @@ public class Level {
                     Orb o = new Orb(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "yes" );
                     orbs.add(o);
 
+                }
+                else if (target == 999) {
+                    startpos = new Startpos(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight);
                 }
             }
         }

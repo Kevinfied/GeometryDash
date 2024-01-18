@@ -67,15 +67,6 @@ public class Solid {
         g.setColor(new Color(0, 208, 255, 255) );
         g.drawRect(x + offsetX, yy + offsetY, width, height);
 
-
-        // if player is on tis solid, make it light blueee, for testing
-//        if(GamePanel.player.onSolid( this )) {
-//            g.setColor(new Color(0, 255, 219, 255) );
-//            g.fillRect(x + offsetX, yy + offsetY, width, height);
-//        }
-    //        d.translate(offset, 0);
-    //        g2d.draw(d);
-
     }
 
     public double getX() { return x;}

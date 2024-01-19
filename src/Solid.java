@@ -21,6 +21,9 @@ public class Solid {
 
         this.x = x;
         this.y = y;
+        if(type == "slabDown"){
+            this.y = y + 37;
+        }
 //        this.type = type;
         this.type = type;
 
@@ -42,28 +45,25 @@ public class Solid {
 
 
     public Rectangle getRect() {
-        int yy = y;
-        if (type == "slabDown") {
-            yy += 37;
-        }
-        return new Rectangle(x, yy, height, width);
+
+        return new Rectangle(x, y, height, width);
     }
 
 
     public void draw(Graphics g, int offsetX, int offsetY) {
 
-        int yy = y;
-        if (type == "slabDown") {
-            yy += 37;
-        }
+//        int yy = y;
+//        if (type == "slabDown") {
+//            yy += 37;
+//        }
         Graphics2D g2d = (Graphics2D)g;
         g.setColor(Color.BLACK);
-        g.drawRect(x, yy, width, height);
+        g.drawRect(x, y, width, height);
         Rectangle d = getRect();
     //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
-        g.fillRect(x + offsetX, yy + offsetY, width, height);
+        g.fillRect(x + offsetX, y + offsetY, width, height);
         g.setColor(new Color(0, 208, 255, 255) );
-        g.drawRect(x + offsetX, yy + offsetY, width, height);
+        g.drawRect(x + offsetX, y + offsetY, width, height);
 
     }
 

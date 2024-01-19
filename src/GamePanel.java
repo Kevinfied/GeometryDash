@@ -251,11 +251,15 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
             offsetX = (int) (stationaryX - player.getX());
+            int adj = 200;
+            if(player.reverse) {
+                adj += 100;
+            }
 
-            if (player.getOffsetY() > offsetY + 200) {
+            if (player.getOffsetY() > offsetY + adj) {
                 offsetY += 5;
             }
-            if (player.getOffsetY() < offsetY + 200) {
+            if (player.getOffsetY() < offsetY + adj) {
                 offsetY -= 5;
             }
 
@@ -356,7 +360,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if (code == KeyEvent.VK_Z) {
             if (keys[code] == false) {
                 if (player.practiceMode) {
-                    Level.checkpoints.add(new Checkpoint(player.getX(), player.getY(), player.getVX(), player.getVY(), player.getGamemode()));
+                    Level.checkpoints.add(new Checkpoint(player.getX(), player.getY(), player.getVX(), player.getVY(), player.getGamemode(), player.reverse));
                 }
             }
         }

@@ -5,13 +5,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.image.BufferedImage;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer;
     static Player player;
     boolean pressFlag = false;
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"));
-    ArrayList<String>  lvl1map = new ArrayList<String>();
+    BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/groundLine.png"), Globals.SCREEN_WIDTH, 5);
+    //    ArrayList<String>  lvl1map = new ArrayList<String>();
+    String lvl1map = "assets/maps/stereoMadness.png";
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
@@ -22,6 +25,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<ArrayList<SquareParticle>> padParticles = new ArrayList<ArrayList<SquareParticle>>();
     Level lvl1 = new Level(lvl1map);
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
+    ArrayList <Ground> grounds = new ArrayList<Ground>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -48,16 +52,17 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
 //            lvl1map.add(s);
 //        }
-        lvl1map.add("assets/maps/baseAfterBase.png");
+//        lvl1map.add("assets/maps/baseAfterBase.png");
 //        lvl1map.add("assets/maps/dbugBarrier.png");
-        lvl1.loadMap();
-        lvl1.makeMap();
+//        lvl1.loadMap();
+//        lvl1.makeMap();
         lvl1solids = lvl1.solids;
         lvl1spikes = lvl1.spikes;
         lvl1portals = lvl1.portals;
         lvl1pads = lvl1.pads;
         lvl1orbs = lvl1.orbs;
         lvl1.asciiPrint();
+        grounds = lvl1.grounds;
 
         if (!lvl1pads.isEmpty()) {
             for (Pad p: lvl1pads) {
@@ -118,6 +123,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 s.move();
             }
         }
+
+//        for (Ground gr : grounds) {
+//            gr.move((int)player.getVX());
+//        }
 
     }
 
@@ -240,6 +249,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             debug.fillRect((int) 300, Globals.floor, 1, 100);
 
 
+
             offsetX = (int) (stationaryX - player.getX());
 
             if (player.getOffsetY() > offsetY + 200) {
@@ -304,6 +314,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             if (player.getGamemode().equals("ship")) {
                 g.fillRect(0, Globals.SHIP_CEILING + offsetY, Globals.SCREEN_WIDTH, 1);
             }
+
+            Graphics groundLine = (Graphics2D) (g);
+            groundLine.drawImage(groundLinePic, 0, Globals.floor+offsetY, null);
+            for (Ground gr : grounds) {
+                gr.draw(g2d, offsetX, offsetY);
+            }
+
         }
     }
 

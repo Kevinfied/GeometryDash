@@ -2,7 +2,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Level {
-    ArrayList<String> map;
+    String map;
     private int w = 1000;
     private int h = 27;
     public static Startpos startpos;
@@ -13,17 +13,18 @@ public class Level {
     ArrayList<Barrier> barriers;
     ArrayList<Orb> orbs;
     ArrayList<Pad> pads;
+    ArrayList<Ground> grounds;
     public static ArrayList<Checkpoint> checkpoints;
     public int aSolid = 1;
     public int aSpike = 2;
     public int aSlab = 3;
     public int aPortal = 4;
-
+    public int mapWidth;
     int[][] mapArr;
-
+    BufferedImage pic;
 
     // constructor
-    public Level(ArrayList<String> map) {
+    public Level(String map) {
         this.map = map;
 
         solids = new ArrayList<Solid>();
@@ -32,9 +33,15 @@ public class Level {
         portals = new ArrayList<Portal>();
         barriers = new ArrayList<Barrier>();
         checkpoints = new ArrayList<Checkpoint>();
+        grounds = new ArrayList<Ground>();
         pads = new ArrayList<Pad>();
         orbs = new ArrayList<Orb>();
         mapArr = new int[6000][27];
+        pic = Util.loadBuffImage(map);
+        mapWidth = pic.getWidth();
+
+        loadMap();
+        makeMap();
     }
 
 
@@ -52,8 +59,7 @@ public class Level {
             11 - cube portal
          */
         int wIndex = 0;
-        for (String s: map) {
-            BufferedImage pic = Util.loadBuffImage(s);
+//        for (String s: map) {
             int tempw = pic.getWidth();
             int temph = pic.getHeight();
 
@@ -110,8 +116,8 @@ public class Level {
                 }
             }
 
-            wIndex += tempw;
-        }
+//            wIndex += tempw;
+//        }
 //        return map;
     }
 
@@ -185,6 +191,13 @@ public class Level {
             }
         }
 
+
+        for (int asd=0; asd<mapWidth*75; asd++) {
+            if (asd % 250 == 0) {
+                Ground g = new Ground(asd, Globals.floor+5);
+                grounds.add(g);
+            }
+        }
 
 //        for (int i=0; i<w; i)
 //        Solid s = new Solid ( x*50, y*50, "solid" );

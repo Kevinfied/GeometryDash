@@ -36,8 +36,6 @@ public class Solid {
         }
 
 
-
-
         img = Util.resize(img, 75, 75);
     }
 

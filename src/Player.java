@@ -392,6 +392,7 @@ public class Player{
 
     }
     public void dies() {
+
         if (Level.startpos != null) {
             gamemode = "cube";
             y = Level.startpos.getY();
@@ -399,42 +400,42 @@ public class Player{
             x = Level.startpos.getX();
             onSurface = true;
         }
-        if (practiceMode) {
-            if (Level.checkpoints.isEmpty()) {
-    //            dies();
+        else {
+            if (practiceMode) {
+                if (Level.checkpoints.isEmpty()) {
+                    //            dies();
+                    gamemode = "cube";
+                    setInitY(-38);
+                    y = Globals.floor - height;
+                    vy = 0;
+
+                    x = constantX;
+                    onSurface = true;
+                } else {
+                    Checkpoint lastCheckpoint = Level.checkpoints.get(Level.checkpoints.size() - 1);
+                    x = lastCheckpoint.getX();
+                    y = lastCheckpoint.getY();
+                    gamemode = lastCheckpoint.getGamemode();
+                    vy = lastCheckpoint.getVy();
+                    vx = lastCheckpoint.getVx();
+                    angle = 0;
+                    groundLevel = (int) y + width;
+                    playerSolids.clear();
+                    curSolidIndex = 0;
+                }
+            } else {
                 gamemode = "cube";
-                setInitY(-38);
                 y = Globals.floor - height;
                 vy = 0;
-
                 x = constantX;
                 onSurface = true;
             }
-            else {
-                Checkpoint lastCheckpoint = Level.checkpoints.get( Level.checkpoints.size() - 1 );
-                x = lastCheckpoint.getX();
-                y = lastCheckpoint.getY();
-                gamemode = lastCheckpoint.getGamemode();
-                vy = lastCheckpoint.getVy();
-                vx = lastCheckpoint.getVx();
-                angle = 0;
-                groundLevel = (int) y + width;
-                playerSolids.clear();
-                curSolidIndex = 0;
-            }
-        }
-        else {
-            gamemode = "cube";
-            y = Globals.floor - height;
-            vy = 0;
-            x = constantX;
-            onSurface = true;
-        }
 
-        // stop all motion - for debugging
+            // stop all motion - for debugging
 //        debugDead = true;
 
 //    vx = 0;
+        }
     }
 
 

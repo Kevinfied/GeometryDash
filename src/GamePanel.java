@@ -151,57 +151,57 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void create() {
-//        Random rand = new Random();
-//        double min = 0; // Minimum value (pi/2)
-//        double max = 3 *Math.PI /2;     // Maximum value (pi)
-//        if (playerSquareParticles.size() < 100) {
-//            if( player.getGamemode().equals("cube") && player.onSurface == true) {
-//                int l = rand.nextInt(4) + 4;
-//                if ( !player.reverse) {
-//                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() + player.getHeight() - 5 + rand.nextInt(5), Math.random() * (-Math.PI), l, l, 0.2 * player.getVX(), 20));
-//                }
-//                else if ( player.reverse) {
-//                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() - 5 + rand.nextInt(5), Math.random() * (Math.PI), l, l, 0.2 * player.getVX(), 20));
-//                }
-//            }
-//
-//            if (player.getGamemode().equals("ship")) {
-//                int l = rand.nextInt(3) + 4;
-//                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) , l, l,-2, 50));
-//            }
-//        }
-//
-//        if ( player.getGamemode().equals("ship")) {
-//            if (shipSquareParticles.size() < 800) {
-//                int l= rand.nextInt(7) + 4;
-//                shipSquareParticles.add(new SquareParticle(rand.nextInt(1000) + player.getX() - 200, rand.nextInt(1000) + player.getY() - 400, min + Math.random() * (max - min) ,l,l,-2, 100 ));
-//            }
-//        }
-//
-//        for (int i = 0; i<padParticles.size(); i++) {
-//            ArrayList lis = padParticles.get(i);
-//            if(lis.size() < 700){
-//                int l = rand.nextInt(7) + 4;
-//                lis.add(new SquareParticle(lvl1pads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvl1pads.get(i).getY() + lvl1pads.get(i).getHeight(), Math.PI/2, l, l,-10, rand.nextInt(50) + 70 ));
-//            }
-//        }
-//
-//
-//        for (int i = 0; i<portalParticles.size(); i++) {
-//            ArrayList lis = portalParticles.get(i);
-//            if(lis.size() < 700){
-//                int l = rand.nextInt(10) + 4;
-//                int portalY = lvl1portals.get(i).getY();
-//                int portalH = lvl1portals.get(i).getHeight();
-//                int portalX = lvl1portals.get(i).getX();
-//                int py = portalY - 20 + rand.nextInt(portalH + 20);
-//                int midy = (2* portalY + portalH ) /2;
-//                // trig actually useful...for once
-//                lis.add(new SquareParticle(portalX-rand.nextInt(100), py,  Math.asin((double) 2* ((midy) - py) / portalH ) , l, l,5, rand.nextInt(50) + 60 ));
-//                System.out.println(lis);
-//                System.out.println(lis.size());
-//            }
-//        }
+        Random rand = new Random();
+        double min = 0; // Minimum value (pi/2)
+        double max = 3 *Math.PI /2;     // Maximum value (pi)
+        if (playerSquareParticles.size() < 100) {
+            if( player.getGamemode().equals("cube") && player.onSurface == true) {
+                int l = rand.nextInt(4) + 4;
+                if ( !player.reverse) {
+                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() + player.getHeight() - 5 + rand.nextInt(5), Math.random() * (-Math.PI), l, l, 0.2 * player.getVX(), 20));
+                }
+                else if ( player.reverse) {
+                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() - 5 + rand.nextInt(5), Math.random() * (Math.PI), l, l, 0.2 * player.getVX(), 20));
+                }
+            }
+
+            if (player.getGamemode().equals("ship")) {
+                int l = rand.nextInt(3) + 4;
+                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) , l, l,-2, 50));
+            }
+        }
+
+        if ( player.getGamemode().equals("ship")) {
+            if (shipSquareParticles.size() < 800) {
+                int l= rand.nextInt(7) + 4;
+                shipSquareParticles.add(new SquareParticle(rand.nextInt(1000) + player.getX() - 200, rand.nextInt(1000) + player.getY() - 400, min + Math.random() * (max - min) ,l,l,-2, 100 ));
+            }
+        }
+
+        for (int i = 0; i<padParticles.size(); i++) {
+            ArrayList lis = padParticles.get(i);
+            if(lis.size() < 700){
+                int l = rand.nextInt(7) + 4;
+                lis.add(new SquareParticle(lvl1pads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvl1pads.get(i).getY() + lvl1pads.get(i).getHeight(), Math.PI/2, l, l,-10, rand.nextInt(50) + 70 ));
+            }
+        }
+
+
+        for (int i = 0; i<portalParticles.size(); i++) {
+            ArrayList lis = portalParticles.get(i);
+            if(lis.size() < 700){
+                int l = rand.nextInt(10) + 4;
+                int portalY = lvl1portals.get(i).getY();
+                int portalH = lvl1portals.get(i).getHeight();
+                int portalX = lvl1portals.get(i).getX();
+                int py = portalY - 20 + rand.nextInt(portalH + 20);
+                int midy = (2* portalY + portalH ) /2;
+                // trig actually useful...for once
+                lis.add(new SquareParticle(portalX-rand.nextInt(100), py,  Math.asin((double) 2* ((midy) - py) / portalH ) , l, l,5, rand.nextInt(50) + 60 ));
+                System.out.println(lis);
+                System.out.println(lis.size());
+            }
+        }
 
 
     }

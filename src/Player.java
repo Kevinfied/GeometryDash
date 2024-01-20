@@ -88,7 +88,6 @@ public class Player{
 
             vy += shipG ;
 
-
             if (GamePanel.mouseDown ) {        //ship movement if mouse pressed
                 vy += shipLift;
             }
@@ -263,7 +262,7 @@ public class Player{
         g = -5.2; //gravity
         initY = 41.55;
         shipG = -1.2;
-        shipLift = 2.008 * shipG;
+        shipLift = -2.008 * shipG;
         jumpRotate = (double) ( Math.PI * g ) / ( 2 * initY );
     }
 
@@ -289,23 +288,11 @@ public class Player{
         boolean collideX = false;
 
         if( sHitbox.intersects(getHitbox())) {
-            //System.out.println("it's colliding");
-//            if(getHitbox().intersects(top) ) {
-//                collideUp = true;
-//            }
+
             if (getHitbox().intersects(top) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= y + height - solid.getY() -10)) {
                 collideUp = true;
             }
-//            if(getHitbox().intersects(top) && !pHitbox.intersects(top)) {
-//                collideUp = true;
-//            }
 
-//            if (getHitbox().intersects(bottom)) {
-//                collideDown = true;
-//            }
-//            if (getHitbox().intersects(bottom) && !pHitbox.intersects(bottom)) {
-//                collideDown = true;
-//            }
             if(getHitbox().intersects(bottom) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= solid.getY() + solid.getHeight() - y -10)) {
                 collideDown = true;
             }
@@ -319,36 +306,28 @@ public class Player{
         if (gamemode == "cube" ) {
             if(collideUp && collideDown) {
                 dies();
-                //System.out.println("collide both");
             }
             else if (collideUp && !reverse && !collideDown) {
                 vy = 0;
                 y = solid.getY() - height;
                 groundLevel = (int) solid.getY();
                 onSurface = true;
-               // System.out.println(collideX + "    " + collideUp + "    " + collideDown);
             }
             else if( collideDown && reverse && !collideUp) {
                 vy = 0;
                 y = solid.getY() + solid.getHeight();
                 groundLevel = (int) solid.getY() + solid.getHeight();
                 onSurface = true;
-               // System.out.println(collideX + "    " + collideUp + "    " + collideDown);
-                System.out.println( (solid.getY() + solid.getHeight() ) + "    "+ solid.getY() + "    " + y);
+             //   System.out.println( (solid.getY() + solid.getHeight() ) + "    "+ solid.getY() + "    " + y);
             }
             else if (!reverse && (collideDown || collideX)) {
                 dies();
-               // System.out.println("collideDown");
             }
             else if (reverse && collideUp ) {
                 dies();
-               // System.out.println("collideUp");
             }
             else if (reverse &&  collideX) {
                 dies();
-                //System.out.println("collide Side");
-               // System.out.println(collideX + "    " + collideUp + "    " + collideDown);
-              //  System.out.println(solid.getHeight());
             }
 
 
@@ -363,7 +342,6 @@ public class Player{
             }
             else if (collideX) {
                 dies();
-               // System.out.println("non cube collide");
             }
             else if (collideDown) {
                 vy = 0;

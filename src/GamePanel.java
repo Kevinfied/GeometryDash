@@ -42,7 +42,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/25, this);
+        timer = new Timer(1000/60, this);
 
         screen = "main menu";
 

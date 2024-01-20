@@ -24,7 +24,7 @@ public class Player{
     public double g = 5.2; //gravity
     private double vy = 0;
     private double vx = 22;
-    public double initY = -41.5;
+    public double initY = -41.55;
     public double shipG = 1.2;
     public double shipLift = -2.008 * shipG;
 
@@ -71,31 +71,25 @@ public class Player{
             return;
         }
 
-//        System.out.println(angle + " ,  " + onSurface);
-
-
         py = y;
         px = x;
 //        y += vy;
 //        x += vx;
 
         if(gamemode.equals ("cube") ) {
-//            System.out.println(onSurface);
             jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
-//            if(vy < 37 || vy > -37) {    //cube velocity change
             vy += g;
-//            }
             if(!onSurface) {     //cube rotation
                 angle += jumpRotate;
             }
         }
 
         if(gamemode.equals( "ship" ) ) {
-            if( vy < 75 ) {
-                vy += shipG ;
-            }
 
-            if (GamePanel.mouseDown && vy >= -75) {        //ship movement if mouse pressed
+            vy += shipG ;
+
+
+            if (GamePanel.mouseDown ) {        //ship movement if mouse pressed
                 vy += shipLift;
             }
 
@@ -111,23 +105,21 @@ public class Player{
 
         }
 
-        if(gamemode.equals ("ufo") ) {
-//            if(vy < 34 || vy > -34) {    //cube velocity change
-            vy += shipG;
+//        if(gamemode.equals ("ufo") ) {
+//            vy += shipG;
+//
+//            if(! onSurface ) {
+//
+//                if (vy < 0 && angle < Math.PI / 7) {
+//                    angle += 0.02;
+//
+//                } else if (vy > 0 && angle > -Math.PI / 7) {
+//                    angle -= 0.02;
+//                }
+//
 //            }
-
-            if(! onSurface ) {
-
-                if (vy < 0 && angle < Math.PI / 7) {
-                    angle += 0.02;
-
-                } else if (vy > 0 && angle > -Math.PI / 7) {
-                    angle -= 0.02;
-                }
-
-            }
-
-        }
+//
+//        }
 
         int newOffsetY = Globals.floor - groundLevel;
         if ( Math.abs(newOffsetY - offsetY) > 150 && !gamemode.equals("ship") ) {
@@ -267,17 +259,21 @@ public class Player{
     }
 
     public void upsideDown() {
-        g *= -1; //gravity
+        reverse = true;
+        g = -5.2; //gravity
+        initY = 41.55;
+        shipG = -1.2;
+        shipLift = 2.008 * shipG;
+        jumpRotate = (double) ( Math.PI * g ) / ( 2 * initY );
+    }
 
-        initY *= -1;
-        shipG *= -1;
-        shipLift *= -1;
-        if (reverse) {
-            reverse = false;
-        }
-        else if (!reverse){
-            reverse = true;
-        }
+    public void upright() {
+        reverse = false;
+        g = 5.2; //gravity
+        initY = -41.55;
+        shipG = 1.2;
+        shipLift = -2.008 * shipG;
+        jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
     }
 
     public void collideSolid( Solid solid) {
@@ -294,25 +290,25 @@ public class Player{
 
         if( sHitbox.intersects(getHitbox())) {
             //System.out.println("it's colliding");
-            if(getHitbox().intersects(top) ) {
-                collideUp = true;
-            }
-//            if (getHitbox().intersects(top) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= y + height - solid.getY() -10)) {
+//            if(getHitbox().intersects(top) ) {
 //                collideUp = true;
 //            }
+            if (getHitbox().intersects(top) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= y + height - solid.getY() -10)) {
+                collideUp = true;
+            }
 //            if(getHitbox().intersects(top) && !pHitbox.intersects(top)) {
 //                collideUp = true;
 //            }
 
-            if (getHitbox().intersects(bottom)) {
-                collideDown = true;
-            }
+//            if (getHitbox().intersects(bottom)) {
+//                collideDown = true;
+//            }
 //            if (getHitbox().intersects(bottom) && !pHitbox.intersects(bottom)) {
 //                collideDown = true;
 //            }
-//            if(getHitbox().intersects(bottom) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= solid.getY() + solid.getHeight() - y +10)) {
-//                collideDown = true;
-//            }
+            if(getHitbox().intersects(bottom) && (Math.min(solid.getX() + solid.getWidth(), x + width) - Math.max(x, solid.getX()) >= solid.getY() + solid.getHeight() - y -10)) {
+                collideDown = true;
+            }
 
             if( side.intersects(getHitbox())) {
                 collideX = true;
@@ -411,6 +407,9 @@ public class Player{
             else if ( portal.getType() == "reverse"){
                upsideDown();
             }
+            else if (portal.getType() == "upright") {
+                upright();
+            }
 
         }
 
@@ -429,10 +428,12 @@ public class Player{
                 if (Level.checkpoints.isEmpty()) {
                     //            dies();
                     gamemode = "cube";
-                    setInitY(-38);
+                    upright();
+//                    initY = -41.55;
+//
                     y = Globals.floor - height;
-                    vy = 0;
-
+//                    vy = 0;
+//                    reverse = false;
                     x = constantX;
                     onSurface = true;
                 } else {
@@ -445,7 +446,7 @@ public class Player{
                     initY = lastCheckpoint.initY;
                     shipG = lastCheckpoint.shipG;
                     shipLift = lastCheckpoint.shipLift;
-                    reverse=lastCheckpoint.reverse;
+                    reverse= lastCheckpoint.reverse;
 
 //                    vx = lastCheckpoint.getVx();
                     angle = 0;

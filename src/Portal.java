@@ -29,7 +29,7 @@ public class Portal {
         if (type == "cube"){
             portalIcon = Util.loadBuffImage("assets/portals/cubePortal.png");
         }
-        else if (type == "ship" ||  type == "reverse") {
+        else if (type == "ship" ||  type == "reverse" || type == "upright") {
             portalIcon = Util.loadBuffImage("assets/portals/shipPortal.png");
         }
         portalIcon = Util.resize(portalIcon, width, height);

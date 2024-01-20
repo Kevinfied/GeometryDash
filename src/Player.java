@@ -13,7 +13,7 @@ public class Player{
 
     // hit box
     private double x, y;
-    private double constantX;
+    public double constantX;
     private double px, py;
     private String collidingOrb = "none";
     private int width, height;
@@ -23,7 +23,7 @@ public class Player{
     // vector
     private double g = 5.2; //gravity
     private double vy = 0;
-    private double vx = 22;
+    private double vx = 0;
     private double initY = -41.5;
     private double shipG = 1.2;
     private double shipLift = -2.008 * shipG;
@@ -498,15 +498,15 @@ public class Player{
 
     public void draw(Graphics g, int offsetY) {
         g.setColor(new Color(110,110,222));
-        drawHitbox(g);
+       // drawHitbox(g);
         drawSprite( g, offsetY);
 
         //debug hitbox
-        g.drawRect((int)constantX, (int) y + offsetY , width, height);
+       // g.drawRect((int)constantX, (int) y + offsetY , width, height);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(248, 248, 4));
         g2.setStroke(new BasicStroke(10)); // Sets the stroke width to 10
-        g2.drawLine((int) constantX, groundLevel + offsetY, (int) constantX + 100, groundLevel + offsetY);
+      //  g2.drawLine((int) constantX, groundLevel + offsetY, (int) constantX + 100, groundLevel + offsetY);
 
         g2.setStroke(new BasicStroke(1));
 
@@ -521,7 +521,6 @@ public class Player{
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         if (gamemode == "cube") {
             g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
-
         }
 
         else if (gamemode == "ship") {

@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 public class Util {
     private BufferedImage pixelMap;
     private BufferedImage back;
+
     private int tileWidth;
     private int tileHeight;
     private HashMap<Integer, Image> tilePics = new HashMap();
@@ -84,6 +85,15 @@ public class Util {
     public Util(String name) {
         this.loadHeader(name);
         this.makeFull();
+    }
+
+    public static boolean onScreen( Player player , double objectX) {
+        int n = (int) (Globals.SCREEN_WIDTH / 2 - player.constantX);
+        double distFromCenter = Math.abs( objectX - (player.getX() + n) );
+        if( distFromCenter < Globals.SCREEN_WIDTH / 2 + 300) {
+            return true;
+        }
+        return false;
     }
 
 

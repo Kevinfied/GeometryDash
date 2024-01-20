@@ -27,10 +27,10 @@ public class Portal {
         System.out.println("assets/portals/" + type + ".png");
 //        portalIcon = Util.resize(Util.loadBuffImage("assets/portal/" + type + ".png"), width, height);
         if (type == "cube"){
-            portalIcon = Util.loadBuffImage("assets/portals/cube.png");
+            portalIcon = Util.loadBuffImage("assets/portals/cubePortal.png");
         }
         else if (type == "ship" ||  type == "reverse") {
-            portalIcon = Util.loadBuffImage("assets/portals/ship.png");
+            portalIcon = Util.loadBuffImage("assets/portals/shipPortal.png");
         }
         portalIcon = Util.resize(portalIcon, width, height);
     }

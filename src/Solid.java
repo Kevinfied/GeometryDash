@@ -50,20 +50,34 @@ public class Solid {
     }
 
 
-    public void draw(Graphics g, int offsetX, int offsetY) {
+    public void draw(Graphics g, int offsetX, int offsetY, Player player) {
 
 //        int yy = y;
 //        if (type == "slabDown") {
 //            yy += 37;
 //        }
         Graphics2D g2d = (Graphics2D)g;
-        g.setColor(Color.BLACK);
+
         g.drawRect(x, y, width, height);
         Rectangle d = getRect();
     //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
-        g.fillRect(x + offsetX, y + offsetY, width, height);
-        g.setColor(new Color(0, 208, 255, 255) );
-        g.drawRect(x + offsetX, y + offsetY, width, height);
+
+        int n = (int) (Globals.SCREEN_WIDTH / 2 - GamePanel.player.constantX);
+        int a = (int) Math.abs(x - (player.getX() + n));
+        if( Util.onScreen(player, x)) {
+            int b =  (int) (a * 0.07 );
+            if ( a < 550) {
+                b = 0;
+            }
+            if( y + width < player.getY()) {
+                b *= -1;
+            }
+            g.setColor(Color.BLACK);
+            g.fillRect(x + offsetX, y + offsetY + b, width, height);
+            g.setColor(new Color(0, 208, 255, 255) );
+            g.drawRect(x + offsetX, y + offsetY + b, width, height);
+        }
+
 
     }
 

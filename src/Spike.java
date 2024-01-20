@@ -71,6 +71,7 @@ public class Spike {
 
 
     public void drawHitbox(Graphics g, int offsetX, int offsetY) {
+
         int x = this.x + offsetX;
         int y = this.y + offsetY;
         g.setColor(Color.RED);
@@ -89,9 +90,25 @@ public class Spike {
 
 
 
-    public void draw(Graphics g, int offsetX, int offsetY) {
-        g.drawImage(img, x + offsetX, y + offsetY, null);
-        drawHitbox(g, offsetX, offsetY);
+    public void draw(Graphics g, int offsetX, int offsetY, Player player) {
+//        if (Util.onScreen(player, x)) {
+//            return;
+//        }
+        int n = (int) (Globals.SCREEN_WIDTH / 2 - GamePanel.player.constantX);
+        int a = (int) Math.abs(x - (player.getX() + n));
+        if( Util.onScreen(player, x)) {
+            int b =  (int) (a * 0.07 );
+            if ( a < 550) {
+                b = 0;
+            }
+            if( y + width < player.getY()) {
+                b *= -1;
+            }
+            g.drawImage(img, x + offsetX, y + offsetY + b, null);
+
+        }
+
+       // drawHitbox(g, offsetX, offsetY);
     }
 
 

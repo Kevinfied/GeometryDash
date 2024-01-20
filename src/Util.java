@@ -88,8 +88,8 @@ public class Util {
     }
 
     public static boolean onScreen( Player player , double objectX) {
-        int n = (int) (Globals.SCREEN_WIDTH / 2 - player.constantX);
-        double distFromCenter = Math.abs( objectX - (player.getX() + n) );
+        int onScreenConstant = (int) (Globals.SCREEN_WIDTH / 2 - player.constantX);
+        double distFromCenter = Math.abs( objectX - (player.getX() + onScreenConstant) );
         if( distFromCenter < Globals.SCREEN_WIDTH / 2 + 300) {
             return true;
         }

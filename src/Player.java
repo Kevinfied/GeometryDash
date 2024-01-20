@@ -21,12 +21,12 @@ public class Player{
     private int offsetY = 0;
 
     // vector
-    private double g = 5.2; //gravity
+    public double g = 5.2; //gravity
     private double vy = 0;
-    private double vx = 0;
-    private double initY = -41.5;
-    private double shipG = 1.2;
-    private double shipLift = -2.008 * shipG;
+    private double vx = 22;
+    public double initY = -41.5;
+    public double shipG = 1.2;
+    public double shipLift = -2.008 * shipG;
 
 
     private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
@@ -251,10 +251,6 @@ public class Player{
         int floorR = (int) Math.floor( (angle / (Math.PI /2 )) );
         int next = floorR + 1;
         double incre = 0.3;
-//        if (Math.abs(floorR - (angle / (Math.PI /2 ))) <= Math.abs( next - (angle / (Math.PI /2 )))) {
-//            incre *= -1;
-//        }
-
         if (angle % (Math.PI / 2) != 0) {
             angle += incre;
         }
@@ -262,12 +258,6 @@ public class Player{
         if (angle > (next) * (Math.PI / 2) ) {
             angle = (next) * (Math.PI / 2);
         }
-//        else if (angle < (floorR) * (Math.PI / 2)) {
-//            angle = (floorR) * (Math.PI / 2) ;
-//        }
-//        else if ( angle > (next) * (Math.PI / 2) ) {
-//            angle = (next) * (Math.PI / 2);
-//        }
 
         angle = angle % ( 2 * Math.PI);
     }
@@ -278,14 +268,14 @@ public class Player{
 
     public void upsideDown() {
         g *= -1; //gravity
-//        vy *= -1;
+
         initY *= -1;
         shipG *= -1;
         shipLift *= -1;
         if (reverse) {
             reverse = false;
         }
-        else{
+        else if (!reverse){
             reverse = true;
         }
     }
@@ -427,14 +417,14 @@ public class Player{
     }
     public void dies() {
 
-        if (Level.startpos != null) {
-            gamemode = "cube";
-            y = Level.startpos.getY();
-            vy = 0;
-            x = Level.startpos.getX();
-            onSurface = true;
-        }
-        else {
+//        if (Level.startpos != null) {
+//            gamemode = "cube";
+//            y = Level.startpos.getY();
+//            vy = 0;
+//            x = Level.startpos.getX();
+//            onSurface = true;
+//        }
+//        if {
             if (practiceMode) {
                 if (Level.checkpoints.isEmpty()) {
                     //            dies();
@@ -451,7 +441,13 @@ public class Player{
                     y = lastCheckpoint.getY();
                     gamemode = lastCheckpoint.getGamemode();
                     vy = lastCheckpoint.getVy();
-                    vx = lastCheckpoint.getVx();
+                    g = lastCheckpoint.g;
+                    initY = lastCheckpoint.initY;
+                    shipG = lastCheckpoint.shipG;
+                    shipLift = lastCheckpoint.shipLift;
+                    reverse=lastCheckpoint.reverse;
+
+//                    vx = lastCheckpoint.getVx();
                     angle = 0;
                     groundLevel = (int) y + width;
                     playerSolids.clear();
@@ -469,7 +465,7 @@ public class Player{
 //        debugDead = true;
 
 //    vx = 0;
-        }
+//        }
     }
 
 

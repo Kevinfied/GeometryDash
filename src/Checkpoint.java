@@ -8,17 +8,21 @@ public class Checkpoint {
 
 //    private
     private BufferedImage img;
-    private double vx, vy;
+    public double vx, vy, g, initY, shipG, shipLift;
     private String type;
     private String gamemode;
-    private boolean reverse;
+    public boolean reverse;
     private boolean upsideDown;
     // constructor
-    public Checkpoint(double xx, double yy, double vx, double vy, String gamemode, boolean reverse) {
+    public Checkpoint(double xx, double yy, double vx, double vy, double g, double initY, double shipG, double shipLift, String gamemode, boolean reverse) {
         this.x = xx;
         this.y = yy;
         this.vx = vx;
         this.vy = vy;
+        this.g = g;
+        this.shipG = shipG;
+        this.initY = initY;
+        this.shipLift = shipLift;
         this.gamemode = gamemode;
 //        this.upsideDown = upsideDown;
         img = Util.loadBuffImage("assets/checkpoint/checkpoint.png");

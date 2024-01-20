@@ -56,10 +56,10 @@ public class Solid {
 //        if (type == "slabDown") {
 //            yy += 37;
 //        }
-        Graphics2D g2d = (Graphics2D)g;
+//        Graphics2D g2d = (Graphics2D)g;
 
-        g.drawRect(x, y, width, height);
-        Rectangle d = getRect();
+//        g.drawRect(x, y, width, height);
+//        Rectangle d = getRect();
     //        Rectangle d = new Rectangle((int) -(x - offset), y, width, height);
 
         int n = (int) (Globals.SCREEN_WIDTH / 2 - GamePanel.player.constantX);

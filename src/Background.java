@@ -6,9 +6,15 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 public class Background {
-    private BufferedImage BG1, BG2;
-    private int w, h;
-    private int v = 2;
+    private BufferedImage bg;
+    private BufferedImage ground;
+    private ArrayList<Integer> groundX = new ArrayList<Integer> ();
+    private ArrayList<Integer> backgroundX = new ArrayList<Integer>();
+    private int bw, bh, gw, gh;
+    private int backgroundY = 0;
+    private int GroundY = Globals.floor;
+    private int bv = -2;
+    private int gv = -22;
     private int blue = 255;
     private int red = 100;
     private int green = 1;
@@ -17,31 +23,65 @@ public class Background {
 //    BufferedImage BG1 = Util.loadBuffImage("assets/background/stereoBG.png" );
 //    BufferedImage BG2 = Util.loadBuffImage("assets/background/stereoBG.png" );
 
-    public Background( BufferedImage bg) {
-        this.BG1 = bg;
-        this.BG2 = bg;
-        this.w = bg.getWidth();
-        this.h = bg.getHeight();
-        this.bg1x = 0;
-        this.bg2x = w;
+    public Background( BufferedImage bg, BufferedImage ground) {
+        this.bg = bg;
+        this.ground = ground;
+        this.bw = bg.getWidth();
+        this.bh = bg.getHeight();
+        this.gw = ground.getWidth();
+        this.gh = ground.getHeight();
+
+        int Xcounter = 0;
+        for (int i = 0; i < 2 ; i++) {
+            backgroundX.add(Xcounter);
+            Xcounter+=bw;
+        }
+
+        Xcounter = 0;
+        for (int i = 0; i<8; i++) {
+            groundX.add(Xcounter);
+            Xcounter+=gw;
+        }
+
+
     }
 
     public void move() {
-        bg1x -= v;
-        bg2x -= v;
-        if(bg1x + w < 0){
-            bg1x = bg2x + w;
+        for (int i = 0; i < backgroundX.size(); i++) {
+            int x = backgroundX.get(i);
+            x += bv;
+            if (x + bw < 0) {
+                backgroundX.set(i, backgroundX.get((backgroundX.size() -2) % 2 ) + bw);
+            } else {
+                backgroundX.set(i, x);
+            }
         }
-        if(bg2x + w < 0){
-            bg2x = bg1x + w;
+
+        for (int i = 0; i < groundX.size(); i++) {
+            int x = groundX.get(i);
+            x += gv;
+            groundX.set(i, x);
+            if (x + gw < 0) {
+                groundX.set(i, groundX.get( ((i + groundX.size() -1 ) % (groundX.size())) ) + gw-20);
+            }
         }
+
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int offsetY) {
+        System.out.println(groundX);
+        System.out.println(backgroundX);
+
+        for (Integer x : backgroundX) {
+            g.drawImage(bg, x, backgroundY, bw, bh, null);
+        }
+
+        for (Integer x : groundX) {
+            g.drawImage(ground, x, GroundY + offsetY, gw, gh, null);
+        }
 
 
-        g.drawImage(BG1, bg1x, 0, w, h, null);
-        g.drawImage(BG2, bg2x, 0, w, h, null);
+
         g.setColor(new Color(red, green, blue, 77));
         g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
         if ( counter % 100 == 0) {

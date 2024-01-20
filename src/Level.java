@@ -199,12 +199,12 @@ public class Level {
         }
 
 
-        for (int asd=0; asd<mapWidth*75; asd++) {
-            if (asd % 250 == 0) {
-                Ground g = new Ground(asd, Globals.floor+5);
-                grounds.add(g);
-            }
-        }
+//        for (int asd=0; asd<mapWidth*75; asd++) {
+//            if (asd % 250 == 0) {
+//                Ground g = new Ground(asd, Globals.floor+5);
+//                grounds.add(g);
+//            }
+//        }
 
 //        for (int i=0; i<w; i)
 //        Solid s = new Solid ( x*50, y*50, "solid" );

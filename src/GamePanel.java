@@ -34,7 +34,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public static String screen;
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
-    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH / 2, Globals.SCREEN_HEIGHT /2, 200, 200);
+    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH / 3, Globals.SCREEN_HEIGHT/3, 200, 200);
 
 
 
@@ -198,8 +198,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 int midy = (2* portalY + portalH ) /2;
                 // trig actually useful...for once
                 lis.add(new SquareParticle(portalX-rand.nextInt(100), py,  Math.asin((double) 2* ((midy) - py) / portalH ) , l, l,5, rand.nextInt(50) + 60 ));
-                System.out.println(lis);
-                System.out.println(lis.size());
+
             }
         }
 
@@ -266,7 +265,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         player.setJumpRotate();
 
         if (keys[KeyEvent.VK_SPACE]) {
-            player.ufoJump();
+            if(player.getVX() == 22) {
+                player.setVX(0);
+                screen = "pause";
+            }
+            else{
+                player.setVX(22);
+                screen = "ingame";
+            }
         }
 
         if (keys[KeyEvent.VK_W]) {
@@ -391,10 +397,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //
 //        }
 
-        if(screen == "pause") {
-            g.setColor( new Color(6, 6, 245,0));
-            g.drawRect(Globals.SCREEN_WIDTH / 2, Globals.SCREEN_HEIGHT/2, 200, 200);
-        }
+//        if(screen == "pause") {
+        System.out.println(screen);
+            g2d.setColor( new Color(6, 6, 245, 255));
+            g2d.fillRect(Globals.SCREEN_WIDTH / 3, Globals.SCREEN_HEIGHT/3, 200, 200);
+//        }
     }
 
 
@@ -430,7 +437,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 }
                 else{
                     player.setVX(22);
-                    screen = "ingame";
+                    screen = "game";
                 }
             }
         }
@@ -455,7 +462,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         if (code == KeyEvent.VK_X) {
             if (keys[code] == false){
-//                System.out.println("HIHIHIHIHIHIHI");
                 if (player.practiceMode) {
                     if (!Level.checkpoints.isEmpty()) {
                         Level.checkpoints.remove(Level.checkpoints.size() - 1);

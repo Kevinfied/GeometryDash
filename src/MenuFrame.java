@@ -29,16 +29,6 @@ public class MenuFrame extends JFrame implements ActionListener {
     class MenuMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            // Handle mouse click events
-            int mouseX = e.getX();
-            int mouseY = e.getY();
-
-            // Check if the click is within the start button hitbox
-            if (menu.buttonHitbox.contains(mouseX, mouseY)) {
-                // Handle start button click
-                System.out.println("Start button clicked!");
-                ControlCenter.enterGame();
-            }
         }
     }
 }

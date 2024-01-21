@@ -64,6 +64,16 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     }
 
     public void mousePressed(MouseEvent e) {
+        // Handle mouse click events
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+
+        // Check if the click is within the start button hitbox
+        if (buttonHitbox.contains(mouseX, mouseY)) {
+            // Handle start button click
+            System.out.println("Start button clicked!");
+            ControlCenter.enterGame();
+        }
         // Handle mouse press events
     }
 

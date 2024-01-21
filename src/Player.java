@@ -513,7 +513,6 @@ public class Player{
     }
 
     public String getGamemode() {
-//        System.out.println(gamemode);
         return gamemode;
     }
     public void setGamemode(String e) { gamemode = e;}

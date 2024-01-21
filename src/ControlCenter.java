@@ -12,13 +12,6 @@ public class ControlCenter extends JFrame implements ActionListener {
     static GameFrame GameF= new GameFrame();
 
     public ControlCenter() {
-//        super("Geometry Dash");
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
-//        add(geometryDash);
-////        pack();
-//        setVisible(true);
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -36,10 +29,12 @@ public class ControlCenter extends JFrame implements ActionListener {
     }
 
     public static void enterGame(){
-        GameF.setVisible(true);
-        GameF.geometryDash.timer.start();
         MenuF.menu.timer.stop();
         MenuF.setVisible(false);
+        GameFrame GameF= new GameFrame();
+        GameF.setVisible(true);
+        GameF.geometryDash.timer.start();
+
     }
 
     public static void toMenu() {
@@ -47,6 +42,7 @@ public class ControlCenter extends JFrame implements ActionListener {
         GameF.geometryDash.timer.stop();
         MenuF.menu.timer.start();
         MenuF.setVisible(true);
+        System.out.println("to MENU >>>>>>>>>>>>>>>>");
     }
 
 

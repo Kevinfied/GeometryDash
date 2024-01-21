@@ -51,7 +51,7 @@ public class Background {
             int x = backgroundX.get(i);
             x += bv;
             if (x + bw < 0) {
-                backgroundX.set(i, backgroundX.get((backgroundX.size() -2) % 2 ) + bw);
+                backgroundX.set(i, backgroundX.get((backgroundX.size() -1) % backgroundX.size() ) + bw);
             } else {
                 backgroundX.set(i, x);
             }
@@ -69,8 +69,6 @@ public class Background {
     }
 
     public void draw(Graphics g, int offsetY) {
-        System.out.println(groundX);
-        System.out.println(backgroundX);
 
         for (Integer x : backgroundX) {
             g.drawImage(bg, x, backgroundY, bw, bh, null);

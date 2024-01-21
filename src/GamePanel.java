@@ -35,7 +35,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
-
+//    Menu menu = new Menu();
 
 
     public GamePanel() {

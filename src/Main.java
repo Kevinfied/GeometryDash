@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 public class Main extends JFrame implements ActionListener {
 
     GamePanel geometryDash = new GamePanel();
+    Menu menu = new Menu();
 
     public Main() {
 

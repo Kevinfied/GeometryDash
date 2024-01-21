@@ -32,7 +32,7 @@ public class Background {
         this.gh = ground.getHeight();
 
         int Xcounter = 0;
-        for (int i = 0; i < 2 ; i++) {
+        for (int i = 0; i < 5 ; i++) {
             backgroundX.add(Xcounter);
             Xcounter+=bw;
         }
@@ -92,6 +92,22 @@ public class Background {
             counter = 1;
         }
         counter += 1;
+
+    }
+
+    public void mainMenuDraw(Graphics g) {
+
+        for (Integer x : backgroundX) {
+            g.drawImage(bg, x, backgroundY, bw, bh, null);
+        }
+
+        for (Integer x : groundX) {
+            g.drawImage(ground, x, GroundY - 90, gw, gh, null);
+        }
+
+        g.setColor(new Color(0, 0, 255, 120));
+        g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+
 
     }
 

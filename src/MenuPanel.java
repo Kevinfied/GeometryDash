@@ -9,8 +9,15 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     BufferedImage background;
     BufferedImage startButton;
     Rectangle buttonHitbox;
+    BufferedImage backgroundImg = Util.loadBuffImage("assets/background/stereoBG.png");
+    BufferedImage groundImg = Util.loadBuffImage("assets/ground/ground1.png");
+    Background bg1 = new Background(backgroundImg, groundImg);
     Timer timer = new Timer(1000/60, this);
+    int buttonWidth = 250; int buttonHeight = 250;
 
+    boolean hover = false;
+
+    int titleWidth = 1050; int titleHeight = 120;
     public MenuPanel() {
         super();
         setLayout(null);
@@ -18,11 +25,11 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         setFocusable(true);
         requestFocus();
 
-        title = Util.loadBuffImage("assets/title.png");
+        title = Util.loadBuffImage("assets/logos/title.png");
         background = Util.loadBuffImage("assets/background/background1.png");
         startButton = Util.loadBuffImage("assets/logos/playButton.png");
-        startButton = Util.resize(startButton, 300, 300);
-        buttonHitbox = new Rectangle(475, 500, 300, 100);
+        startButton = Util.resize(startButton, buttonWidth, buttonHeight);
+        title = Util.resize(title, titleWidth, titleHeight);
 
 //        Timer timer = new Timer(1000/60, this);
 //        timer.start();
@@ -33,11 +40,27 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         addMouseMotionListener(this);
     }
 
+    public Rectangle getButtonHitbox() {
+        return new Rectangle(Globals.SCREEN_WIDTH / 2 - (buttonWidth/2), Globals.SCREEN_HEIGHT/2 - (buttonHeight/2), buttonWidth, buttonHeight);
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, null);
-        g.drawImage(title, 300, 100, null);
-        g.drawImage(startButton, 475, 500, null);
+
+        bg1.mainMenuDraw(g);
+//        g.drawImage(background, 0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT,null);
+        g.drawImage(title, (Globals.SCREEN_WIDTH - titleWidth) / 2, 75, null);
+
+        if (!hover) {
+//            System.out.println("LOLZERS");
+            g.drawImage(startButton, Globals.SCREEN_WIDTH / 2 - (buttonWidth / 2), Globals.SCREEN_HEIGHT / 2 - (buttonHeight / 2), null);
+        }
+        else {
+            g.drawImage(startButton, Globals.SCREEN_WIDTH / 2 - (buttonWidth / 2) - 15, Globals.SCREEN_HEIGHT / 2 - (buttonHeight / 2) - 15, buttonWidth + 30, buttonHeight + 30,null);
+        }
+    }
+    public void move() {
+        bg1.move();
     }
 
     // Implement KeyListener methods
@@ -69,7 +92,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         int mouseY = e.getY();
 
         // Check if the click is within the start button hitbox
-        if (buttonHitbox.contains(mouseX, mouseY)) {
+        if (getButtonHitbox().contains(mouseX, mouseY)) {
             // Handle start button click
             System.out.println("Start button clicked!");
             ControlCenter.enterGame();
@@ -96,5 +119,18 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
 
     public void mouseMoved(MouseEvent e) {
         // Handle mouse move events
+
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+//        System.out.println("hi there");
+        if (getButtonHitbox().contains(mouseX, mouseY)) {
+            // hover
+//            System.out.println("HOVERING");
+            hover = true;
+        } else {
+            // not hover
+            hover = false;
+//            System.out.println("not hovering");
+        }
     }
 }

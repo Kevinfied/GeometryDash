@@ -9,7 +9,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
 
     static MenuFrame MenuF = new MenuFrame();
-    static GameFrame GameF= new GameFrame();
+    static GameFrame GameF = new GameFrame();
 
     public ControlCenter() {
     }
@@ -45,5 +45,7 @@ public class ControlCenter extends JFrame implements ActionListener {
         System.out.println("to MENU >>>>>>>>>>>>>>>>");
     }
 
+
+    public static void toPauseMenu() {}
 
 }

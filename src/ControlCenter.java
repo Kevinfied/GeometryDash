@@ -31,11 +31,11 @@ public class ControlCenter extends JFrame implements ActionListener {
     public static void enterGame(){
         MenuF.menu.timer.stop();
         MenuF.setVisible(false);
-        GameFrame GameF= new GameFrame();
+//        GameFrame GameF= new GameFrame();
         GameF.setVisible(true);
         GameF.geometryDash.timer.start();
-
     }
+
 
     public static void toMenu() {
         GameF.setVisible(false);

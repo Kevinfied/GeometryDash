@@ -98,7 +98,7 @@ public class Player{
             else if ( vy <= Math.tan( - Math.PI / 4) * vx ) {
                 angle = -Math.PI / 4;
             }
-            else {
+            else if(!onSurface || !onCeiling){
                 angle = 0.9 * Math.atan2( vy , vx );
             }
 
@@ -240,17 +240,30 @@ public class Player{
 
     public void angleAdjust() {
         int floorR = (int) Math.floor( (angle / (Math.PI /2 )) );
-        int next = floorR + 1;
+        int ceilR = floorR + 1;
         double incre = 0.3;
-        if (angle % (Math.PI / 2) != 0) {
-            angle += incre;
-        }
+        if ( gamemode == "cube") {
+            if (angle % (Math.PI / 2) != 0) {
+                angle += incre;
+            }
 
-        if (angle > (next) * (Math.PI / 2) ) {
-            angle = (next) * (Math.PI / 2);
-        }
+            if (angle > (ceilR) * (Math.PI / 2)) {
+                angle = (ceilR) * (Math.PI / 2);
+            }
 
-        angle = angle % ( 2 * Math.PI);
+        }
+        else if (gamemode == "ship") {
+            incre *= -1;
+            if (angle % (Math.PI / 2) != 0) {
+                angle += incre;
+            }
+
+            if (angle < (floorR) * (Math.PI / 2)) {
+                angle = (floorR) * (Math.PI / 2);
+            }
+
+        }
+        angle = angle % (2 * Math.PI);
     }
 
     public void collide() {
@@ -340,11 +353,11 @@ public class Player{
                 groundLevel = (int) solid.getY();
                 onSurface = true;
             }
-            else if (collideX) {
-                dies();
-            }
             else if (collideDown) {
                 vy = 0;
+            }
+            else if (collideX) {
+                dies();
             }
 
         }
@@ -540,7 +553,7 @@ public class Player{
     public int getOffsetY() {return offsetY; }
     public int getGroundLevel() { return groundLevel; }
     public void setAngle( double n ) { angle = n ;}
-    public void setInitY( int n ) { initY = n;}
+    public void setInitY( double n ) { initY = n;}
     public void setJumpRotate(){
         jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump
     }

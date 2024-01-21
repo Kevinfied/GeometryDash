@@ -407,11 +407,11 @@ public class Player{
                     //            dies();
                     gamemode = "cube";
                     upright();
-//                    initY = -41.55;
+                    initY = -41.55;
 //
                     y = Globals.floor - height;
-//                    vy = 0;
-//                    reverse = false;
+                    vy = 0;
+                    reverse = false;
                     x = constantX;
                     onSurface = true;
                 } else {

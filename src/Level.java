@@ -189,7 +189,6 @@ public class Level {
                 else if ( target == 14) {
                     Orb o = new Orb(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "yes" );
                     orbs.add(o);
-
                 }
                 else if (target == 999) {
                     startpos = new Startpos(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight);

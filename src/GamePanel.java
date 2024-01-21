@@ -8,13 +8,13 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
-    Timer timer;
+    Timer timer =  timer = new Timer(1000/40, this);;
     static Player player;
     boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     //    ArrayList<String>  lvl1map = new ArrayList<String>();
-    String lvl1map = "assets/maps/jumper.png";
+    String lvl1map = "assets/maps/stereoMadness.png";
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
@@ -34,7 +34,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public static String screen;
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
-
+    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH / 2, Globals.SCREEN_HEIGHT /2, 200, 200);
 
 
 
@@ -44,9 +44,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/30, this);
+       // timer = new Timer(1000/40, this);
 
-        screen = "main menu";
+        screen = "game";
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -82,19 +82,19 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
 
-        timer.start();
+//        timer.start();
     }
 
     public void actionPerformed(ActionEvent e) {
 
-        if (screen == "main menu") {
-            if (keys[KeyEvent.VK_ENTER]) {
-                screen = "game";
-            }
+//        if (screen == "main menu") {
+//            if (keys[KeyEvent.VK_ENTER]) {
+//                screen = "game";
+//            }
+//
+//        }
 
-        }
-
-        else if (screen == "game") {
+//        else if (screen == "game") {
             move();
 
             // for cosmetics
@@ -102,7 +102,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             destroy();
 
             changeGamemode();
-        }
+//        }
 
         repaint();
     }
@@ -283,14 +283,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (screen == "main menu") {
+//        if (screen == "main menu") {
+//
+//            Graphics2D menu = (Graphics2D) (g);
+//            menu.drawImage(Util.loadBuffImage("assets/background/stereoBG.png"), 0, 0, null);
+//
+//        }
 
-            Graphics2D menu = (Graphics2D) (g);
-            menu.drawImage(Util.loadBuffImage("assets/background/stereoBG.png"), 0, 0, null);
-
-        }
-
-        if (screen == "game") {
+//        if (screen == "game") {
             Graphics2D g2d = (Graphics2D) (g);
 
 
@@ -388,7 +388,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            for (Ground gr : grounds) {
 //                gr.draw(g2d, offsetX, offsetY);
 //            }
+//
+//        }
 
+        if(screen == "pause") {
+            g.setColor( new Color(6, 6, 245,0));
+            g.drawRect(Globals.SCREEN_WIDTH / 2, Globals.SCREEN_HEIGHT/2, 200, 200);
         }
     }
 
@@ -399,6 +404,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
         System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+        if (pauseButton.contains(mouse.x, mouse.y)) {
+            ControlCenter.toMenu();
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -414,6 +422,18 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_SPACE) {
+            if(keys[code] ) {
+                if(player.getVX() == 22) {
+                    player.setVX(0);
+                    screen = "pause";
+                }
+                else{
+                    player.setVX(22);
+                    screen = "ingame";
+                }
+            }
+        }
 
         if (code == KeyEvent.VK_P) {
             if (keys[code] == false) {

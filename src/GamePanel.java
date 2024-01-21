@@ -8,13 +8,13 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
-    Timer timer;
+    Timer timer =  timer = new Timer(1000/40, this);;
     static Player player;
     boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     //    ArrayList<String>  lvl1map = new ArrayList<String>();
-    String lvl1map = "assets/maps/jumper.png";
+    String lvl1map = "assets/maps/stereoMadness.png";
     ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
     ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
     ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
@@ -36,6 +36,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
 //    Menu menu = new Menu();
+    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH / 3, Globals.SCREEN_HEIGHT/3, 200, 200);
+
 
 
     public GamePanel() {
@@ -44,9 +46,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
-        timer = new Timer(1000/60, this);
+       // timer = new Timer(1000/40, this);
 
-        screen = "main menu";
+        screen = "game";
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -82,19 +84,19 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
 
-        timer.start();
+//        timer.start();
     }
 
     public void actionPerformed(ActionEvent e) {
 
-        if (screen == "main menu") {
-            if (keys[KeyEvent.VK_ENTER]) {
-                screen = "game";
-            }
+//        if (screen == "main menu") {
+//            if (keys[KeyEvent.VK_ENTER]) {
+//                screen = "game";
+//            }
+//
+//        }
 
-        }
-
-        else if (screen == "game") {
+//        else if (screen == "game") {
             move();
 
             // for cosmetics
@@ -102,7 +104,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             destroy();
 
             changeGamemode();
-        }
+//        }
 
         repaint();
     }
@@ -151,57 +153,56 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void create() {
-//        Random rand = new Random();
-//        double min = 0; // Minimum value (pi/2)
-//        double max = 3 *Math.PI /2;     // Maximum value (pi)
-//        if (playerSquareParticles.size() < 100) {
-//            if( player.getGamemode().equals("cube") && player.onSurface == true) {
-//                int l = rand.nextInt(4) + 4;
-//                if ( !player.reverse) {
-//                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() + player.getHeight() - 5 + rand.nextInt(5), Math.random() * (-Math.PI), l, l, 0.2 * player.getVX(), 20));
-//                }
-//                else if ( player.reverse) {
-//                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() - 5 + rand.nextInt(5), Math.random() * (Math.PI), l, l, 0.2 * player.getVX(), 20));
-//                }
-//            }
-//
-//            if (player.getGamemode().equals("ship")) {
-//                int l = rand.nextInt(3) + 4;
-//                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) , l, l,-2, 50));
-//            }
-//        }
-//
-//        if ( player.getGamemode().equals("ship")) {
-//            if (shipSquareParticles.size() < 800) {
-//                int l= rand.nextInt(7) + 4;
-//                shipSquareParticles.add(new SquareParticle(rand.nextInt(1000) + player.getX() - 200, rand.nextInt(1000) + player.getY() - 400, min + Math.random() * (max - min) ,l,l,-2, 100 ));
-//            }
-//        }
-//
-//        for (int i = 0; i<padParticles.size(); i++) {
-//            ArrayList lis = padParticles.get(i);
-//            if(lis.size() < 700){
-//                int l = rand.nextInt(7) + 4;
-//                lis.add(new SquareParticle(lvl1pads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvl1pads.get(i).getY() + lvl1pads.get(i).getHeight(), Math.PI/2, l, l,-10, rand.nextInt(50) + 70 ));
-//            }
-//        }
-//
-//
-//        for (int i = 0; i<portalParticles.size(); i++) {
-//            ArrayList lis = portalParticles.get(i);
-//            if(lis.size() < 700){
-//                int l = rand.nextInt(10) + 4;
-//                int portalY = lvl1portals.get(i).getY();
-//                int portalH = lvl1portals.get(i).getHeight();
-//                int portalX = lvl1portals.get(i).getX();
-//                int py = portalY - 20 + rand.nextInt(portalH + 20);
-//                int midy = (2* portalY + portalH ) /2;
-//                // trig actually useful...for once
-//                lis.add(new SquareParticle(portalX-rand.nextInt(100), py,  Math.asin((double) 2* ((midy) - py) / portalH ) , l, l,5, rand.nextInt(50) + 60 ));
-//                System.out.println(lis);
-//                System.out.println(lis.size());
-//            }
-//        }
+        Random rand = new Random();
+        double min = 0; // Minimum value (pi/2)
+        double max = 3 *Math.PI /2;     // Maximum value (pi)
+        if (playerSquareParticles.size() < 100) {
+            if( player.getGamemode().equals("cube") && player.onSurface == true) {
+                int l = rand.nextInt(4) + 4;
+                if ( !player.reverse) {
+                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() + player.getHeight() - 5 + rand.nextInt(5), Math.random() * (-Math.PI), l, l, 0.2 * player.getVX(), 20));
+                }
+                else if ( player.reverse) {
+                    playerSquareParticles.add(new SquareParticle(player.getX(), player.getY() - 5 + rand.nextInt(5), Math.random() * (Math.PI), l, l, 0.2 * player.getVX(), 20));
+                }
+            }
+
+            if (player.getGamemode().equals("ship")) {
+                int l = rand.nextInt(3) + 4;
+                playerSquareParticles.add ( new SquareParticle( player.getX(), rand.nextInt(player.getWidth()) + player.getY(), min + Math.random() * (max - min) , l, l,-2, 50));
+            }
+        }
+
+        if ( player.getGamemode().equals("ship")) {
+            if (shipSquareParticles.size() < 800) {
+                int l= rand.nextInt(7) + 4;
+                shipSquareParticles.add(new SquareParticle(rand.nextInt(1000) + player.getX() - 200, rand.nextInt(1000) + player.getY() - 400, min + Math.random() * (max - min) ,l,l,-2, 100 ));
+            }
+        }
+
+        for (int i = 0; i<padParticles.size(); i++) {
+            ArrayList lis = padParticles.get(i);
+            if(lis.size() < 700){
+                int l = rand.nextInt(7) + 4;
+                lis.add(new SquareParticle(lvl1pads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvl1pads.get(i).getY() + lvl1pads.get(i).getHeight(), Math.PI/2, l, l,-10, rand.nextInt(50) + 70 ));
+            }
+        }
+
+
+        for (int i = 0; i<portalParticles.size(); i++) {
+            ArrayList lis = portalParticles.get(i);
+            if(lis.size() < 700){
+                int l = rand.nextInt(10) + 4;
+                int portalY = lvl1portals.get(i).getY();
+                int portalH = lvl1portals.get(i).getHeight();
+                int portalX = lvl1portals.get(i).getX();
+                int py = portalY - 20 + rand.nextInt(portalH + 20);
+                int midy = (2* portalY + portalH ) /2;
+                // trig actually useful...for once
+                lis.add(new SquareParticle(portalX-rand.nextInt(100), py,  Math.asin((double) 2* ((midy) - py) / portalH ) , l, l,5, rand.nextInt(50) + 60 ));
+
+            }
+        }
 
 
     }
@@ -266,7 +267,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         player.setJumpRotate();
 
         if (keys[KeyEvent.VK_SPACE]) {
-            player.ufoJump();
+            if(player.getVX() == 22) {
+                player.setVX(0);
+                screen = "pause";
+            }
+            else{
+                player.setVX(22);
+                screen = "ingame";
+            }
         }
 
         if (keys[KeyEvent.VK_W]) {
@@ -283,14 +291,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (screen == "main menu") {
+//        if (screen == "main menu") {
+//
+//            Graphics2D menu = (Graphics2D) (g);
+//            menu.drawImage(Util.loadBuffImage("assets/background/stereoBG.png"), 0, 0, null);
+//
+//        }
 
-            Graphics2D menu = (Graphics2D) (g);
-            menu.drawImage(Util.loadBuffImage("assets/background/stereoBG.png"), 0, 0, null);
-
-        }
-
-        if (screen == "game") {
+//        if (screen == "game") {
             Graphics2D g2d = (Graphics2D) (g);
 
 
@@ -388,8 +396,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //            for (Ground gr : grounds) {
 //                gr.draw(g2d, offsetX, offsetY);
 //            }
+//
+//        }
 
-        }
+//        if(screen == "pause") {
+        System.out.println(screen);
+            g2d.setColor( new Color(6, 6, 245, 255));
+            g2d.fillRect(Globals.SCREEN_WIDTH / 3, Globals.SCREEN_HEIGHT/3, 200, 200);
+//        }
     }
 
 
@@ -399,6 +413,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
         System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+        if (pauseButton.contains(mouse.x, mouse.y)) {
+            ControlCenter.toMenu();
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -414,6 +431,18 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_SPACE) {
+            if(keys[code] ) {
+                if(player.getVX() == 22) {
+                    player.setVX(0);
+                    screen = "pause";
+                }
+                else{
+                    player.setVX(22);
+                    screen = "game";
+                }
+            }
+        }
 
         if (code == KeyEvent.VK_P) {
             if (keys[code] == false) {
@@ -435,7 +464,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         if (code == KeyEvent.VK_X) {
             if (keys[code] == false){
-//                System.out.println("HIHIHIHIHIHIHI");
                 if (player.practiceMode) {
                     if (!Level.checkpoints.isEmpty()) {
                         Level.checkpoints.remove(Level.checkpoints.size() - 1);

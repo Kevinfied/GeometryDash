@@ -89,7 +89,7 @@ public class Level {
                     }
                     else if (c == 0xFF7F006E) {
                         v = 6;
-                        System.out.println("portal found");
+//                        System.out.println("portal found");
                     }
                     else if (c == 0xFF007F7F) {
                         v = 7;
@@ -114,6 +114,9 @@ public class Level {
                     }
                     else if ( c == 0xFFD67FFF) {
                         v = 15;
+                    }
+                    else if ( c ==0xFFFF7FB6) {
+                        v = 16;
                     }
                     mapArr[x][y] = v;
                 }
@@ -168,12 +171,12 @@ public class Level {
                 else if (target == 10) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "ship", 0 );
                     portals.add(p);
-                    System.out.println("portal made");
+//                    System.out.println("portal made");
                 }
                 else if (target == 11) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "cube", 0 );
                     portals.add(p);
-                    System.out.println("portal made");
+//                    System.out.println("portal made");
                 }
                 else if (target == 12) {
                     Barrier b = new Barrier(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.solidHeight, Globals.solidHeight);
@@ -186,13 +189,16 @@ public class Level {
                 else if ( target == 14) {
                     Orb o = new Orb(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "yes" );
                     orbs.add(o);
-
                 }
                 else if (target == 999) {
                     startpos = new Startpos(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight);
                 }
                 else if (target == 15) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "reverse", 0 );
+                    portals.add(p);
+                }
+                else if (target == 16) {
+                    Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "upright", 0 );
                     portals.add(p);
                 }
             }

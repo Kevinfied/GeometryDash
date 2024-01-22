@@ -12,7 +12,7 @@ public class Solid {
 
 //    private String type;
 
-    private BufferedImage img;
+    private BufferedImage img = Util.loadBuffImage("assets/solids/block2.png");
     private String type;
 
 
@@ -72,10 +72,13 @@ public class Solid {
             if( y + width < player.getY()) {
                 b *= -1;
             }
-            g.setColor(Color.BLACK);
-            g.fillRect(x + offsetX, y + offsetY + b, width, height);
-            g.setColor(new Color(0, 208, 255, 255) );
-            g.drawRect(x + offsetX, y + offsetY + b, width, height);
+//            g.setColor(Color.BLACK);
+//            g.fillRect(x + offsetX, y + offsetY + b, width, height);
+//            g.setColor(new Color(0, 208, 255, 255) );
+//            g.drawRect(x + offsetX, y + offsetY + b, width, height);
+
+            g.drawImage(img, x + offsetX, y + offsetY + b, width, height, null);
+
         }
 
 

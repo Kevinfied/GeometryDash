@@ -41,10 +41,17 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
     public int playButtonWidth = 200; public int playButtonHeight = 200;
-    public int buttonWidth = 100; public int buttonHeight = 100;
+    public int buttonWidth = 175; public int buttonHeight = 175;
     public Rectangle playButtonHitbox = new Rectangle((Globals.SCREEN_WIDTH/2) - (playButtonWidth/2), 400, playButtonWidth, playButtonHeight);
+    public Rectangle menuButtonHitbox = new Rectangle((Globals.SCREEN_WIDTH / 2) + (playButtonWidth / 2) + 175 - (buttonWidth / 2), 400 + 12, buttonWidth, buttonHeight);
     public BufferedImage playButtonImg = Util.resize(Util.loadBuffImage("assets/buttons/play.png"), playButtonWidth, playButtonHeight);
+    public BufferedImage menuButtonImg = Util.resize(Util.loadBuffImage("assets/buttons/menu.png"), buttonWidth, buttonHeight);
+    public BufferedImage playButtonHoverImg = Util.resize(Util.loadBuffImage("assets/buttons/play.png"), playButtonWidth + 30, playButtonHeight + 30);
+    public BufferedImage menuButtonHoverImg = Util.resize(Util.loadBuffImage("assets/buttons/menu.png"), buttonWidth + 30, buttonHeight + 30);
 
+    public boolean playButtonHover = false;
+    public boolean menuButtonHover = false;
+    public boolean practiceButtonHover = false;
 
     public PausePanel() {
         super();
@@ -65,7 +72,18 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         g.setColor(new Color(0, 0, 0, 228));
         g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
 
-        g.drawImage(playButtonImg, (Globals.SCREEN_WIDTH/2) - (playButtonWidth/2), 400, playButtonWidth, playButtonHeight, null);
+        if (!playButtonHover) {
+            g.drawImage(playButtonImg, (Globals.SCREEN_WIDTH / 2) - (playButtonWidth / 2), 400,  null);
+        }
+        else {
+            g.drawImage(playButtonHoverImg, (Globals.SCREEN_WIDTH / 2) - (playButtonWidth / 2) - 15, 400 - 15, null);
+        }
+        if (!menuButtonHover) {
+            g.drawImage(menuButtonImg, (Globals.SCREEN_WIDTH / 2) + (playButtonWidth / 2) + 175 - (buttonWidth / 2), 400 + 12, null);
+        }
+        else {
+            g.drawImage(menuButtonHoverImg, (Globals.SCREEN_WIDTH / 2) + (playButtonWidth / 2) + 175 - (buttonWidth / 2) - 15, 400 + 12 - 15, null);
+        }
     }
 
     public void move() {
@@ -120,7 +138,15 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
 
     @Override
     public void mousePressed(MouseEvent e) {
+        int mouseX = e.getX();
+        int mouseY = e.getY();
 
+        if (playButtonHitbox.contains(mouseX, mouseY)) {
+            resume();
+        }
+        else if (menuButtonHitbox.contains(mouseX, mouseY)) {
+            exitToMenu();
+        }
     }
 
     @Override
@@ -146,6 +172,26 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
     @Override
     public void mouseMoved(MouseEvent e) {
 
+        if (playButtonHitbox.contains(e.getX(), e.getY())) {
+            playButtonHover = true;
+        }
+        else {
+            playButtonHover = false;
+        }
+
+        if (menuButtonHitbox.contains(e.getX(), e.getY())) {
+            menuButtonHover = true;
+        }
+        else {
+            menuButtonHover = false;
+        }
+
+//        if (practiceButtonHitbox.contains(e.getX(), e.getY())) {
+//            practiceButtonHover = true;
+//        }
+//        else {
+//            practiceButtonHover = false;
+//        }
     }
 
 

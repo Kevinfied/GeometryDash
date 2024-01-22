@@ -298,8 +298,16 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         player.reverse = false;
         player.setX((int) player.constantX);
         player.onSurface = true;
-        player.practiceMode = false;
+        Player.practiceMode = false;
         Level.checkpoints.clear();
+    }
+
+    public static void setPlayerPracticemode(boolean b) {
+        player.practiceMode = b;
+    }
+
+    public static boolean getPlayerPracticemode() {
+        return player.practiceMode;
     }
 
     @Override

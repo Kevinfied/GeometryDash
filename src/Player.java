@@ -43,7 +43,7 @@ public class Player{
     public boolean prevOnSurface = true;
     public boolean onCeiling = false;
 
-    public boolean practiceMode;
+    public static boolean practiceMode;
     private final BufferedImage shipIcon;
     private final BufferedImage ufoIcon;
 

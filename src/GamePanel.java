@@ -336,11 +336,11 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
             offsetX = (int) (stationaryX - player.getX());
-            int adj = 200;
+            int adj = 250;
 
             bg.draw(g2d, offsetY);
             if(player.reverse) {
-                adj += 100;
+                adj += 200;
             }
 
             if (player.getOffsetY() > offsetY + adj) {
@@ -393,6 +393,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
 
             for (int i = 0; i < padParticles.size(); i++) {
+                if( ! Util.onScreen(player, lvl1pads.get(i).getX()) ) {
+                    continue;
+                }
                 ArrayList<SquareParticle> lis = padParticles.get(i);
                 for (int j = lis.size() - 1; j >= 0; j--) {
                     SquareParticle s = lis.get(j);
@@ -401,6 +404,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
 
             for (int i = 0; i < portalParticles.size(); i++) {
+                if( ! Util.onScreen(player, lvl1portals.get(i).getX()) ) {
+                    continue;
+                }
                 ArrayList<SquareParticle> lis = portalParticles.get(i);
                 for (int j = lis.size() - 1; j >= 0; j--) {
                     SquareParticle s = lis.get(j);

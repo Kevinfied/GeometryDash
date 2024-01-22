@@ -66,7 +66,7 @@ public class Solid {
         int a = (int) Math.abs(x - (player.getX() + n));
         if( Util.onScreen(player, x)) {
             int b =  (int) (a * 0.07 );
-            if ( a < 550) {
+            if ( a < 550 || Math.abs(player.getGroundLevel() - Globals.floor) <300) {
                 b = 0;
             }
             if( y + width < player.getY()) {

@@ -121,14 +121,14 @@ public class Player{
 //        }
 
         int newOffsetY = Globals.floor - groundLevel;
-        if ( Math.abs(newOffsetY - offsetY) > 150 && !gamemode.equals("ship") ) {
+        if ( Math.abs(newOffsetY - offsetY) > 120 && !gamemode.equals("ship") ) {
             offsetY = Globals.floor - groundLevel;
         }
         else if ( vy > 0 && Math.abs(py - y) > 38) {
             offsetY = Globals.floor - groundLevel - 30;
         }
         if (gamemode.equals("ship")) {
-            offsetY = 210;
+            offsetY = 220;
         }
 
 

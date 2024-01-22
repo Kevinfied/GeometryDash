@@ -37,6 +37,10 @@ public class Spike {
                 img = Util.loadBuffImage("assets/spikes/smallDown.png");
             }
         }
+
+        else if (type == "side") {
+            img = Util.loadBuffImage("assets/spikes/normalLeft.png");
+        }
         img = Util.resize(img, width, height);
     }
 
@@ -64,6 +68,10 @@ public class Spike {
             }
         }
 
+        else if (type == "side") {
+            return new Rectangle(x + 22, y + 30, 31, 15);
+        }
+
 
         return null;
     }
@@ -86,6 +94,9 @@ public class Spike {
                 g.drawRect(x + 28, y+5, 19, 18);
             }
         }
+        else if (type == "side") {
+            g.drawRect(x + 22, y + 30, 31, 15);
+        }
     }
 
 
@@ -98,7 +109,7 @@ public class Spike {
         int a = (int) Math.abs(x - (player.getX() + n));
         if( Util.onScreen(player, x)) {
             int b =  (int) (a * 0.07 );
-            if ( a < 550) {
+            if ( a < 550 || Math.abs(player.getGroundLevel() - Globals.floor) <300) {
                 b = 0;
             }
             if( y + width < player.getY()) {

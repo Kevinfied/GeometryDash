@@ -11,7 +11,7 @@ pass all the obstacles to get to the end of the map.
 <br/>
 There is only one type of input. The gamemode that the player is in decides what that input does.
 
-Cube: Press to jump
+Cube: Press to jump <br/>
 Ship: Press to fly upward, let go to fall down
 
 In our game, there are three levels, in order of increasing difficulty:

@@ -33,20 +33,24 @@ public class ControlCenter extends JFrame implements ActionListener {
     }
 
     public static void enterGame(){
-        System.out.println("MY HEAD IS UNDER DA WATER");
+        System.out.println("MY HEAD IS UNDER DA WATER"); // oh yes ofc, brain fluid gooood
         MenuF.menu.timer.stop();
         MenuF.setVisible(false);
+
+        pauseMenu.timer.stop();
         pauseMenu.setVisible(false);
+
         GameF.setVisible(true);
         GameF.geometryDash.timer.start();
     }
     public static void pauseGame() {
         pauseMenu.pausemenu.timer.start();
-        GameF.geometryDash.timer.stop();
         MenuF.setVisible(false);
+
+        GameF.geometryDash.timer.stop();
         GameF.setVisible(false);
+
         pauseMenu.setVisible(true);
-//        GameF.setVisible(false);
         MenuF.menu.timer.stop();
     }
 
@@ -54,10 +58,13 @@ public class ControlCenter extends JFrame implements ActionListener {
         GameF.setVisible(false);
         GameF.geometryDash.timer.stop();
         GameF.geometryDash.resetPlayer();
+
         pauseMenu.pausemenu.timer.stop();
+        pauseMenu.setVisible(false);
+
         MenuF.menu.timer.start();
         MenuF.setVisible(true);
-        pauseMenu.setVisible(false);
+
         System.out.println("to MENU >>>>>>>>>>>>>>>>");
     }
 

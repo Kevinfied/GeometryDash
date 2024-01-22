@@ -15,7 +15,7 @@ public class GameFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
         add(geometryDash);
-
+        setIconImage(Globals.windowIcon.getImage());
 
     }
 

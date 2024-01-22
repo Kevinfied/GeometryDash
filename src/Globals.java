@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Globals {
 
     public static final int SCREEN_WIDTH = 1250;
@@ -13,4 +15,6 @@ public class Globals {
 
     public static final int SHIP_CEILING =Globals.floor - Globals.solidHeight * 11 + 35;
 
+
+    public static ImageIcon windowIcon = new ImageIcon("assets/logos/GeometryDash.png");
 }

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 public class Background {
     private BufferedImage bg;
     private BufferedImage ground;
+    private BufferedImage groundLine = Util.loadBuffImage("assets/ground/groundLine.png");
     private ArrayList<Integer> groundX = new ArrayList<Integer> ();
     private ArrayList<Integer> backgroundX = new ArrayList<Integer>();
     private int bw, bh, gw, gh;
@@ -80,8 +81,15 @@ public class Background {
 
 
 
+
         g.setColor(new Color(red, green, blue, 77));
         g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+
+        int tmp = 250;
+        g.drawImage(groundLine, 0, GroundY + offsetY, Globals.SCREEN_WIDTH, 5, null);
+//        g.fillRect(0, GroundY+offsetY, tmp, 5);
+//        g.fillRect(Globals.SCREEN_WIDTH - tmp, GroundY+offsetY, tmp, 5);
+
         if ( counter % 100 == 0) {
             red = (int) (0.97 * red);
             blue = (int) (0.97 * blue);
@@ -92,6 +100,8 @@ public class Background {
             counter = 1;
         }
         counter += 1;
+
+
 
     }
 

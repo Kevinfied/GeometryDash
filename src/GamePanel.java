@@ -8,7 +8,7 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
-    Timer timer =  timer = new Timer(1000/40, this);;
+    Timer timer =  timer = new Timer(1000/60, this);;
     static Player player;
     boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
@@ -36,7 +36,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
 //    Menu menu = new Menu();
-    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH / 3, Globals.SCREEN_HEIGHT/3, 200, 200);
+    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH - 25 - 2, 25 + 2, 25, 25);
 
 
 
@@ -67,7 +67,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         lvl1portals = lvl1.portals;
         lvl1pads = lvl1.pads;
         lvl1orbs = lvl1.orbs;
-        lvl1.asciiPrint();
+//        lvl1.asciiPrint();
         grounds = lvl1.grounds;
 
         if (!lvl1pads.isEmpty()) {
@@ -266,16 +266,16 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         player.setJumpRotate();
 
-        if (keys[KeyEvent.VK_SPACE]) {
-            if(player.getVX() == 22) {
-                player.setVX(0);
-                screen = "pause";
-            }
-            else{
-                player.setVX(22);
-                screen = "ingame";
-            }
-        }
+//        if (keys[KeyEvent.VK_SPACE]) {
+//            if(player.getVX() == 22) {
+//                player.setVX(0);
+//                screen = "pause";
+//            }
+//            else{
+//                player.setVX(22);
+//                screen = "ingame";
+//            }
+//        }
 
         if (keys[KeyEvent.VK_W]) {
             player.ufoJump();
@@ -285,6 +285,21 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.changeYdirection = true;;
         }
 
+    }
+
+    public static void resetPlayer() {
+        player.setGamemode("cube");
+        player.upright();
+        player.initY = -41.55;
+//
+//        player.y = Globals.floor - player.height;
+        player.setY(Globals.floor - player.getHeight());
+        player.setVY(0);
+        player.reverse = false;
+        player.setX((int) player.constantX);
+        player.onSurface = true;
+        player.practiceMode = false;
+        Level.checkpoints.clear();
     }
 
     @Override
@@ -400,10 +415,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 //        }
 
 //        if(screen == "pause") {
-        System.out.println(screen);
-            g2d.setColor( new Color(6, 6, 245, 255));
-            g2d.fillRect(Globals.SCREEN_WIDTH / 3, Globals.SCREEN_HEIGHT/3, 200, 200);
-//        }
+//        System.out.println(screen);
+//            g2d.setColor( new Color(6, 6, 245, 255));
+//            g2d.fillRect(Globals.SCREEN_WIDTH - 25 - 20, 25 + 2, 25, 25);
+//          }
     }
 
 
@@ -412,10 +427,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         //get mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         Point offset = getLocationOnScreen();
-        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
-        if (pauseButton.contains(mouse.x, mouse.y)) {
-            ControlCenter.toMenu();
-        }
+//        System.out.println("("+(mouse.x-offset.x)+", "+(mouse.y-offset.y)+")");
+
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -431,18 +444,23 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_SPACE) {
-            if(keys[code] ) {
-                if(player.getVX() == 22) {
-                    player.setVX(0);
-                    screen = "pause";
-                }
-                else{
-                    player.setVX(22);
-                    screen = "game";
-                }
-            }
+
+        if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_UP) {
+            mouseDown = true;
         }
+
+//        if (code == KeyEvent.VK_SPACE) {
+//            if(keys[code] ) {
+//                if(player.getVX() == 22) {
+//                    player.setVX(0);
+//                    screen = "pause";
+//                }
+//                else{
+//                    player.setVX(22);
+//                    screen = "game";
+//                }
+//            }
+//        }
 
         if (code == KeyEvent.VK_P) {
             if (keys[code] == false) {
@@ -472,16 +490,30 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
+
+        if (code == KeyEvent.VK_ESCAPE) {
+            if (keys[code] == false) {
+
+                ControlCenter.pauseGame();
+
+            }
+        }
+
+
+
         keys[code] = true;
-
-
     }
 
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_UP) {
+            mouseDown = false;
+        }
         keys[code] = false;
 
     }
+
 
     public void keyTyped(KeyEvent e) {}
 

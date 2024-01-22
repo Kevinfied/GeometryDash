@@ -8,6 +8,7 @@ public class MenuFrame extends JFrame implements ActionListener {
 
     static public MenuPanel menu = new MenuPanel();
     Timer timer = new Timer(1000/60, this);
+
     public MenuFrame() {
 
         super("Geometry Dash");
@@ -17,9 +18,9 @@ public class MenuFrame extends JFrame implements ActionListener {
         add(menu);
         // Add mouse listener to the MenuPanel
         menu.addMouseListener(new MenuMouseListener());
-
+        setIconImage(Globals.windowIcon.getImage());
         // Set up a timer to trigger actionPerformed
-        setVisible(true);
+//        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {

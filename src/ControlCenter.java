@@ -26,7 +26,7 @@ public class ControlCenter extends JFrame implements ActionListener {
     public static int var;
 
     private static void start() {
-        MenuF.menu.timer.start();
+        MenuF.timer.start();
         MenuF.setVisible(true);
 
         GameF.stopTimer();

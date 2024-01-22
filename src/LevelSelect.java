@@ -58,9 +58,15 @@ public class LevelSelect extends JPanel implements KeyListener, ActionListener, 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.BLUE);
-        g.drawRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
 
+
+        g.setColor(Color.BLUE);
+
+
+        g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+
+
+        g.setColor(Color.WHITE);
         g.drawRect(700, 350, 200, 200);
         g.drawRect(100, 350, 200, 200);
         g.drawRect((Globals.SCREEN_WIDTH/2) - (playButtonWidth/2), (Globals.SCREEN_HEIGHT/2) - (playButtonHeight/2), playButtonWidth, playButtonHeight);

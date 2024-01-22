@@ -7,9 +7,7 @@ import java.awt.event.MouseEvent;
 public class MenuFrame extends JFrame implements ActionListener {
 
     static public MenuPanel menu = new MenuPanel();
-    static public LevelSelect levelMenu = new LevelSelect();
     Timer timer = new Timer(1000/60, this);
-    public static String screen = "menu";
     public MenuFrame() {
 
         super("Geometry Dash");
@@ -18,12 +16,9 @@ public class MenuFrame extends JFrame implements ActionListener {
         setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
 
         add(menu);
-        add(levelMenu);
-
 
         // Add mouse listener to the MenuPanel
         menu.addMouseListener(new MenuMouseListener());
-        levelMenu.addMouseListener(new MenuMouseListener());
 
 
         setIconImage(Globals.windowIcon.getImage());
@@ -33,17 +28,8 @@ public class MenuFrame extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         // Repaint the menu panel on timer events
-//        System.out.println("MenuFrame.actionPerformed");
-
-        if (screen == "menu") {
-            menu.move();
-            menu.repaint();
-        }
-        else if (screen == "level select") {
-            levelMenu.move();
-            levelMenu.repaint();
-        }
-
+        menu.move();
+        menu.repaint();
     }
 
     class MenuMouseListener extends MouseAdapter {

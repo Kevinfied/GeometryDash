@@ -453,8 +453,12 @@ public class Player{
                 }
             } else {
                 gamemode = "cube";
+                upright();
+                initY = -41.55;
+//
                 y = Globals.floor - height;
                 vy = 0;
+                reverse = false;
                 x = constantX;
                 onSurface = true;
             }

@@ -95,7 +95,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         if (getButtonHitbox().contains(mouseX, mouseY)) {
             // Handle start button click
             System.out.println("Start button clicked!");
-            ControlCenter.enterGame();
+            MenuFrame.screen = "level select";
         }
         // Handle mouse press events
     }

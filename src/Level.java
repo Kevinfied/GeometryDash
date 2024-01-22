@@ -251,6 +251,9 @@ public class Level {
     }
     public ArrayList<Portal> getPortals() {return portals;}
     public static ArrayList<Checkpoint> getCheckpoints() {return checkpoints;}
+
+    public ArrayList<Pad> getPads() {return pads;}
+    public ArrayList<Orb> getOrbs() {return orbs;}
     public void asciiPrint() {
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {

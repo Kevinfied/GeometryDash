@@ -131,6 +131,12 @@ public class Player{
             offsetY = 220;
         }
 
+        if( y + offsetY > Globals.SCREEN_HEIGHT ) {
+            offsetY -= 100;
+        }
+        else if (y + offsetY < 0 ) {
+            offsetY += 100;
+        }
 
 //        rotation adjustment
         if(onSurface || onCeiling){

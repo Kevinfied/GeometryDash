@@ -14,17 +14,17 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     //    ArrayList<String>  lvl1map = new ArrayList<String>();
-    String lvl1map = "assets/maps/stereoMadness.png";
-    ArrayList<Solid> lvl1solids = new ArrayList<Solid>();
-    ArrayList <Spike> lvl1spikes = new ArrayList<Spike>();
-    ArrayList <Portal> lvl1portals = new ArrayList<Portal>();
-    ArrayList <Orb> lvl1orbs = new ArrayList<Orb>();
+    String lvl1map;
+    ArrayList<Solid> lvlSolids = new ArrayList<Solid>();
+    ArrayList <Spike> lvlSpikes = new ArrayList<Spike>();
+    ArrayList <Portal> lvlPortals = new ArrayList<Portal>();
+    ArrayList <Orb> lvlOrbs = new ArrayList<Orb>();
     ArrayList <Checkpoint> checkPoints = new ArrayList<Checkpoint>();
-    ArrayList <Pad> lvl1pads = new ArrayList<Pad>();
+    ArrayList <Pad> lvlPads = new ArrayList<Pad>();
     ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
     ArrayList<ArrayList<SquareParticle>> padParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList<ArrayList<SquareParticle>> portalParticles = new ArrayList<ArrayList<SquareParticle>>();
-    Level lvl1 = new Level(lvl1map);
+    Level lvl;
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
 
     ArrayList <Ground> grounds = new ArrayList<Ground>();
@@ -40,13 +40,16 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
 
-    public GamePanel() {
+    public GamePanel( String mapString) {
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
         requestFocus();
 
+
+        lvl = new Level(mapString);
        // timer = new Timer(1000/40, this);
+        this.lvl1map = mapString;
 
         screen = "game";
 
@@ -54,30 +57,23 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
 
 
-//        for ( int i = 1; i <= 3; i++ ) {
-//            String s = "assets/mapMaking/stereo" + Integer.toString(i) + ".png" ;
-//            lvl1map.add(s);
-//        }
-//        lvl1map.add("assets/maps/baseAfterBase.png");
-//        lvl1map.add("assets/maps/dbugBarrier.png");
-//        lvl1.loadMap();
-//        lvl1.makeMap();
-        lvl1solids = lvl1.solids;
-        lvl1spikes = lvl1.spikes;
-        lvl1portals = lvl1.portals;
-        lvl1pads = lvl1.pads;
-        lvl1orbs = lvl1.orbs;
-//        lvl1.asciiPrint();
-        grounds = lvl1.grounds;
 
-        if (!lvl1pads.isEmpty()) {
-            for (Pad p: lvl1pads) {
+        lvlSolids = lvl.getSolids();
+        lvlSpikes = lvl.getSpikes();
+        lvlPortals = lvl.getPortals();
+        lvlPads = lvl.getPads();
+        lvlOrbs = lvl.getOrbs();
+//        lvl1.asciiPrint();
+        grounds = lvl.grounds;
+
+        if (!lvlPads.isEmpty()) {
+            for (Pad p: lvlPads) {
                 padParticles.add(new ArrayList<SquareParticle>());
             }
         }
 
-        if (!lvl1portals.isEmpty()) {
-            for (Portal p: lvl1portals) {
+        if (!lvlPortals.isEmpty()) {
+            for (Portal p: lvlPortals) {
                 portalParticles.add(new ArrayList<SquareParticle>());
             }
         }
@@ -111,7 +107,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public void move() {
         bg.move();
-        player.move(lvl1solids, lvl1spikes, lvl1portals, lvl1pads, lvl1orbs);
+        player.move(lvlSolids, lvlSpikes, lvlPortals, lvlPads, lvlOrbs);
         if(mouseDown) {
             player.cubeJump();
         }
@@ -184,7 +180,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             ArrayList lis = padParticles.get(i);
             if(lis.size() < 700){
                 int l = rand.nextInt(7) + 4;
-                lis.add(new SquareParticle(lvl1pads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvl1pads.get(i).getY() + lvl1pads.get(i).getHeight(), Math.PI/2, l, l,-10, rand.nextInt(50) + 70 ));
+                lis.add(new SquareParticle(lvlPads.get(i).getX()+rand.nextInt(Globals.solidWidth), lvlPads.get(i).getY() + lvlPads.get(i).getHeight(), Math.PI/2, l, l,-10, rand.nextInt(50) + 70 ));
             }
         }
 
@@ -193,9 +189,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             ArrayList lis = portalParticles.get(i);
             if(lis.size() < 700){
                 int l = rand.nextInt(10) + 4;
-                int portalY = lvl1portals.get(i).getY();
-                int portalH = lvl1portals.get(i).getHeight();
-                int portalX = lvl1portals.get(i).getX();
+                int portalY = lvlPortals.get(i).getY();
+                int portalH = lvlPortals.get(i).getHeight();
+                int portalX = lvlPortals.get(i).getX();
                 int py = portalY - 20 + rand.nextInt(portalH + 20);
                 int midy = (2* portalY + portalH ) /2;
                 // trig actually useful...for once
@@ -357,22 +353,22 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
             player.draw(g2d, playerOSY);
 
-            for (Solid s : lvl1solids) {
+            for (Solid s : lvlSolids) {
                 s.draw(g2d, offsetX, offsetY, player);
             }
-            for (Spike s : lvl1spikes) {
+            for (Spike s : lvlSpikes) {
                 s.draw(g2d, offsetX, offsetY, player);
             }
-            for (Portal p : lvl1portals) {
+            for (Portal p : lvlPortals) {
                 p.draw(g2d, offsetX, offsetY);
             }
-            if (!lvl1pads.isEmpty()) {
-                for (Pad p : lvl1pads) {
+            if (!lvlPads.isEmpty()) {
+                for (Pad p : lvlPads) {
                     p.draw(g, offsetX, offsetY);
                 }
             }
-            if (!lvl1orbs.isEmpty()) {
-                for (Orb o : lvl1orbs) {
+            if (!lvlOrbs.isEmpty()) {
+                for (Orb o : lvlOrbs) {
                     o.draw(g, offsetX, offsetY);
                 }
             }
@@ -393,7 +389,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
 
             for (int i = 0; i < padParticles.size(); i++) {
-                if( ! Util.onScreen(player, lvl1pads.get(i).getX()) ) {
+                if( ! Util.onScreen(player, lvlPads.get(i).getX()) ) {
                     continue;
                 }
                 ArrayList<SquareParticle> lis = padParticles.get(i);
@@ -404,7 +400,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
 
             for (int i = 0; i < portalParticles.size(); i++) {
-                if( ! Util.onScreen(player, lvl1portals.get(i).getX()) ) {
+                if( ! Util.onScreen(player, lvlPortals.get(i).getX()) ) {
                     continue;
                 }
                 ArrayList<SquareParticle> lis = portalParticles.get(i);

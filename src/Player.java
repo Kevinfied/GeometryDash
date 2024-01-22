@@ -73,8 +73,6 @@ public class Player{
 
         py = y;
         px = x;
-//        y += vy;
-//        x += vx;
 
         if(gamemode.equals ("cube") ) {
             jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
@@ -104,21 +102,6 @@ public class Player{
 
         }
 
-//        if(gamemode.equals ("ufo") ) {
-//            vy += shipG;
-//
-//            if(! onSurface ) {
-//
-//                if (vy < 0 && angle < Math.PI / 7) {
-//                    angle += 0.02;
-//
-//                } else if (vy > 0 && angle > -Math.PI / 7) {
-//                    angle -= 0.02;
-//                }
-//
-//            }
-//
-//        }
 
         int newOffsetY = Globals.floor - groundLevel;
         if ( Math.abs(newOffsetY - offsetY) > 120 && !gamemode.equals("ship") ) {
@@ -210,8 +193,6 @@ public class Player{
                 collideOrb(o);
             }
         }
-
-
 
 
     }

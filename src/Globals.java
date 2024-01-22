@@ -14,6 +14,9 @@ public class Globals {
     public static final int solidHeight = 75;
 
     public static final int SHIP_CEILING =Globals.floor - Globals.solidHeight * 11 + 35;
+    static String map1 = "assets/maps/stereoMadness.png";
+    static String map2 = "assets/maps/baseAfterBase.png";
+    static String map3 = "assets/maps/jumper.png";
 
 
     public static ImageIcon windowIcon = new ImageIcon("assets/logos/GeometryDash.png");

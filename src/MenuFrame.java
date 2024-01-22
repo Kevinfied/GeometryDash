@@ -8,11 +8,12 @@ public class MenuFrame extends JFrame implements ActionListener {
 
     static public MenuPanel menu = new MenuPanel();
     static public LevelSelect levelMenu = new LevelSelect();
-    Timer timer = new Timer(1000/60, this);
+    Timer timer;
     public static String screen = "menu";
     public MenuFrame() {
 
         super("Geometry Dash");
+        timer = new Timer(1000/60, this);
         timer.start();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);

@@ -91,7 +91,7 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
     }
 
     public void resume() {
-        ControlCenter.enterGame();
+//        ControlCenter.enterGame();
     }
 
 
@@ -114,7 +114,7 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_SPACE) {
-            ControlCenter.enterGame();
+          //  ControlCenter.enterGame();
 
 
         }

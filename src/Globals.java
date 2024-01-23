@@ -24,10 +24,17 @@ public class Globals {
     static String BaseAfterBaseSounds = "soundTrack/BaseAfterBase.wav";
     static String JumperSound = "soundTrack/Jumper.wav";
 
-    public static Clip lvl1Sound = Util.getSound(Globals.StereoMadnessSound);;;
+    public static Clip lvl1Sound = Util.getSound(Globals.StereoMadnessSound);
     public static Clip lvl2Sound = Util.getSound(BaseAfterBaseSounds);
     public static Clip lvl3Sound = Util.getSound(JumperSound);
-    public static Clip MenuMusic = Util.getSound(Globals.MainMenuSound);;
+    public static Clip MenuMusic = Util.getSound(Globals.MainMenuSound);
+    public static String scoreFile = "src/scores";
+
+    public static int lvl1TopScore = Integer.parseInt(Util.readFile(Globals.scoreFile, 1) );
+    public static int lvl2TopScore = Integer.parseInt(Util.readFile(Globals.scoreFile, 2) );
+    public static int lvl3TopScore = Integer.parseInt(Util.readFile(Globals.scoreFile, 3 ));
+
+
 
 
 

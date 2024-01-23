@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -10,16 +11,17 @@ public class Player{
     private boolean debugDead = false;
     public boolean orbActivate = false;
     public boolean changeYdirection = false;
-
+    ImageIcon deathAnimation = new ImageIcon("assets/deathEffect/deathEffect.gif");
     // hit box
     private double x, y;
     public double constantX;
     private double px, py;
+    public int deathY;
     private String collidingOrb = "none";
     private int width, height;
     private int groundLevel;
     private int offsetY = 0;
-
+    public int deathTimeCounter = -1;
     // vector
     public double g = 5.2; //gravity
     private double vy = 0;
@@ -68,6 +70,16 @@ public class Player{
 
 
     public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals, ArrayList<Pad> pads, ArrayList<Orb> orbs) {
+
+        if (deathTimeCounter > 0) {
+            vx = 0;
+            vy = 0;
+            deathTimeCounter--;
+            return;
+        }
+
+        vx = 22;
+
         if (debugDead) {
             return;
         }
@@ -395,14 +407,6 @@ public class Player{
     }
     public void dies() {
 
-//        if (Level.startpos != null) {
-//            gamemode = "cube";
-//            y = Level.startpos.getY();
-//            vy = 0;
-//            x = Level.startpos.getX();
-//            onSurface = true;
-//        }
-//        if {
             if (practiceMode) {
                 if (Level.checkpoints.isEmpty()) {
                     //            dies();
@@ -433,16 +437,47 @@ public class Player{
                     playerSolids.clear();
                     curSolidIndex = 0;
                 }
-            } else {
-                gamemode = "cube";
-                upright();
-                initY = -41.55;
-//
-                y = Globals.floor - height;
-                vy = 0;
-                reverse = false;
-                x = constantX;
-                onSurface = true;
+            }
+            else {
+
+                int score = (int) x ;
+                String s;
+
+                System.out.println("current level" + MenuPanel.targetLevel);
+
+                if (MenuPanel.targetLevel == 1) {
+                    if (score > Globals.lvl1TopScore) {
+                        Globals.lvl1TopScore = score;
+                        s =Integer.toString(score) + "\n" +  Integer.toString(Globals.lvl2TopScore) + "\n" + Integer.toString(Globals.lvl3TopScore);
+                        Util.writeFile(Globals.scoreFile, s ) ;
+
+                    }
+                }
+                if (MenuPanel.targetLevel == 2) {
+                    if ( score > Globals.lvl2TopScore) {
+                        Globals.lvl2TopScore = score;
+                        s = Integer.toString(Globals.lvl1TopScore) + "\n" +Integer.toString(score) +"\n" + Integer.toString(Globals.lvl3TopScore);
+                        Util.writeFile(Globals.scoreFile, s ) ;
+                    }
+                }
+                if (MenuPanel.targetLevel == 3) {
+                    if ( score > Globals.lvl3TopScore) {
+                        Globals.lvl3TopScore = score;
+                        s = Integer.toString(Globals.lvl1TopScore) + "\n" + Integer.toString(Globals.lvl2TopScore) + "\n" + Integer.toString(score) ;
+                        Util.writeFile(Globals.scoreFile, s ) ;
+                    }
+                }
+
+                deathTimeCounter = 1000;
+
+//                reset();
+
+
+
+                System.out.println(Globals.lvl1TopScore);
+                System.out.println(Globals.lvl2TopScore);
+                System.out.println(Globals.lvl3TopScore);
+
             }
 
             // stop all motion - for debugging
@@ -451,7 +486,16 @@ public class Player{
 //    vx = 0;
 //        }
     }
-
+    public void reset() {
+        gamemode = "cube";
+        upright();
+        initY = -41.55;
+        y = Globals.floor - height;
+        vy = 0;
+        reverse = false;
+        x = constantX;
+        onSurface = true;
+    }
 
 
     public void cubeJump() {
@@ -477,20 +521,25 @@ public class Player{
 
 
     public void draw(Graphics g, int offsetY) {
-        g.setColor(new Color(110,110,222));
-       // drawHitbox(g);
-        drawSprite( g, offsetY);
-
-        //debug hitbox
-       // g.drawRect((int)constantX, (int) y + offsetY , width, height);
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(new Color(248, 248, 4));
-        g2.setStroke(new BasicStroke(10)); // Sets the stroke width to 10
-      //  g2.drawLine((int) constantX, groundLevel + offsetY, (int) constantX + 100, groundLevel + offsetY);
-
-        g2.setStroke(new BasicStroke(1));
 
 
+
+            g.setColor(new Color(110,110,222));
+            // drawHitbox(g);
+            drawSprite( g, offsetY);
+            g.drawImage(deathAnimation.getImage(), (int)constantX, 300, null);
+            //debug hitbox
+            // g.drawRect((int)constantX, (int) y + offsetY , width, height);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(new Color(248, 248, 4));
+            g2.setStroke(new BasicStroke(10)); // Sets the stroke width to 10
+            //  g2.drawLine((int) constantX, groundLevel + offsetY, (int) constantX + 100, groundLevel + offsetY);
+
+            g2.setStroke(new BasicStroke(1));
+
+//        if (deathTimeCounter > 0) {
+            g.drawImage(deathAnimation.getImage(), (int)(constantX - ((100-width)/2)), (int) ((y+offsetY) - ((100-height)/2)),100 ,100,null);
+//        }
     }
 
     public void drawSprite( Graphics g, int offsetY) {
@@ -500,6 +549,7 @@ public class Player{
         AffineTransformOp rotOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_BILINEAR);
         // The options are: TYPE_BICUBIC, TYPE_BILINEAR, TYPE_NEAREST_NEIGHBOR 	// NEAREST_NEIGHBOR is fastest but lowest quality
         if (gamemode == "cube") {
+//            g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
             g2D.drawImage(icon, rotOp, (int) constantX, (int) y + offsetY);
         }
 

@@ -1,13 +1,9 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
+
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
@@ -142,6 +138,46 @@ public class Util {
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static String readFile(String filePath, int curLvl) {
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            String line1 = reader.readLine();
+            String line2 = reader.readLine();
+            String line3 = reader.readLine();
+
+            System.out.println(line1);
+            System.out.println(line2);
+            System.out.println(line3);
+
+
+
+            if (curLvl == 1) {
+                return line1;
+            }
+            if(curLvl == 2) {
+                return line2;
+            }
+            if(curLvl ==3) {
+                return line3;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "-1" ;
+    }
+
+    public static void writeFile(String filePath, String content) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(content);
+            System.out.println("File written successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

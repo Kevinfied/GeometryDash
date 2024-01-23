@@ -10,7 +10,6 @@ public class Level {
 //    ArrayList<Slab> slabs;
     ArrayList<Spike> spikes;
     ArrayList<Portal> portals;
-    ArrayList<Barrier> barriers;
     ArrayList<Orb> orbs;
     ArrayList<Pad> pads;
     ArrayList<Ground> grounds;
@@ -19,7 +18,7 @@ public class Level {
     public int aSpike = 2;
     public int aSlab = 3;
     public int aPortal = 4;
-    public int mapWidth;
+    public static int mapWidth;
     int[][] mapArr;
     BufferedImage pic;
 
@@ -31,7 +30,6 @@ public class Level {
 //        slabs = new ArrayList<Slab>();
         spikes = new ArrayList<Spike>();
         portals = new ArrayList<Portal>();
-        barriers = new ArrayList<Barrier>();
         checkpoints = new ArrayList<Checkpoint>();
         grounds = new ArrayList<Ground>();
         pads = new ArrayList<Pad>();
@@ -181,10 +179,7 @@ public class Level {
                     portals.add(p);
 //                    System.out.println("portal made");
                 }
-                else if (target == 12) {
-                    Barrier b = new Barrier(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, Globals.solidHeight, Globals.solidHeight);
-                    barriers.add(b);
-                }
+
                 else if (target == 13) {
                     Pad p = new Pad(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - 30, Globals.solidWidth, 30);
                     pads.add(p);

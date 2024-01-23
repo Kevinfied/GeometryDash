@@ -190,7 +190,6 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
                 ControlCenter.enterGame(targetLevel);
             }
 
-
         }
 
 
@@ -242,12 +241,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
                     targetLevel--;
                 }
 
-                if (targetLevel > 3) {
-                    targetLevel = 1;
-                }
-                if (targetLevel < 1) {
-                    targetLevel = 3;
-                }
+                targetLevel = (targetLevel +2 ) % 3 + 1;
 
             }
         }

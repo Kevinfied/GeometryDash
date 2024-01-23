@@ -23,7 +23,7 @@ public class Player{
     private int offsetY = 0;
     public int deathTimeCounter = 0;
     // vector
-    public double g = 5.2; //gravity
+    public double g = 5.19; //gravity
     private double vy = 0;
     private double vx = 22;
     public double initY = -41.55;
@@ -261,7 +261,7 @@ public class Player{
 
     public void upsideDown() {
         reverse = true;
-        g = -5.2; //gravity
+        g = -5.19; //gravity
         initY = 41.55;
         shipG = -1.2;
         shipLift = -2.008 * shipG;
@@ -270,7 +270,7 @@ public class Player{
 
     public void upright() {
         reverse = false;
-        g = 5.2; //gravity
+        g = 5.19; //gravity
         initY = -41.55;
         shipG = 1.2;
         shipLift = -2.008 * shipG;
@@ -395,6 +395,7 @@ public class Player{
 
     }
     public void dies() {
+            GameFrame.stopGameSound();
             if(deathTimeCounter > 0) {
                 return;
             }
@@ -465,6 +466,7 @@ public class Player{
     }
 
     public void restart() {
+        GameFrame.startGameSound(MenuPanel.targetLevel);
         gamemode = "cube";
         upright();
         initY = -41.55;
@@ -485,11 +487,6 @@ public class Player{
         onSurface = false;
     }
 
-    public void ufoJump() {
-        if (gamemode == "ufo" ) {
-            vy = initY;
-        }
-    }
 
 
     public Rectangle getHitbox() {
@@ -504,8 +501,6 @@ public class Player{
             return;
         }
         drawSprite( g, offsetY);
-
-
     }
 
     public void drawSprite( Graphics g, int offsetY) {
@@ -535,14 +530,6 @@ public class Player{
         return gamemode;
     }
     public void setGamemode(String e) { gamemode = e;}
-
-    public Rectangle getPrevHitboxY() {
-        return new Rectangle((int) x, (int)py, width, height);
-    }
-
-    public Rectangle getPrevHitboxX() {
-        return new Rectangle((int) px, (int) y, width, height);
-    }
 
 
     public void setX(int x) { this.x = x;}

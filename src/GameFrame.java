@@ -34,7 +34,6 @@ public class GameFrame extends JFrame implements ActionListener {
     }
 
     public static void startTimer(int lv) {
-
         if (lv == 1) {
             geometryDash.mapReload(Globals.map1, Globals.StereoMadnessSound);
             Util.startSound(Globals.lvl1Sound);
@@ -58,6 +57,37 @@ public class GameFrame extends JFrame implements ActionListener {
         }
 
         geometryDash.timer.start();
+    }
+
+    public static void stopGameSound(){
+        Util.stopSound(Globals.lvl1Sound);
+        Util.stopSound(Globals.lvl2Sound);
+        Util.stopSound(Globals.lvl3Sound);
+    }
+    public static void startGameSound(int lv) {
+        if (lv == 1) {
+            Util.startSound(Globals.lvl1Sound);
+
+            Util.stopSound(Globals.lvl2Sound);
+            Util.stopSound(Globals.lvl3Sound);
+
+        }
+
+        else if (lv == 2) {
+            Util.startSound(Globals.lvl2Sound);
+
+            Util.stopSound(Globals.lvl1Sound);
+            Util.stopSound(Globals.lvl3Sound);
+
+        }
+
+        else if (lv == 3) {
+            Util.startSound(Globals.lvl3Sound);
+
+            Util.stopSound(Globals.lvl2Sound);
+            Util.stopSound(Globals.lvl1Sound);
+        }
+
     }
 
 

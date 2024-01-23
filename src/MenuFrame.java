@@ -34,6 +34,14 @@ public class MenuFrame extends JFrame implements ActionListener {
         menu.repaint();
     }
 
+    public void startMenuSound() {
+        Util.startSound( Globals.MenuMusic);
+    }
+
+    public void stopMenuSound() {
+        Util.stopSound(Globals.MenuMusic);
+    }
+
     class MenuMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {

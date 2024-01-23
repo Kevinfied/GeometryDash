@@ -15,7 +15,6 @@ import java.io.File;
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
     Timer timer = new Timer(1000/50, this);
     static Player player;
-    boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     //    ArrayList<String>  lvl1map = new ArrayList<String>();
@@ -33,12 +32,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<ArrayList<SquareParticle>> padParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList<ArrayList<SquareParticle>> portalParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
-
-    ArrayList <Ground> grounds = new ArrayList<Ground>();
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
-    public static String screen;
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
@@ -49,9 +45,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addKeyListener(this);
         addMouseListener(this);
         requestFocus();
-
         mapReload(mapString, soundTrack);
-//        timer.start();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -69,12 +63,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mapReload(String mapString, String soundTrack) {
-//        System.out.println(mapString);
-//        Util.readFile(Globals.scoreFile);
-        System.out.println(Globals.lvl1TopScore);
-        System.out.println(Globals.lvl2TopScore);
-        System.out.println(Globals.lvl3TopScore);
-
 
         lvl = new Level(mapString);
         levelSoundTrack = soundTrack;
@@ -301,8 +289,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
 
-
-
         Graphics2D g2d = (Graphics2D) (g);
 
 
@@ -405,9 +391,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
     public void mouseMoved(MouseEvent e) {}
     public void mouseDragged(MouseEvent e) {}
-    public void mouseClicked(MouseEvent e) {
-        player.ufoJump();
-    }
+    public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
 

@@ -69,9 +69,6 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         addMouseMotionListener(this);
         addMouseMotionListener(this);
 
-
-
-//        timer.start();
     }
 
     public void paint(Graphics g) {
@@ -124,7 +121,7 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_SPACE) {
-            ControlCenter.enterGame(ControlCenter.var);
+            ControlCenter.enterGame(MenuPanel.targetLevel);
 
 
         }

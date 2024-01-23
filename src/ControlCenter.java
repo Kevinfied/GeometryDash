@@ -67,6 +67,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         pauseMenu.setVisible(true);
         MenuF.menu.timer.stop();
+
         Util.startSound( Globals.MenuMusic);
 
     }

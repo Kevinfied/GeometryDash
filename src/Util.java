@@ -113,12 +113,14 @@ public class Util {
     public static void stopSound(Clip music) {
         if (music != null) {
             music.stop();
-            music.close();
+//            music.close();
         }
     }
 
     public static void startSound(Clip music) {
 //        if( ! music.isRunning()) {
+
+        music.setFramePosition(0);
             music.start();
 //        }
     }

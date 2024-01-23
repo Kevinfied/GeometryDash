@@ -10,16 +10,14 @@ public class GameFrame extends JFrame implements ActionListener {
 //   static GamePanel geometryDash = new GamePanel();
 
 
-    static GamePanel geometryDash = new GamePanel (Globals.map1);;
+    static GamePanel geometryDash = new GamePanel (Globals.map1, Globals.StereoMadnessSound);;
 
     public GameFrame() {
-
         super("Geometry Dash");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
         add(geometryDash);
         setIconImage(Globals.windowIcon.getImage());
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -39,13 +37,13 @@ public class GameFrame extends JFrame implements ActionListener {
     public static void startTimer(int lv) {
 
         if (lv == 1) {
-            geometryDash.mapReload(Globals.map1);
+            geometryDash.mapReload(Globals.map1, Globals.StereoMadnessSound);
         }
         else if (lv == 2) {
-            geometryDash.mapReload(Globals.map2);
+            geometryDash.mapReload(Globals.map2, Globals.BaseAfterBaseSounds);
         }
         else if (lv == 3) {
-            geometryDash.mapReload(Globals.map3);
+            geometryDash.mapReload(Globals.map3, Globals.JumperSound);
         }
 
         geometryDash.timer.start();

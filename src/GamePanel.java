@@ -1,21 +1,28 @@
 // GamePanel.java
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.image.BufferedImage;
 
+import java.io.File;
+
+
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
-    Timer timer =  timer = new Timer(1000/60, this);;
+    Timer timer =  timer = new Timer(1000/80, this);;
     static Player player;
     boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     //    ArrayList<String>  lvl1map = new ArrayList<String>();
     String lvl1map;
+    String levelSoundTrack;
     Level lvl;
+
     ArrayList<Solid> lvlSolids = new ArrayList<Solid>();
     ArrayList <Spike> lvlSpikes = new ArrayList<Spike>();
     ArrayList <Portal> lvlPortals = new ArrayList<Portal>();
@@ -37,13 +44,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
 
 
-    public GamePanel( String mapString) {
+    public GamePanel( String mapString, String soundTrack) {
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
         requestFocus();
 
-        mapReload(mapString);
+        mapReload(mapString, soundTrack);
+        playSound(levelSoundTrack);
 //        timer.start();
     }
 
@@ -57,13 +65,14 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         changeGamemode();
 
         repaint();
+
     }
 
-    public void mapReload(String mapString) {
-        System.out.println(mapString);
-        lvl = new Level(mapString);
-        // timer = new Timer(1000/40, this);
+    public void mapReload(String mapString, String soundTrack) {
+//        System.out.println(mapString);
 
+        lvl = new Level(mapString);
+        levelSoundTrack = soundTrack;
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -246,19 +255,19 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.setInitY( -12 );
             player.setAngle( 0 );
         }
-        if(keys[KeyEvent.VK_A]) {
-            player.setVX( 0 );
-        }
-        else if(keys[KeyEvent.VK_D]) {
-            player.setVX( 15 );
-        }
+//        if(keys[KeyEvent.VK_A]) {
+//            player.setVX( 0 );
+//        }
+//        else if(keys[KeyEvent.VK_D]) {
+//            player.setVX( 15 );
+//        }
 
-        player.setJumpRotate();
+//        player.setJumpRotate();
 
-
-        if (keys[KeyEvent.VK_W]) {
-            player.ufoJump();
-        }
+//
+//        if (keys[KeyEvent.VK_W]) {
+//            player.ufoJump();
+//        }
 
         if(keys[KeyEvent.VK_4]) {
             player.changeYdirection = true;;
@@ -332,7 +341,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         for (Portal p : lvlPortals) {
             p.draw(g2d, offsetX, offsetY);
         }
-        
+
         if (!lvlPads.isEmpty()) {
             for (Pad p : lvlPads) {
                 p.draw(g, offsetX, offsetY);
@@ -469,4 +478,26 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     public static void setOffsetX( int n ) { offsetX = n ; }
     public static void setOffsetY( int n ) { offsetY = n; }
+
+
+
+    public void playSound(String soundFilePath) {
+        try {
+            // Get the audio input stream from the file
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
+
+            // Get a Clip (a data line that can be used for playback)
+            Clip clip = AudioSystem.getClip();
+
+            // Open the audioInputStream to the clip
+            clip.open(audioInputStream);
+
+            // Start playing the sound
+            clip.start();
+
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

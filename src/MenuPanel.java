@@ -22,13 +22,14 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     BufferedImage groundImg = Util.loadBuffImage("assets/ground/ground1.png");
 
 
-    public Font fontLocal, fontSys, fontScores;
+    public Font fontLocal, fontSys, fontScores, lvlNameFont;
 
     Background bg1 = new Background(backgroundImg, groundImg);
     Timer timer = new Timer(1000/60, this);
     int buttonWidth = 250; int buttonHeight = 250;
 
     boolean hover = false;
+    boolean mouseDown = false;
 
     int titleWidth = 1050; int titleHeight = 120;
 
@@ -41,6 +42,8 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     boolean nextButtonHover = false; boolean prevButtonHover = false; boolean loadButtonHover = false;
     BufferedImage nextButtonImg = Util.loadBuffImage("assets/buttons/rightArrow.png");
     BufferedImage prevButtonImg = Util.loadBuffImage("assets/buttons/leftArrow.png");
+    String [] lvlNames = new String[4];
+
 
     public MenuPanel() {
         super();
@@ -64,6 +67,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
             File fntFile = new File("assets/Fonts/PUSAB.otf");
             fontLocal = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(32f);
             fontScores = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(60f);
+            lvlNameFont = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(60f);
         }
         catch(IOException ex){
             System.out.println(ex);
@@ -71,6 +75,9 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         catch(FontFormatException ex){
             System.out.println(ex);
         }
+
+
+        lvlNames[1] = "Stereo Madness"; lvlNames[2] = "Base After Base"; lvlNames[3] = "Jumper";
 
         // Add listeners
         addKeyListener(this);
@@ -135,7 +142,8 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
             g.fillRoundRect(loadLevelHitbox.x, loadLevelHitbox.y, loadLevelHitbox.width, loadLevelHitbox.height, 50, 30);
         }
 
-        drawCenteredString(g, "Stereo Madness", loadLevelHitbox, fontLocal);
+
+        drawCenteredString(g, lvlNames[targetLevel], loadLevelHitbox, lvlNameFont);
 
     }
     public void move() {
@@ -171,32 +179,37 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         int mouseY = e.getY();
 
         // Check if the click is within the start button hitbox
-        if (screen == "menu") {
-            if (getButtonHitbox().contains(mouseX, mouseY)) {
-                // Handle start button click
-                System.out.println("Start button clicked!");
-                screen = "levelSelect";
+        if (!mouseDown) {
+            if (screen == "menu") {
+                if (getButtonHitbox().contains(mouseX, mouseY)) {
+                    // Handle start button click
+                    System.out.println("Start button clicked!");
+                    screen = "levelSelect";
+                }
+            }
+
+            else if (screen == "levelSelect") {
+                if (loadLevelHitbox.contains(mouseX, mouseY)) {
+                    ControlCenter.enterGame(targetLevel);
+                } else if (nextButtonHitbox.contains(mouseX, mouseY)) {
+                    targetLevel++;
+                } else if (prevButtonHitbox.contains(mouseX, mouseY)) {
+                    targetLevel--;
+                }
+
+                if (targetLevel > 3) {
+                    targetLevel = 1;
+                }
+                if (targetLevel < 1) {
+                    targetLevel = 3;
+                }
+
             }
         }
 
-        // Handle mouse press events
-    }
 
-    public void mouseReleased(MouseEvent e) {
-        // Handle mouse release events
-    }
 
-    public void mouseEntered(MouseEvent e) {
-        // Handle mouse enter events
-    }
-
-    public void mouseExited(MouseEvent e) {
-        // Handle mouse exit events
-    }
-
-    // Implement MouseMotionListener methods
-    public void mouseDragged(MouseEvent e) {
-        // Handle mouse drag events
+        mouseDown = true;
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -240,6 +253,25 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
             }
         }
     }
+
+    public void mouseReleased(MouseEvent e) {
+        // Handle mouse release events
+        mouseDown = false;
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        // Handle mouse enter events
+    }
+
+    public void mouseExited(MouseEvent e) {
+        // Handle mouse exit events
+    }
+
+    // Implement MouseMotionListener methods
+    public void mouseDragged(MouseEvent e) {
+        // Handle mouse drag events
+    }
+
 
     public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         // Get the FontMetrics

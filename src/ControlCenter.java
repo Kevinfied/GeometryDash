@@ -79,7 +79,6 @@ public class ControlCenter extends JFrame implements ActionListener {
         pauseMenu.setVisible(false);
 
         MenuF.menu.timer.start();
-        MenuF.levelMenu.timer.stop();
         MenuF.setVisible(true);
 
 
@@ -95,7 +94,6 @@ public class ControlCenter extends JFrame implements ActionListener {
         pauseMenu.pausemenu.timer.stop();
         pauseMenu.setVisible(false);
 
-        MenuF.levelMenu.timer.start();
         MenuF.menu.timer.stop();
         MenuF.setVisible(true);
 

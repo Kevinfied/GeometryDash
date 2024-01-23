@@ -21,7 +21,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     BufferedImage backgroundImg = Util.loadBuffImage("assets/background/stereoBG.png");
     BufferedImage groundImg = Util.loadBuffImage("assets/ground/ground1.png");
 
-
+    boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
     public Font fontLocal, fontSys, fontScores, lvlNameFont;
 
     Background bg1 = new Background(backgroundImg, groundImg);
@@ -38,7 +38,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     Rectangle nextButtonHitbox = new Rectangle(Globals.SCREEN_WIDTH - 20 - switchButtonWidth, (Globals.SCREEN_HEIGHT/2) - (switchButtonHeight/2), switchButtonWidth, switchButtonHeight);
     Rectangle prevButtonHitbox = new Rectangle(20, (Globals.SCREEN_HEIGHT/2) - (switchButtonHeight/2), switchButtonWidth, switchButtonHeight);
 
-    Rectangle loadLevelHitbox = new Rectangle((Globals.SCREEN_WIDTH/2) - (loadButtonWidth/2), (Globals.SCREEN_HEIGHT/2) - (loadButtonHeight/2), loadButtonWidth, loadButtonHeight);
+    Rectangle loadLevelHitbox = new Rectangle((Globals.SCREEN_WIDTH/2) - (loadButtonWidth/2), 100, loadButtonWidth, loadButtonHeight);
     boolean nextButtonHover = false; boolean prevButtonHover = false; boolean loadButtonHover = false;
     BufferedImage nextButtonImg = Util.loadBuffImage("assets/buttons/rightArrow.png");
     BufferedImage prevButtonImg = Util.loadBuffImage("assets/buttons/leftArrow.png");
@@ -67,7 +67,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
             File fntFile = new File("assets/Fonts/PUSAB.otf");
             fontLocal = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(32f);
             fontScores = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(60f);
-            lvlNameFont = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(60f);
+            lvlNameFont = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(50f);
         }
         catch(IOException ex){
             System.out.println(ex);
@@ -153,10 +153,35 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     // Implement KeyListener methods
     public void keyPressed(KeyEvent e) {
         // Handle key press events
+        int code = e.getKeyCode();
+
+        if (screen == "menu") {
+
+            if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
+                screen = "levelSelect";
+            }
+
+        }
+        else if (screen == "levelSelect") {
+            if (code == KeyEvent.VK_ESCAPE) {
+                screen = "menu";
+            }
+            else if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
+                ControlCenter.enterGame(targetLevel);
+            }
+
+            
+        }
+
+
+        keys[code] = true;
     }
 
     public void keyReleased(KeyEvent e) {
         // Handle key release events
+
+        int code = e.getKeyCode();
+        keys[code] = false;
     }
 
     public void keyTyped(KeyEvent e) {

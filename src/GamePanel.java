@@ -13,7 +13,7 @@ import java.io.File;
 
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
-    Timer timer = new Timer(1000/150, this);
+    Timer timer = new Timer(1000/50, this);
     static Player player;
     boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
@@ -119,6 +119,13 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void move() {
+        if (player.deathTimeCounter > 0) {
+            player.deathTimeCounter -- ;
+            if(player.deathTimeCounter == 0) {
+                player.restart();
+            }
+            return;
+        }
         bg.move();
         player.move(lvlSolids, lvlSpikes, lvlPortals, lvlPads, lvlOrbs);
         if(mouseDown) {
@@ -260,19 +267,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             player.setInitY( -12 );
             player.setAngle( 0 );
         }
-//        if(keys[KeyEvent.VK_A]) {
-//            player.setVX( 0 );
-//        }
-//        else if(keys[KeyEvent.VK_D]) {
-//            player.setVX( 15 );
-//        }
-
-//        player.setJumpRotate();
-
-//
-//        if (keys[KeyEvent.VK_W]) {
-//            player.ufoJump();
-//        }
 
         if(keys[KeyEvent.VK_4]) {
             player.changeYdirection = true;;
@@ -311,7 +305,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         Graphics2D g2d = (Graphics2D) (g);
 
-//        if (player.deathTimeCounter <= 0) {
 
             Graphics ground = (Graphics2D) (g);
             ground.setColor(Color.WHITE);
@@ -396,21 +389,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                     s.draw(g2d, offsetX, offsetY);
                 }
             }
-//        }
-//        else {
-////            deathAnimation();
-//            player.deathTimeCounter--;
-//        }
-
     }
 
-//    public void deathAnimation() {
-//        player.deathTimeCounter = 10;
-//        drawAnimation();
-//    }
-//    public void drawAnimation(Graphics g) {
-//        g.drawImage(deathAnimation.getImage(), (int)player.constantX - ((100 - player.getWidth()) / 2), (int)player.getY() - ((100 - player.getHeight()) / 2), 100, 100,null);
-//    }
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
         //get mouse coordinate on panel

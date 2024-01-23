@@ -59,16 +59,31 @@ public class ControlCenter extends JFrame implements ActionListener {
         Util.stopSound(Globals.MenuMusic);
     }
     public static void pauseGame() {
+
+        GameF.stopTimer();
+
         pauseMenu.pausemenu.timer.start();
         MenuF.setVisible(false);
 
         GameF.setVisible(false);
-        GameF.stopTimer();
 
         pauseMenu.setVisible(true);
         MenuF.menu.timer.stop();
 
-        Util.startSound( Globals.MenuMusic);
+//        Util.startSound( Globals.MenuMusic); no menu music when paused
+
+
+    }
+
+    public static void resumeGame() {
+        System.out.println("resuming game");
+        pauseMenu.pausemenu.timer.stop();
+        pauseMenu.setVisible(false);
+        MenuF.setVisible(false);
+
+        GameF.geometryDash.timer.start();
+        GameF.setVisible(true);
+
 
     }
 
@@ -89,28 +104,6 @@ public class ControlCenter extends JFrame implements ActionListener {
         Util.stopSound(Globals.lvl1Sound);
         Util.stopSound(Globals.lvl2Sound);
         Util.stopSound(Globals.lvl3Sound);
-    }
-
-    public static void toLevelMenu() {
-        System.out.println("to LevelMenu >>>>>>>>>>>>>>>>");
-        GameF.setVisible(false);
-        GameF.stopTimer();
-        GameF.RESET();
-
-        pauseMenu.pausemenu.timer.stop();
-        pauseMenu.setVisible(false);
-
-        MenuF.menu.timer.stop();
-        MenuF.setVisible(true);
-
-
-        Util.startSound( Globals.MenuMusic);
-
-        Util.stopSound(Globals.lvl1Sound);
-        Util.stopSound(Globals.lvl2Sound);
-        Util.stopSound(Globals.lvl3Sound);
-
-
     }
 
 

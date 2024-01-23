@@ -94,7 +94,7 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
     }
 
     public void resume() {
-        ControlCenter.enterGame(ControlCenter.var);
+        ControlCenter.resumeGame();
     }
 
 

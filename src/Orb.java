@@ -3,7 +3,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.Random;
 
 
 public class Orb {
@@ -34,6 +34,8 @@ public class Orb {
     }
 
     public void drawHitbox(Graphics g, int offsetX, int offsetY) {
+//        System.out.println(saturation);
+
         g.setColor(Color.GREEN);
         g.drawRect(x + offsetX -10, y + offsetY -10, width + 20, height+ 20);
         g.drawRect(x+offsetX, y + offsetY, width, height);

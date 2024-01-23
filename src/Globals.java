@@ -16,7 +16,7 @@ public class Globals {
 
     public static final int SHIP_CEILING =Globals.floor - Globals.solidHeight * 11 + 35;
 //    static String map1 = "assets/maps/stereoMadness.png";
-    static String map1 = "assets/maps/empty.png";
+    static String map1 = "assets/maps/stereoMadness.png";
     static String map2 = "assets/maps/baseAfterBase.png";
     static String map3 = "assets/maps/jumper.png";
     static String MainMenuSound = "soundTrack/MainMenu.wav";

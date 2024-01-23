@@ -175,6 +175,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         int code = e.getKeyCode();
 
         if (screen == "menu") {
+            LevelSelect.curLev = 0;
 
             if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
                 screen = "levelSelect";

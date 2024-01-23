@@ -35,12 +35,14 @@ public class ControlCenter extends JFrame implements ActionListener {
         pauseMenu.pausemenu.timer.stop();
         pauseMenu.setVisible(false);
 
-        System.out.println(pauseMenu.timer.isRunning());
+        Util.startSound(Globals.MenuMusic);
+
+//        Util.stopSound(Globals.lvl1Sound);
+//        Util.stopSound(Globals.lvl2Sound);
+//        Util.stopSound(Globals.lvl3Sound);
     }
 
     public static void enterGame(int lvl){
-        System.out.println("player x >>>>>>   " + GameFrame.geometryDash.player.getVX());
-
 
         System.out.println("entering game >>>>>>>>>>>>>>>");
         MenuF.menu.timer.stop();
@@ -54,8 +56,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         var = lvl;
 
-        System.out.println(pauseMenu.timer.isRunning());
-        //GameF.geometryDash.timer.start();
+        Util.stopSound(Globals.MenuMusic);
     }
     public static void pauseGame() {
         pauseMenu.pausemenu.timer.start();
@@ -66,11 +67,12 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         pauseMenu.setVisible(true);
         MenuF.menu.timer.stop();
+        Util.startSound( Globals.MenuMusic);
 
-        System.out.println(pauseMenu.timer.isRunning());
     }
 
     public static void toMainMenu() {
+        System.out.println("to MENU >>>>>>>>>>>>>>>>");
         GameF.setVisible(false);
         GameF.stopTimer();
         GameF.RESET();
@@ -81,12 +83,15 @@ public class ControlCenter extends JFrame implements ActionListener {
         MenuF.menu.timer.start();
         MenuF.setVisible(true);
 
+        Util.startSound( Globals.MenuMusic);
 
-        System.out.println(pauseMenu.timer.isRunning());
-        System.out.println("to MENU >>>>>>>>>>>>>>>>");
+        Util.stopSound(Globals.lvl1Sound);
+        Util.stopSound(Globals.lvl2Sound);
+        Util.stopSound(Globals.lvl3Sound);
     }
 
     public static void toLevelMenu() {
+        System.out.println("to LevelMenu >>>>>>>>>>>>>>>>");
         GameF.setVisible(false);
         GameF.stopTimer();
         GameF.RESET();
@@ -98,8 +103,13 @@ public class ControlCenter extends JFrame implements ActionListener {
         MenuF.setVisible(true);
 
 
-        System.out.println(pauseMenu.timer.isRunning());
-        System.out.println("to LevelMenu >>>>>>>>>>>>>>>>");
+        Util.startSound( Globals.MenuMusic);
+
+        Util.stopSound(Globals.lvl1Sound);
+        Util.stopSound(Globals.lvl2Sound);
+        Util.stopSound(Globals.lvl3Sound);
+
+
     }
 
 

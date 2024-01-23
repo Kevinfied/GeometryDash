@@ -1,3 +1,4 @@
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class Globals {
@@ -20,7 +21,12 @@ public class Globals {
     static String MainMenuSound = "soundTrack/MainMenu.wav";
     static String StereoMadnessSound = "soundTrack/StereoMadness.wav";
     static String BaseAfterBaseSounds = "soundTrack/BaseAfterBase.wav";
-    static String JumperSound = "soundTrack/Jumper.mp3";
+    static String JumperSound = "soundTrack/Jumper.wav";
+
+    public static Clip lvl1Sound = Util.getSound(Globals.StereoMadnessSound);;;
+    public static Clip lvl2Sound = Util.getSound(BaseAfterBaseSounds);
+    public static Clip lvl3Sound = Util.getSound(JumperSound);
+    public static Clip MenuMusic = Util.getSound(Globals.MainMenuSound);;
 
 
 

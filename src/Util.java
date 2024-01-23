@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.ImageIcon;
 
 public class Util {
@@ -106,6 +107,40 @@ public class Util {
         g2d.dispose();
 
         return dimg;
+    }
+
+
+    public static void stopSound(Clip music) {
+        if (music != null) {
+            music.stop();
+            music.close();
+        }
+    }
+
+    public static void startSound(Clip music) {
+//        if( ! music.isRunning()) {
+            music.start();
+//        }
+    }
+
+    public static Clip getSound(String soundFilePath) {
+        try {
+            // Get the audio input stream from the file
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
+
+            // Get a Clip (a data line that can be used for playback)
+            Clip music = AudioSystem.getClip();
+
+            // Open the audioInputStream to the clip
+            music.open(audioInputStream);
+
+
+            return music;
+
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

@@ -5,13 +5,6 @@ import java.awt.image.BufferedImage;
 
 public class LevelSelect extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
-    BufferedImage L1;
-    BufferedImage L2;
-    BufferedImage L3;
-
-    static String map1 = "assets/maps/stereoMadness.png";
-    static String map2 = "assets/maps/baseAfterBase.png";
-    static String map3 = "assets/maps/jumper.png";
 
     Rectangle nextLev = new Rectangle(700, 350, 200, 200);
     Rectangle prevLev = new Rectangle(100, 350, 200, 200);
@@ -64,7 +57,6 @@ public class LevelSelect extends JPanel implements KeyListener, ActionListener, 
 
 
         g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
-
 
         g.setColor(Color.WHITE);
         g.drawRect(700, 350, 200, 200);

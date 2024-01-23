@@ -16,6 +16,7 @@ public class PauseScreen extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
         add(pausemenu);
+
         pausemenu.timer.start();
         setIconImage(Globals.windowIcon.getImage());
         pausemenu.addMouseListener(new MenuMouseListener());
@@ -63,6 +64,12 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
+        setFocusable(true);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        addMouseMotionListener(this);
+
+
 
 //        timer.start();
     }

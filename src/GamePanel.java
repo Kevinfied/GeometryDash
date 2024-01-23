@@ -51,7 +51,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         requestFocus();
 
         mapReload(mapString, soundTrack);
-        playSound(levelSoundTrack);
 //        timer.start();
     }
 
@@ -480,24 +479,4 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public static void setOffsetY( int n ) { offsetY = n; }
 
 
-
-    public void playSound(String soundFilePath) {
-        try {
-            // Get the audio input stream from the file
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
-
-            // Get a Clip (a data line that can be used for playback)
-            Clip clip = AudioSystem.getClip();
-
-            // Open the audioInputStream to the clip
-            clip.open(audioInputStream);
-
-            // Start playing the sound
-            clip.start();
-
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

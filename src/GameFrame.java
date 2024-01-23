@@ -1,16 +1,18 @@
 // Main.java
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.File;
+import java.io.IOException;
 
 public class GameFrame extends JFrame implements ActionListener {
 
-//   static GamePanel geometryDash = new GamePanel();
-
-
-    static GamePanel geometryDash = new GamePanel (Globals.map1, Globals.StereoMadnessSound);;
+    static GamePanel geometryDash = new GamePanel(Globals.map1, Globals.StereoMadnessSound);
+    public static Clip lvl1Sound;
+    public static Clip lvl2Sound;
+    public static Clip lvl3Sound;
 
     public GameFrame() {
         super("Geometry Dash");
@@ -23,7 +25,6 @@ public class GameFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         geometryDash.move();
         geometryDash.repaint();
-
     }
 
     public static void stopTimer() {
@@ -38,15 +39,51 @@ public class GameFrame extends JFrame implements ActionListener {
 
         if (lv == 1) {
             geometryDash.mapReload(Globals.map1, Globals.StereoMadnessSound);
-        }
-        else if (lv == 2) {
+            lvl1Sound = playSound(Globals.StereoMadnessSound);
+            stopSound(lvl2Sound);
+            stopSound(lvl3Sound);
+
+        } else if (lv == 2) {
             geometryDash.mapReload(Globals.map2, Globals.BaseAfterBaseSounds);
-        }
-        else if (lv == 3) {
+            lvl2Sound = playSound(Globals.BaseAfterBaseSounds);
+            stopSound(lvl3Sound);
+            stopSound(lvl1Sound);
+        } else if (lv == 3) {
             geometryDash.mapReload(Globals.map3, Globals.JumperSound);
+            lvl3Sound = playSound(Globals.JumperSound);
+            stopSound(lvl2Sound);
+            stopSound(lvl1Sound);
         }
 
         geometryDash.timer.start();
     }
 
+    public static void stopSound(Clip music) {
+        if (music != null) {
+            music.stop();
+            music.close();
+        }
+    }
+
+    public static Clip playSound(String soundFilePath) {
+        try {
+            // Get the audio input stream from the file
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
+
+            // Get a Clip (a data line that can be used for playback)
+            Clip music = AudioSystem.getClip();
+
+            // Open the audioInputStream to the clip
+            music.open(audioInputStream);
+
+            // Start playing the sound
+            music.start();
+
+            return music;
+
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

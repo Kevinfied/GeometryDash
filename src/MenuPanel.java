@@ -42,8 +42,16 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     boolean nextButtonHover = false; boolean prevButtonHover = false; boolean loadButtonHover = false;
     BufferedImage nextButtonImg = Util.loadBuffImage("assets/buttons/rightArrow.png");
     BufferedImage prevButtonImg = Util.loadBuffImage("assets/buttons/leftArrow.png");
-    String [] lvlNames = new String[4];
+    BufferedImage backButtonImg = Util.loadBuffImage("assets/buttons/greenArrow.png");
+    BufferedImage groundSquare = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), 250, 250);
+    BufferedImage groundLine = Util.resize(Util.loadBuffImage("assets/ground/groundLine.png"), Globals.SCREEN_WIDTH, 5);
 
+    BufferedImage levelSelectBackground = Util.resize(Util.loadBuffImage("assets/background/gradient.png"), Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+    String [] lvlNames = new String[4];
+    BufferedImage [] difficultyFaces = new BufferedImage[4];
+    BufferedImage easyFace = Util.resize(Util.loadBuffImage("assets/difficultyFaces/easy.png"), 50, 50);
+    BufferedImage hardFace = Util.resize(Util.loadBuffImage("assets/difficultyFaces/hard.png"), 50, 50);
+    BufferedImage harderFace = Util.resize(Util.loadBuffImage("assets/difficultyFaces/harder.png"), 50, 50);
 
     public MenuPanel() {
         super();
@@ -78,6 +86,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
 
 
         lvlNames[1] = "Stereo Madness"; lvlNames[2] = "Base After Base"; lvlNames[3] = "Jumper";
+        difficultyFaces[1] = easyFace; difficultyFaces[2] = hardFace; difficultyFaces[3] = harderFace;
 
         // Add listeners
         addKeyListener(this);
@@ -115,9 +124,10 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     }
 
     public void levelSelectDraw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
+//        g.setColor(Color.BLUE);
+//        g.fillRect(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
 
+        g.drawImage(levelSelectBackground, 0, 0, null);
         // buttons
         if (nextButtonHover) {
             g.drawImage(Util.resize(nextButtonImg, switchButtonWidth + 20, switchButtonHeight + 20), nextButtonHitbox.x - 10, nextButtonHitbox.y - 10, null);
@@ -144,6 +154,15 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
 
 
         drawCenteredString(g, lvlNames[targetLevel], loadLevelHitbox, lvlNameFont);
+        g.drawImage(difficultyFaces[targetLevel], (Globals.SCREEN_WIDTH/2) - 25 ,loadLevelHitbox.y + 200, null);
+
+        for (int i=0; i<5; i++) {
+            g.drawImage(groundSquare, (i * 250), Globals.SCREEN_HEIGHT - 150, null);
+        }
+
+        g.drawImage(groundLine, 0, Globals.SCREEN_HEIGHT - 150, null);
+        g.setColor(new Color(0, 128, 255, 160));
+        g.fillRect(0, Globals.SCREEN_HEIGHT - 150, Globals.SCREEN_WIDTH, 150);
 
     }
     public void move() {
@@ -170,7 +189,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
                 ControlCenter.enterGame(targetLevel);
             }
 
-            
+
         }
 
 

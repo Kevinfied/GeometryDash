@@ -13,7 +13,7 @@ import java.io.File;
 
 
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
-    Timer timer =  timer = new Timer(1000/80, this);;
+    Timer timer = new Timer(1000/60, this);
     static Player player;
     boolean pressFlag = false;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);

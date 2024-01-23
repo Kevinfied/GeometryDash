@@ -16,6 +16,7 @@ public class PauseScreen extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
         add(pausemenu);
+        pausemenu.timer.start();
         setIconImage(Globals.windowIcon.getImage());
         pausemenu.addMouseListener(new MenuMouseListener());
 
@@ -76,12 +77,14 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
             g.drawImage(playButtonImg, (Globals.SCREEN_WIDTH / 2) - (playButtonWidth / 2), 400,  null);
         }
         else {
+            System.out.println("HOVERING");
             g.drawImage(playButtonHoverImg, (Globals.SCREEN_WIDTH / 2) - (playButtonWidth / 2) - 15, 400 - 15, null);
         }
         if (!menuButtonHover) {
             g.drawImage(menuButtonImg, (Globals.SCREEN_WIDTH / 2) + (playButtonWidth / 2) + 175 - (buttonWidth / 2), 400 + 12, null);
         }
         else {
+            System.out.println("HOVERING");
             g.drawImage(menuButtonHoverImg, (Globals.SCREEN_WIDTH / 2) + (playButtonWidth / 2) + 175 - (buttonWidth / 2) - 15, 400 + 12 - 15, null);
         }
     }

@@ -17,6 +17,11 @@ public class Globals {
     static String map1 = "assets/maps/stereoMadness.png";
     static String map2 = "assets/maps/baseAfterBase.png";
     static String map3 = "assets/maps/jumper.png";
+    static String MainMenuSound = "soundTrack/MainMenu.wav";
+    static String StereoMadnessSound = "soundTrack/StereoMadness.wav";
+    static String BaseAfterBaseSounds = "soundTrack/BaseAfterBase.wav";
+    static String JumperSound = "soundTrack/Jumper.mp3";
+
 
 
     public static ImageIcon windowIcon = new ImageIcon("assets/logos/GeometryDash.png");

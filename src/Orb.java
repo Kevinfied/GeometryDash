@@ -3,6 +3,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.*;
 
 
 public class Orb {
@@ -13,13 +14,16 @@ public class Orb {
     private String type;
     private BufferedImage img;
     ArrayList<Integer> radius = new ArrayList<Integer>();
+    ArrayList<Integer> saturation = new ArrayList<Integer>();
 
     public Orb(int x, int y, String type) {
+        Random rand = new Random();
         this.x = x;
         this.y = y;
         this.type = type;
-        for( int i = 3; i <= 9; i++) {
+        for( int i = 1; i <= 7; i++) {
             radius.add( i* rDiff) ;
+            saturation.add(rand.nextInt(7) * 36);
         }
     }
 
@@ -34,12 +38,12 @@ public class Orb {
         g.drawRect(x + offsetX -10, y + offsetY -10, width + 20, height+ 20);
         g.drawRect(x+offsetX, y + offsetY, width, height);
         for (int i = 0; i<radius.size() ; i ++ ) {
-            radius.set( i ,  radius.get(i) + 1);
+            radius.set( i ,  radius.get(i) + 3);
             int r = radius.get(i);
             if ( r > rDiff * (radius.size())) {
                 radius.set( i ,  rDiff * 3);
             }
-            g.setColor( new Color(0, 239, 255, (int) (255/r)));
+            g.setColor( new Color(0, 239, 255, saturation.get(i) ));
             g.fillOval(x + width/2 -r +offsetX, y + height/2 - r + offsetY, 2 * r, 2 * r);
         }
     }

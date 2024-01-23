@@ -34,10 +34,15 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         pauseMenu.pausemenu.timer.stop();
         pauseMenu.setVisible(false);
+
+        System.out.println(pauseMenu.timer.isRunning());
     }
 
     public static void enterGame(int lvl){
-        System.out.println("MY HEAD IS UNDER DA WATER"); // oh yes ofc, brain fluid gooood
+        System.out.println("player x >>>>>>   " + GameFrame.geometryDash.player.getVX());
+
+
+        System.out.println("entering game >>>>>>>>>>>>>>>");
         MenuF.menu.timer.stop();
         MenuF.setVisible(false);
 
@@ -48,6 +53,8 @@ public class ControlCenter extends JFrame implements ActionListener {
         GameF.setVisible(true);
 
         var = lvl;
+
+        System.out.println(pauseMenu.timer.isRunning());
         //GameF.geometryDash.timer.start();
     }
     public static void pauseGame() {
@@ -59,6 +66,8 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         pauseMenu.setVisible(true);
         MenuF.menu.timer.stop();
+
+        System.out.println(pauseMenu.timer.isRunning());
     }
 
     public static void toMainMenu() {
@@ -70,9 +79,29 @@ public class ControlCenter extends JFrame implements ActionListener {
         pauseMenu.setVisible(false);
 
         MenuF.menu.timer.start();
+        MenuF.levelMenu.timer.stop();
         MenuF.setVisible(true);
 
+
+        System.out.println(pauseMenu.timer.isRunning());
         System.out.println("to MENU >>>>>>>>>>>>>>>>");
+    }
+
+    public static void toLevelMenu() {
+        GameF.setVisible(false);
+        GameF.stopTimer();
+        GameF.RESET();
+
+        pauseMenu.pausemenu.timer.stop();
+        pauseMenu.setVisible(false);
+
+        MenuF.levelMenu.timer.start();
+        MenuF.menu.timer.stop();
+        MenuF.setVisible(true);
+
+
+        System.out.println(pauseMenu.timer.isRunning());
+        System.out.println("to LevelMenu >>>>>>>>>>>>>>>>");
     }
 
 

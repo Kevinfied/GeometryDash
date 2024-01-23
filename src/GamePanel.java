@@ -15,6 +15,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     //    ArrayList<String>  lvl1map = new ArrayList<String>();
     String lvl1map;
+    Level lvl;
     ArrayList<Solid> lvlSolids = new ArrayList<Solid>();
     ArrayList <Spike> lvlSpikes = new ArrayList<Spike>();
     ArrayList <Portal> lvlPortals = new ArrayList<Portal>();
@@ -24,7 +25,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList <SquareParticle> playerSquareParticles = new ArrayList<SquareParticle>();
     ArrayList<ArrayList<SquareParticle>> padParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList<ArrayList<SquareParticle>> portalParticles = new ArrayList<ArrayList<SquareParticle>>();
-    Level lvl;
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
 
     ArrayList <Ground> grounds = new ArrayList<Ground>();
@@ -35,9 +35,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     static boolean mouseDown = false;
     boolean[] keys = new boolean[KeyEvent.KEY_LAST + 1];
 
-//    Menu menu = new Menu();
-    Rectangle pauseButton = new Rectangle( Globals.SCREEN_WIDTH - 25 - 2, 25 + 2, 25, 25);
-
 
 
     public GamePanel( String mapString) {
@@ -46,25 +43,52 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         addMouseListener(this);
         requestFocus();
 
+        mapReload(mapString);
+//        timer.start();
+    }
 
+    public void actionPerformed(ActionEvent e) {
+        move();
+
+            // for cosmetics
+        create();
+        destroy();
+
+        changeGamemode();
+
+        repaint();
+    }
+
+    public void mapReload(String mapString) {
+        System.out.println(mapString);
         lvl = new Level(mapString);
-       // timer = new Timer(1000/40, this);
-        this.lvl1map = mapString;
+        // timer = new Timer(1000/40, this);
 
-        screen = "game";
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
+        lvlSolids = new ArrayList<Solid>();
+        lvlSpikes = new ArrayList<Spike>();
+        lvlPortals = new ArrayList<Portal>();
+        lvlOrbs = new ArrayList<Orb>();
+        checkPoints = new ArrayList<Checkpoint>();
+        lvlPads = new ArrayList<Pad>();
+        playerSquareParticles = new ArrayList<SquareParticle>();
+        padParticles = new ArrayList<ArrayList<SquareParticle>>();
+        portalParticles = new ArrayList<ArrayList<SquareParticle>>();
+        shipSquareParticles = new ArrayList<SquareParticle>();
+
+        ArrayList <Ground> grounds = new ArrayList<Ground>();
 
 
-
+        lvl1map = mapString;
         lvlSolids = lvl.getSolids();
         lvlSpikes = lvl.getSpikes();
         lvlPortals = lvl.getPortals();
         lvlPads = lvl.getPads();
         lvlOrbs = lvl.getOrbs();
-//        lvl1.asciiPrint();
         grounds = lvl.grounds;
+
 
         if (!lvlPads.isEmpty()) {
             for (Pad p: lvlPads) {
@@ -78,31 +102,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-
-
-//        timer.start();
-    }
-
-    public void actionPerformed(ActionEvent e) {
-
-//        if (screen == "main menu") {
-//            if (keys[KeyEvent.VK_ENTER]) {
-//                screen = "game";
-//            }
-//
-//        }
-
-//        else if (screen == "game") {
-            move();
-
-            // for cosmetics
-            create();
-            destroy();
-
-            changeGamemode();
-//        }
-
-        repaint();
     }
 
     public void move() {
@@ -139,12 +138,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
                 s.move();
             }
         }
-
-
-
-//        for (Ground gr : grounds) {
-//            gr.move((int)player.getVX());
-//        }
 
     }
 
@@ -262,16 +255,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
         player.setJumpRotate();
 
-//        if (keys[KeyEvent.VK_SPACE]) {
-//            if(player.getVX() == 22) {
-//                player.setVX(0);
-//                screen = "pause";
-//            }
-//            else{
-//                player.setVX(22);
-//                screen = "ingame";
-//            }
-//        }
 
         if (keys[KeyEvent.VK_W]) {
             player.ufoJump();
@@ -310,125 +293,94 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void paint(Graphics g) {
         super.paint(g);
 
-//        if (screen == "main menu") {
-//
-//            Graphics2D menu = (Graphics2D) (g);
-//            menu.drawImage(Util.loadBuffImage("assets/background/stereoBG.png"), 0, 0, null);
-//
-//        }
+        Graphics2D g2d = (Graphics2D) (g);
 
-//        if (screen == "game") {
-            Graphics2D g2d = (Graphics2D) (g);
+        Graphics ground = (Graphics2D) (g);
+        ground.setColor(Color.WHITE);
 
-
-
-            Graphics ground = (Graphics2D) (g);
-            ground.setColor(Color.WHITE);
-
-            Graphics debug = (Graphics2D) (g);
-            debug.setColor(Color.RED);
-            debug.fillRect((int) 300, Globals.floor, 1, 100);
+        Graphics debug = (Graphics2D) (g);
+        debug.setColor(Color.RED);
+        debug.fillRect((int) 300, Globals.floor, 1, 100);
 
 
 
-            offsetX = (int) (stationaryX - player.getX());
-            int adj = 250;
+        offsetX = (int) (stationaryX - player.getX());
+        int adj = 250;
 
-            bg.draw(g2d, offsetY);
-            if(player.reverse) {
-                adj += 200;
+        bg.draw(g2d, offsetY);
+        if(player.reverse) {
+            adj += 200;
+        }
+
+        if (player.getOffsetY() > offsetY + adj) {
+            offsetY += 5;
+        }
+        if (player.getOffsetY() < offsetY + adj) {
+            offsetY -= 5;
+        }
+
+        int playerOSY = offsetY;
+
+        player.draw(g2d, playerOSY);
+
+        for (Solid s : lvlSolids) {
+            s.draw(g2d, offsetX, offsetY, player);
+        }
+        for (Spike s : lvlSpikes) {
+            s.draw(g2d, offsetX, offsetY, player);
+        }
+        for (Portal p : lvlPortals) {
+            p.draw(g2d, offsetX, offsetY);
+        }
+        
+        if (!lvlPads.isEmpty()) {
+            for (Pad p : lvlPads) {
+                p.draw(g, offsetX, offsetY);
             }
+        }
 
-            if (player.getOffsetY() > offsetY + adj) {
-                offsetY += 5;
+        if (!lvlOrbs.isEmpty()) {
+            for (Orb o : lvlOrbs) {
+                o.draw(g, offsetX, offsetY);
             }
-            if (player.getOffsetY() < offsetY + adj) {
-                offsetY -= 5;
-            }
+        }
 
-//        offsetY = 0;
+        for (Checkpoint c : Level.checkpoints) {
+            c.draw(g2d, offsetX, offsetY);
+        }
 
-//        System.out.println( player.getOffsetY() + "  " + offsetY);
-            int playerOSY = offsetY;
+        for (int i = 0; i < playerSquareParticles.size(); i++) {
+            SquareParticle s = playerSquareParticles.get(i);
+            s.draw(g2d, offsetX, offsetY);
+        }
+        for (int i = 0; i < shipSquareParticles.size(); i++) {
+            SquareParticle s = shipSquareParticles.get(i);
+            s.draw(g2d, offsetX, offsetY);
+        }
 
-            player.draw(g2d, playerOSY);
-
-            for (Solid s : lvlSolids) {
-                s.draw(g2d, offsetX, offsetY, player);
+        for (int i = 0; i < padParticles.size(); i++) {
+            if( ! Util.onScreen(player, lvlPads.get(i).getX()) ) {
+                continue;
             }
-            for (Spike s : lvlSpikes) {
-                s.draw(g2d, offsetX, offsetY, player);
-            }
-            for (Portal p : lvlPortals) {
-                p.draw(g2d, offsetX, offsetY);
-            }
-            if (!lvlPads.isEmpty()) {
-                for (Pad p : lvlPads) {
-                    p.draw(g, offsetX, offsetY);
-                }
-            }
-            if (!lvlOrbs.isEmpty()) {
-                for (Orb o : lvlOrbs) {
-                    o.draw(g, offsetX, offsetY);
-                }
-            }
-
-//        System.out.print("[");
-            for (Checkpoint c : Level.checkpoints) {
-                c.draw(g2d, offsetX, offsetY);
-//            System.out.print(c.toString() + ", ");
-            }
-//        System.out.println("]");
-            for (int i = 0; i < playerSquareParticles.size(); i++) {
-                SquareParticle s = playerSquareParticles.get(i);
+            ArrayList<SquareParticle> lis = padParticles.get(i);
+            for (int j = lis.size() - 1; j >= 0; j--) {
+                SquareParticle s = lis.get(j);
                 s.draw(g2d, offsetX, offsetY);
             }
-            for (int i = 0; i < shipSquareParticles.size(); i++) {
-                SquareParticle s = shipSquareParticles.get(i);
+        }
+
+        for (int i = 0; i < portalParticles.size(); i++) {
+            if( ! Util.onScreen(player, lvlPortals.get(i).getX()) ) {
+                continue;
+            }
+            ArrayList<SquareParticle> lis = portalParticles.get(i);
+            for (int j = lis.size() - 1; j >= 0; j--) {
+                SquareParticle s = lis.get(j);
                 s.draw(g2d, offsetX, offsetY);
             }
+        }
 
-            for (int i = 0; i < padParticles.size(); i++) {
-                if( ! Util.onScreen(player, lvlPads.get(i).getX()) ) {
-                    continue;
-                }
-                ArrayList<SquareParticle> lis = padParticles.get(i);
-                for (int j = lis.size() - 1; j >= 0; j--) {
-                    SquareParticle s = lis.get(j);
-                    s.draw(g2d, offsetX, offsetY);
-                }
-            }
 
-            for (int i = 0; i < portalParticles.size(); i++) {
-                if( ! Util.onScreen(player, lvlPortals.get(i).getX()) ) {
-                    continue;
-                }
-                ArrayList<SquareParticle> lis = portalParticles.get(i);
-                for (int j = lis.size() - 1; j >= 0; j--) {
-                    SquareParticle s = lis.get(j);
-                    s.draw(g2d, offsetX, offsetY);
-                }
-            }
-
-            ground.fillRect(0, Globals.floor - Globals.solidHeight + player.getHeight() + offsetY, Globals.SCREEN_WIDTH, 1);
-
-            if (player.getGamemode().equals("ship")) {
-                g.fillRect(0, Globals.SHIP_CEILING + offsetY, Globals.SCREEN_WIDTH, 1);
-            }
-
-            Graphics groundLine = (Graphics2D) (g);
-//            groundLine.drawImage(groundLinePic, 0, Globals.floor+offsetY, null);
-//            for (Ground gr : grounds) {
-//                gr.draw(g2d, offsetX, offsetY);
-//            }
-//
-//        }
-
-//        if(screen == "pause") {
-//        System.out.println(screen);
-//            g2d.setColor( new Color(6, 6, 245, 255));
-//            g2d.fillRect(Globals.SCREEN_WIDTH - 25 - 20, 25 + 2, 25, 25);
-//          }
     }
 
 
@@ -459,18 +411,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             mouseDown = true;
         }
 
-//        if (code == KeyEvent.VK_SPACE) {
-//            if(keys[code] ) {
-//                if(player.getVX() == 22) {
-//                    player.setVX(0);
-//                    screen = "pause";
-//                }
-//                else{
-//                    player.setVX(22);
-//                    screen = "game";
-//                }
-//            }
-//        }
 
         if (code == KeyEvent.VK_P) {
             if (keys[code] == false) {

@@ -1,33 +1,38 @@
+/*
+    Level.java
+
+    This class is used to load the map from an image and create the level.
+ */
+
 import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Level {
-    String map;
+    String map; // the address of the map image
+
+    // dimensions
     private int w = 1000;
     private int h = 27;
-    public static Startpos startpos;
+    public static Startpos startpos; // uhhhh this was for the starpos objects
+
+    // arraylists of objects
     ArrayList<Solid> solids;
-//    ArrayList<Slab> slabs;
     ArrayList<Spike> spikes;
     ArrayList<Portal> portals;
     ArrayList<Orb> orbs;
     ArrayList<Pad> pads;
     ArrayList<Ground> grounds;
     public static ArrayList<Checkpoint> checkpoints;
-    public int aSolid = 1;
-    public int aSpike = 2;
-    public int aSlab = 3;
-    public int aPortal = 4;
-    public static int mapWidth;
-    int[][] mapArr;
-    BufferedImage pic;
+
+    public static int mapWidth; // width of the map in pixels (grids)
+    int[][] mapArr; // key of the objects in a 2d array
+    BufferedImage pic; // the map image
 
     // constructor
     public Level(String map) {
         this.map = map;
-
+        // initialize the arraylists
         solids = new ArrayList<Solid>();
-//        slabs = new ArrayList<Slab>();
         spikes = new ArrayList<Spike>();
         portals = new ArrayList<Portal>();
         checkpoints = new ArrayList<Checkpoint>();
@@ -36,14 +41,17 @@ public class Level {
         orbs = new ArrayList<Orb>();
         mapArr = new int[6000][27];
         pic = Util.loadBuffImage(map);
-        mapWidth = pic.getWidth();
+        mapWidth = pic.getWidth(); // get the width of the map in pixels
 
+        // load the map and make the level
         loadMap();
         makeMap();
     }
 
 
     public void loadMap(){
+
+        // goes thru the image and assign a value to each pixel depending on the color. The value will be used to create the objects
         /*
             Table:
             1 - Solids
@@ -60,7 +68,6 @@ public class Level {
 //        for (String s: map) {
             int tempw = pic.getWidth();
             int temph = pic.getHeight();
-
             for (int x = wIndex; x < tempw + wIndex; x++) {
                 for (int y = 0; y < temph; y++) {
                     int c = pic.getRGB(x - wIndex, y);
@@ -69,19 +76,15 @@ public class Level {
 //                    solids[y][x] = new Solid( x*50, y*50, "solid");
                         v = 1;
                     }
-
                     else if (c == 0xFFFF0000) {
                         v = 2;
                     }
-
                     else if (c == 0xFF00FFFF) {
                         v = 3;
                     }
-
                     else if (c == 0xFFFF00DC) {
                         v = 4;
                     }
-
                     else if (c == 0xFF7F0000) {
                         v = 5;
                     }
@@ -121,20 +124,16 @@ public class Level {
                     mapArr[x][y] = v;
                 }
             }
-
-//            wIndex += tempw;
-//        }
-//        return map;
     }
 
     public void makeMap() {
+        // goes thru the array that has the values of the objects and creates the objects
+
         // ground is 400
         // 7 from the bottom is the ground in mapArr
-
         // h * 50 = bottom
-
-
         // h - y
+        // math from before
         for (int x=0; x<w; x++) {
             for (int y=0; y<h; y++) {
                 int target = mapArr[x][y];
@@ -154,12 +153,10 @@ public class Level {
                     Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 0, "small");
                     spikes.add(s);
                 }
-
                 else if (target == 5) {
                     Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 1, "normal");
                     spikes.add(s);
                 }
-
                 else if (target == 6) {
                     Spike s = new Spike(x * Globals.solidWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, 1, "small");
                     spikes.add(s);
@@ -171,14 +168,11 @@ public class Level {
                 else if (target == 10) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "ship", 0 );
                     portals.add(p);
-//                    System.out.println("portal made");
                 }
                 else if (target == 11) {
                     Portal p = new Portal( x * Portal.width, Globals.floor - ((h-y-7) * Globals.solidHeight) - Globals.solidHeight, "cube", 0 );
                     portals.add(p);
-//                    System.out.println("portal made");
                 }
-
                 else if (target == 13) {
                     Pad p = new Pad(x * Globals.slabWidth , Globals.floor - ((h-y-7) * Globals.solidHeight) - 30, Globals.solidWidth, 30);
                     pads.add(p);
@@ -204,51 +198,32 @@ public class Level {
                 }
             }
         }
-
-
-//        for (int asd=0; asd<mapWidth*75; asd++) {
-//            if (asd % 250 == 0) {
-//                Ground g = new Ground(asd, Globals.floor+5);
-//                grounds.add(g);
-//            }
-//        }
-
-//        for (int i=0; i<w; i)
-//        Solid s = new Solid ( x*50, y*50, "solid" );
     }
 
-    public void drawLevel() {
-
-    }
-
-    public int[][] getMapArr() {
-        return mapArr;
-    }
 
     public int getWidth() {
         return w ;
     }
-
     public int getHeight() {
         return h ;
     }
 
 
+
+    // used to fetch the arraylists of objects
     public ArrayList<Solid> getSolids() {
         return solids;
     }
-//    public ArrayList<Slab> getSlabs() {
-//        return slabs;
-//    }
     public ArrayList<Spike> getSpikes() {
         return spikes;
     }
     public ArrayList<Portal> getPortals() {return portals;}
     public static ArrayList<Checkpoint> getCheckpoints() {return checkpoints;}
-
     public ArrayList<Pad> getPads() {return pads;}
     public ArrayList<Orb> getOrbs() {return orbs;}
-    public void asciiPrint() {
+
+
+    public void asciiPrint() { // was used for debugging
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {
                 System.out.printf("%d", mapArr[x][y]);
@@ -256,5 +231,4 @@ public class Level {
             System.out.println();
         }
     }
-
 }

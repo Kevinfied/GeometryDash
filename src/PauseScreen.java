@@ -19,6 +19,7 @@ public class PauseScreen extends JFrame implements ActionListener {
         add(pausemenu);
 
         pausemenu.timer.start();
+
         setIconImage(Globals.windowIcon.getImage());
         pausemenu.addMouseListener(new MenuMouseListener());
 
@@ -117,7 +118,7 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         Util.drawCenteredString(g, MenuPanel.lvlNames[MenuPanel.targetLevel], new Rectangle(0, 0, Globals.SCREEN_WIDTH, 80), lvlNameFont);
 
 
-        int percent = ((Integer.parseInt(Util.readFile(Globals.scoreFile, MenuPanel.targetLevel)) * 100)/ (Level.mapWidth * 75));
+        int percent = Math.min(((Integer.parseInt(Util.readFile(Globals.scoreFile, MenuPanel.targetLevel)) * 100)/ (Level.mapWidth * 75)), 100);
         g.setColor(new Color(0, 0, 0,  100));
         g.fillRoundRect((Globals.SCREEN_WIDTH/2) - 300, 100, 600, 40, 32, 50);
         g.setColor(Color.GREEN);

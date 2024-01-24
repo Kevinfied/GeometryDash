@@ -378,6 +378,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     }
 
     public void mousePressed(MouseEvent e) {
+
+
         mouseDown = true;
         //get mouse coordinate on panel
         Point mouse = MouseInfo.getPointerInfo().getLocation();
@@ -435,8 +437,12 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         if (code == KeyEvent.VK_ESCAPE) {
             if (keys[code] == false) {
 
-                ControlCenter.pauseGame();
-
+                if (player.win) {
+                    ControlCenter.toMainMenu();
+                }
+                else {
+                    ControlCenter.pauseGame();
+                }
             }
         }
 

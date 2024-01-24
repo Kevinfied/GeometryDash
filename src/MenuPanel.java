@@ -166,7 +166,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         g.setColor(new Color(0, 128, 255, 160));
         g.fillRect(0, Globals.SCREEN_HEIGHT - 150, Globals.SCREEN_WIDTH, 150);
 
-        int percent = ((Integer.parseInt(Util.readFile(Globals.scoreFile, targetLevel)) * 100)/ (Level.mapWidth * 75));
+        int percent = Math.min(((Integer.parseInt(Util.readFile(Globals.scoreFile, targetLevel)) * 100)/ (Level.mapWidth * 75)) , 100);
         g.setColor(new Color(0, 0, 0,  100));
         g.fillRoundRect((Globals.SCREEN_WIDTH/2) - 300,Globals.SCREEN_HEIGHT - 272, 600, 40, 32, 50);
         g.setColor(Color.GREEN);

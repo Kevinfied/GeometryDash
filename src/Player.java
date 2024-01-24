@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -13,6 +15,7 @@ public class Player{
     private final BufferedImage shipIcon;
     private final BufferedImage ufoIcon;
     private final BufferedImage icon;
+
 
     private double x, y;
     public double constantX;
@@ -49,9 +52,13 @@ public class Player{
 
     //mode: practice or real game play
     public static boolean practiceMode;
-    private boolean debugDead = false;
+    private boolean debugDead = false; // for debugging.
 
+    // if player has beat the level
+    public boolean win = false;
 
+    // Font
+    Font titleFont;
 
     public Player(double x, double y, int width, int height) { //constructor
         this.gamemode = "cube";
@@ -68,6 +75,19 @@ public class Player{
         this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
         this.shipIcon = Util.resize( Util.loadBuffImage("assets/icons/Ship001.png" ), width, height);
         this.ufoIcon = Util.resize( Util.loadBuffImage("assets/icons/UFO001.png" ), width, height);
+
+        try{
+            File fntFile = new File("assets/Fonts/PUSAB.otf");
+
+            titleFont = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(90f);
+        }
+        catch(IOException ex){
+            System.out.println(ex);
+        }
+        catch(FontFormatException ex){
+            System.out.println(ex);
+        }
+
     }
 
 
@@ -75,6 +95,32 @@ public class Player{
 
         if (debugDead) {
             return;
+        }
+
+        if (x >= (Level.mapWidth*75)) { // player wins after reaching the end of the map
+            win = true;
+
+            // Update score
+
+            if (!practiceMode) {
+                String s;
+                int score = (int) x;
+                if (MenuPanel.targetLevel == 1) {
+                    Globals.lvl1TopScore = score;
+                    s = Integer.toString(score) + "\n" + Integer.toString(Globals.lvl2TopScore) + "\n" + Integer.toString(Globals.lvl3TopScore);
+                    Util.writeFile(Globals.scoreFile, s);
+                } else if (MenuPanel.targetLevel == 2) {
+                    Globals.lvl2TopScore = score;
+                    s = Integer.toString(Globals.lvl1TopScore) + "\n" + Integer.toString(score) + "\n" + Integer.toString(Globals.lvl3TopScore);
+                    Util.writeFile(Globals.scoreFile, s);
+                } else if (MenuPanel.targetLevel == 3) {
+                    Globals.lvl3TopScore = score;
+                    s = Integer.toString(Globals.lvl1TopScore) + "\n" + Integer.toString(Globals.lvl2TopScore) + "\n" + Integer.toString(score);
+                    Util.writeFile(Globals.scoreFile, s);
+                }
+            }
+
+            return; // no more movement
         }
 
         //movement for player
@@ -539,11 +585,16 @@ public class Player{
 
     //draw player's sprtie. But if it died, play the death animation
     public void draw(Graphics g, int offsetY) {
+
         if (deathTimeCounter > 0) {
             g.drawImage(deathAnimation, (int) (constantX) - ((200 - width)/2), (int) (y + offsetY) - ((200-height)/2), 200, 200, null);
             return;
         }
         drawSprite( g, offsetY);
+
+        if (win) {
+            Util.drawCenteredString(g, "Level Complete", new Rectangle(0, 0, Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT), titleFont);
+        }
     }
 
     //draw sprite according to gamemode of the player

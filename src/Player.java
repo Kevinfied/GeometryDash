@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/*
+controlled by mouse. Interact with all other game objects. Has 2 gamemode, can reverse it's Y vectors
+ */
 
 public class Player{
 

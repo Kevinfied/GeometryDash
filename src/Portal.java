@@ -4,6 +4,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+// game object that interact with player by changing gamemode(ship, cube) and or reverse its direction - Daisy
 public class Portal {
 
     // coordinate and dimensions

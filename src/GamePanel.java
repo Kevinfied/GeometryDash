@@ -1,4 +1,8 @@
 // GamePanel.java
+/*
+GamePanel controls all action and display of all game objects: player, solid, spikes...
+GamePanel is displayed on GameFrame, it's timer is controlled in ControlCenter class
+ */
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -19,6 +23,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
     static String lvl1map;
     static Level lvl;
+
+
+    //arryalist for each game object and visual effects
     ArrayList<Solid> lvlSolids = new ArrayList<Solid>();
     ArrayList <Spike> lvlSpikes = new ArrayList<Spike>();
     ArrayList <Portal> lvlPortals = new ArrayList<Portal>();
@@ -30,7 +37,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<ArrayList<SquareParticle>> portalParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
 
-    //
+    //important value for display. Player always at staionary x, offsetX and offsety are for other game objext's display
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -290,6 +297,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         return player.practiceMode;
     }
 
+    //all the drawings
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -304,6 +312,10 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             debug.setColor(Color.RED);
             debug.fillRect((int) 300, Globals.floor, 1, 100);
 
+            //
+
+            //offsetY is adjusted with adj(adjustment) to display on the screen more nicely
+            //then draw everything on the screen
 
             offsetX = (int) (stationaryX - player.getX());
             int adj = 250;
@@ -402,15 +414,16 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
 
+    //keyboard input
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_UP) {
+        if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_UP) {  ///  basiclaly like mouse pressed, takes in user input to control the player
             mouseDown = true;
         }
 
 
-        if (code == KeyEvent.VK_P) {
+        if (code == KeyEvent.VK_P) { //press p for practice mode
             if (keys[code] == false) {
                 player.practiceMode = true;
             }
@@ -428,7 +441,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-        //
+        //for deleting checkpoints
         if (code == KeyEvent.VK_X) {
             if (keys[code] == false){
                 if (player.practiceMode) {
@@ -439,7 +452,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-
+//navigate to main menu
         if (code == KeyEvent.VK_ESCAPE) {
             if (keys[code] == false) {
 

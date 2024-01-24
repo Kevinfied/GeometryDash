@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+control all frames( MenuFrame, PauseScreen and GameFrame) and their panels.
+-Daisy
+ */
 
 public class ControlCenter extends JFrame implements ActionListener {
     //control different frame, panels, their timers
@@ -24,7 +28,7 @@ public class ControlCenter extends JFrame implements ActionListener {
     }
 
 
-    //show menu, player menu sound
+    //show menu, play menu sound
     private static void start() {
         MenuF.timer.start();
         MenuF.setVisible(true);
@@ -39,6 +43,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
     }
 
+    //show game, play game music
     public static void enterGame(int lvl){
 
         System.out.println("entering game >>>>>>>>>>>>>>>");
@@ -55,6 +60,8 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         MenuF.stopMenuSound();
     }
+
+    //show pause screen, no sound played
     public static void pauseGame() {
 
         GameF.stopTimer();
@@ -69,6 +76,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
     }
 
+    //back to game, play game music
     public static void resumeGame() {
         System.out.println("resuming game");
         pauseMenu.pausemenu.timer.stop();
@@ -81,6 +89,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
     }
 
+    //show menu, play menu music
     public static void toMainMenu() {
         System.out.println("to MENU >>>>>>>>>>>>>>>>");
         GameF.setVisible(false);

@@ -4,6 +4,9 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/*
+game object that player can land on safely depends on the player's mode(reverse or normal) - Daisy
+ */
 public class Solid {
     //solid's coordnate and dimensions
 

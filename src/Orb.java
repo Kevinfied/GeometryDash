@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
-
+//game object that interact with the player by increasing its y velocty magnitude when collide with - Daisy
 public class Orb {
 
     // coordinates and dimensions

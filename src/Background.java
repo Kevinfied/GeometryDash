@@ -34,7 +34,7 @@ public class Background {
     private int gv = -22;
 
     //for colors
-    private double blue = 255;
+    private double blue = 155;
     private double red = 100;
     private double green = 1;
     int counter = 0;

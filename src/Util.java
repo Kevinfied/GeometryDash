@@ -166,8 +166,6 @@ public class Util {
             System.out.println(line2);
             System.out.println(line3);
 
-
-
             if (curLvl == 1) {
                 return line1;
             }

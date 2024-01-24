@@ -155,7 +155,7 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_SPACE) {
-            ControlCenter.enterGame(ControlCenter.var);
+            ControlCenter.enterGame(MenuPanel.targetLevel);
 
 
         }

@@ -23,7 +23,6 @@ public class ControlCenter extends JFrame implements ActionListener {
         start();
     }
 
-    public static int var;
 
     private static void start() {
         MenuF.timer.start();
@@ -35,11 +34,8 @@ public class ControlCenter extends JFrame implements ActionListener {
         pauseMenu.pausemenu.timer.stop();
         pauseMenu.setVisible(false);
 
-        Util.startSound(Globals.MenuMusic);
+        MenuF.startMenuSound();
 
-//        Util.stopSound(Globals.lvl1Sound);
-//        Util.stopSound(Globals.lvl2Sound);
-//        Util.stopSound(Globals.lvl3Sound);
     }
 
     public static void enterGame(int lvl){
@@ -54,23 +50,20 @@ public class ControlCenter extends JFrame implements ActionListener {
         GameF.startTimer(lvl);
         GameF.setVisible(true);
 
-        var = lvl;
+        GameF.startGameSound(MenuPanel.targetLevel);
 
-        Util.stopSound(Globals.MenuMusic);
+        MenuF.stopMenuSound();
     }
     public static void pauseGame() {
 
         GameF.stopTimer();
+        GameF.setVisible(false);
+        GameF.stopGameSound();
 
         pauseMenu.pausemenu.timer.start();
         MenuF.setVisible(false);
-
-        GameF.setVisible(false);
-
         pauseMenu.setVisible(true);
         MenuF.menu.timer.stop();
-
-//        Util.startSound( Globals.MenuMusic); no menu music when paused
 
 
     }
@@ -83,7 +76,7 @@ public class ControlCenter extends JFrame implements ActionListener {
 
         GameF.geometryDash.timer.start();
         GameF.setVisible(true);
-
+        GameF.startGameSound(MenuPanel.targetLevel);
 
     }
 
@@ -99,11 +92,8 @@ public class ControlCenter extends JFrame implements ActionListener {
         MenuF.menu.timer.start();
         MenuF.setVisible(true);
 
-        Util.startSound( Globals.MenuMusic);
-
-        Util.stopSound(Globals.lvl1Sound);
-        Util.stopSound(Globals.lvl2Sound);
-        Util.stopSound(Globals.lvl3Sound);
+        MenuF.startMenuSound();
+        GameF.stopGameSound();
     }
 
 

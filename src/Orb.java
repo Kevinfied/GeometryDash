@@ -8,11 +8,17 @@ import java.util.Random;
 
 public class Orb {
 
+    // coordinates and dimensions
     private int x, y;
     public static int width = 75, height = 75;
+
+    //radius difference between each ring of the orb
     public int rDiff = 7;
-    private String type;
+
+    //sprite
     private BufferedImage img;
+
+    //radius of each circle ring, saturation of each circle
     ArrayList<Integer> radius = new ArrayList<Integer>();
     ArrayList<Integer> saturation = new ArrayList<Integer>();
 
@@ -20,7 +26,6 @@ public class Orb {
         Random rand = new Random();
         this.x = x;
         this.y = y;
-        this.type = type;
         for( int i = 1; i <= 7; i++) {
             radius.add( i* rDiff) ;
             saturation.add(rand.nextInt(7) * 36);
@@ -28,17 +33,13 @@ public class Orb {
     }
 
 
+    //hit box used for pplayer's collision with orb
     public Rectangle getHitbox() {
-
         return new Rectangle(x -10, y -10, width+20, height+20);
     }
 
     public void drawHitbox(Graphics g, int offsetX, int offsetY) {
-//        System.out.println(saturation);
-
-        g.setColor(Color.GREEN);
-        g.drawRect(x + offsetX -10, y + offsetY -10, width + 20, height+ 20);
-        g.drawRect(x+offsetX, y + offsetY, width, height);
+        //draw the rings
         for (int i = 0; i<radius.size() ; i ++ ) {
             radius.set( i ,  radius.get(i) + 3);
             int r = radius.get(i);
@@ -51,7 +52,6 @@ public class Orb {
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {
-//        g.drawImage(img, x + offsetX, y + offsetY, null);
         drawHitbox(g, offsetX, offsetY);
     }
 

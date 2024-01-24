@@ -1,6 +1,7 @@
 import java.awt.*;
 
 public class Pad {
+    //coordinate and dimensions
     private double x,y, width, height;
 
     public Pad(double x, double y, double width, double height) {
@@ -16,10 +17,11 @@ public class Pad {
     }
 
 
+    // for testing only
     public void draw(Graphics g, int offsetX, int offsetY) {
         g.setColor(Color.BLACK);
         g.setColor(new Color(0, 208, 255, 255));
-        g.drawRect((int)x + offsetX, (int)y + offsetY, (int)width, (int)height);
+//        g.drawRect((int)x + offsetX, (int)y + offsetY, (int)width, (int)height);
     }
 
 

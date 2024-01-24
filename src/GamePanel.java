@@ -17,11 +17,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     static Player player;
     BufferedImage groundLinePic = Util.resize(Util.loadBuffImage("assets/ground/ground1.png"), Globals.SCREEN_WIDTH, 5);
     Background bg = new Background(Util.loadBuffImage("assets/background/stereoBG.png"), Util.loadBuffImage("assets/ground/ground1.png"));
-    //    ArrayList<String>  lvl1map = new ArrayList<String>();
     static String lvl1map;
-    String levelSoundTrack;
     static Level lvl;
-
     ArrayList<Solid> lvlSolids = new ArrayList<Solid>();
     ArrayList <Spike> lvlSpikes = new ArrayList<Spike>();
     ArrayList <Portal> lvlPortals = new ArrayList<Portal>();
@@ -32,6 +29,8 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
     ArrayList<ArrayList<SquareParticle>> padParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList<ArrayList<SquareParticle>> portalParticles = new ArrayList<ArrayList<SquareParticle>>();
     ArrayList <SquareParticle> shipSquareParticles = new ArrayList<SquareParticle>();
+
+    //
     public double stationaryX = 300;
     private static int offsetX = 0;
     private static int offsetY = 0;
@@ -48,10 +47,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         mapReload(mapString, soundTrack);
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) { //the main method that contains sub method with utility methods in them
 
         move();
-
         // for cosmetics
         create();
         destroy();
@@ -62,10 +60,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    public void mapReload(String mapString, String soundTrack) {
+    public void mapReload(String mapString, String soundTrack) { //reload the map objects when player enter a game or switch to a different game
 
         lvl = new Level(mapString);
-        levelSoundTrack = soundTrack;
 
         double stationaryX = 300;
         player = new Player(stationaryX, Globals.floor-Globals.solidHeight, 75, 75);
@@ -106,7 +103,9 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    public void move() {
+    public void move() { // most game object don't moves, only player and visual effects do: player and squareParticles
+
+        // if player is dead, then don't go through this method. Continur the deathtimeCounter countdown. if countdown goes to 0 then restart the game
         if (player.deathTimeCounter > 0) {
             player.deathTimeCounter -- ;
             if(player.deathTimeCounter == 0) {
@@ -114,12 +113,19 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
             return;
         }
+
+        //move the ground and background sprites
         bg.move();
+
+        //move the player
         player.move(lvlSolids, lvlSpikes, lvlPortals, lvlPads, lvlOrbs);
+
+        //player jump movement
         if(mouseDown) {
             player.cubeJump();
         }
 
+        //move all the particles!
         if (! playerSquareParticles.isEmpty()) {
             for (SquareParticle s: playerSquareParticles) {
                 s.move();
@@ -150,7 +156,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    public void create() {
+    public void create() { //just for creating visual effect square particles, used some math (randint and unit circle)
         Random rand = new Random();
         double min = 0; // Minimum value (pi/2)
         double max = 3 *Math.PI /2;     // Maximum value (pi)
@@ -171,7 +177,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
-        if ( player.getGamemode().equals("ship")) {
+        if ( player.getGamemode().equals("ship")) {  // the particles that float around the screen when player is in shiop mode
             if (shipSquareParticles.size() < 800) {
                 int l= rand.nextInt(7) + 4;
                 shipSquareParticles.add(new SquareParticle(rand.nextInt(1000) + player.getX() - 200, rand.nextInt(1000) + player.getY() - 400, min + Math.random() * (max - min) ,l,l,-2, 100 ));
@@ -187,6 +193,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         }
 
 
+        //portal particles firection and generated using sine wave
         for (int i = 0; i<portalParticles.size(); i++) {
             ArrayList lis = portalParticles.get(i);
             if(lis.size() < 700){
@@ -205,7 +212,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    public void destroy() {
+    public void destroy() { //remove square particles one they traveled their maximum distance
         for (int i = playerSquareParticles.size() - 1 ; i>=0; i--) {
             SquareParticle s = playerSquareParticles.get(i);
            if (Math.pow(s.x - s.startX, 2) + Math.pow(s.y-s.startY, 2) > Math.pow(s.maxdist, 2)) {
@@ -241,18 +248,15 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    public void changeGamemode() { //debug stuff
+
+// cheat buttonsl for dbug too
+    public void changeGamemode() {
         if(keys[KeyEvent.VK_1]) {
             player.setGamemode("cube");
             player.setInitY(-41.5);
         }
         if(keys[KeyEvent.VK_2]) {
             player.setGamemode("ship");
-            player.setAngle( 0 );
-        }
-        if(keys[KeyEvent.VK_3]) {
-            player.setGamemode("ufo");
-            player.setInitY( -12 );
             player.setAngle( 0 );
         }
 
@@ -262,6 +266,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
+    //reset the player to starting position
     public static void resetPlayer() {
         player.setGamemode("cube");
         player.upright();
@@ -423,6 +428,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
             }
         }
 
+        //
         if (code == KeyEvent.VK_X) {
             if (keys[code] == false){
                 if (player.practiceMode) {

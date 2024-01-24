@@ -514,14 +514,11 @@ public class Player{
                 int score = (int) x ;
                 String s;
 
-                System.out.println("current level" + MenuPanel.targetLevel);
-
                 if (MenuPanel.targetLevel == 1) {
                     if (score > Globals.lvl1TopScore) {
                         Globals.lvl1TopScore = score;
                         s =Integer.toString(score) + "\n" +  Integer.toString(Globals.lvl2TopScore) + "\n" + Integer.toString(Globals.lvl3TopScore);
                         Util.writeFile(Globals.scoreFile, s ) ;
-                       System.out.println("new score");
                     }
                 }
                 else if (MenuPanel.targetLevel == 2) {
@@ -530,7 +527,6 @@ public class Player{
                         s = Integer.toString(Globals.lvl1TopScore) + "\n" +Integer.toString(score) +"\n" + Integer.toString(Globals.lvl3TopScore);
                         Util.writeFile(Globals.scoreFile, s ) ;
                         deathTimeCounter = 10;
-                        System.out.println("new score");
                     }
                 }
                 else if (MenuPanel.targetLevel == 3) {
@@ -539,7 +535,6 @@ public class Player{
                         s = Integer.toString(Globals.lvl1TopScore) + "\n" + Integer.toString(Globals.lvl2TopScore) + "\n" + Integer.toString(score) ;
                         Util.writeFile(Globals.scoreFile, s ) ;
                         deathTimeCounter = 10;
-                        System.out.println("new score");
                     }
                 }
 

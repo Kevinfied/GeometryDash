@@ -8,48 +8,52 @@ import java.util.ArrayList;
 
 public class Player{
 
-    private boolean debugDead = false;
-    public boolean orbActivate = false;
-    public boolean changeYdirection = false;
+    //sprites
     Image deathAnimation = new ImageIcon("assets/deathEffects/deathEffect.gif").getImage();
-    boolean dead = false;
+    private final BufferedImage shipIcon;
+    private final BufferedImage ufoIcon;
+    private final BufferedImage icon;
 
     private double x, y;
     public double constantX;
     private double px, py;
-
     private int width, height;
     private int groundLevel;
     private int offsetY = 0;
     public int deathTimeCounter = 0;
-    // vector
+
+
+    // player's movement vector
     public double g = 5.19; //gravity
     private double vy = 0;
     private double vx = 22;
     public double initY = -41.55;
-    public double shipG = 1.2;
+    public double shipG = 1.2;  //ship has different uy vectors
     public double shipLift = -2.008 * shipG;
 
-
-    private ArrayList<Solid> playerSolids = new ArrayList<Solid>();
-    private int curSolidIndex = 0;
 
     // rotation
     private double angle = 0;
     private double jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY ); // add to angle when jump
     public boolean reverse = false;
 
+
+    //player's state : gamemode: cube or ship , reversed or upright, onsurface or in air in current frame and previous frame, can jump on orbs or not
     private String gamemode;
-    private final BufferedImage icon;
+    public boolean changeYdirection = false;
     public boolean onSurface = true;
     public boolean prevOnSurface = true;
     public boolean onCeiling = false;
+    public boolean orbActivate = false;
 
+
+    //mode: practice or real game play
     public static boolean practiceMode;
-    private final BufferedImage shipIcon;
-    private final BufferedImage ufoIcon;
+    private boolean debugDead = false;
 
-    public Player(double x, double y, int width, int height) {
+
+
+    public Player(double x, double y, int width, int height) { //constructor
         this.gamemode = "cube";
 
         this.y = y;
@@ -60,7 +64,6 @@ public class Player{
         this.height = height;
 
         this.groundLevel = (int) y + width;
-
         practiceMode = false;
         this.icon = Util.resize( Util.loadBuffImage("assets/icons/Cube001.png" ), width, height);
         this.shipIcon = Util.resize( Util.loadBuffImage("assets/icons/Ship001.png" ), width, height);
@@ -70,15 +73,72 @@ public class Player{
 
     public void move(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals, ArrayList<Pad> pads, ArrayList<Orb> orbs) {
 
-
-
         if (debugDead) {
             return;
         }
 
-        py = y;
-        px = x;
+        //movement for player
+        gamemodeMovement();
 
+        //calculate the offset for drawing objects other than player
+        adjustOffset();
+
+
+//        rotation adjustment: if player's rotation is not a multiple of pi/2
+        if(onSurface || onCeiling){
+            angleAdjust();
+        }
+
+        //set on surface to false, then check through all solids and ground to determine if lpayer is on surface
+        onSurface = false;
+
+        //normal collision
+        collide(solids, spikes, portals);
+
+
+        onCeiling = ceilingCheck();
+        prevOnSurface = onSurface;
+
+        //check if player is on the ground;
+        groundCheck();
+
+        //reverse the player's y vectors if changeYdirection is true
+        if(changeYdirection) {
+            upsideDown();
+            changeYdirection = false;
+        }
+
+        // special collisions for pad
+        if (!pads.isEmpty()) {
+            for (Pad p: pads) {
+                collidePad(p);
+            }
+        }
+
+        //if player in air and mouse is pressed, then player can jump on orbs
+        if ( ! onSurface && !GamePanel.mouseDown) {
+            orbActivate = true;
+        }
+
+        //orbs are deactivated when player is on ground
+        if(onSurface) {
+            orbActivate = false;
+        }
+
+        // collision for orbs
+        if (!orbs.isEmpty()) {
+            for (Orb o : orbs) {
+                collideOrb(o);
+            }
+        }
+
+
+    }
+
+    public void gamemodeMovement(){
+
+        //cube movement: rotate by a certain amount when in air
+        //add gravity to vy
         if(gamemode.equals ("cube") ) {
             jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
             vy += g;
@@ -87,14 +147,16 @@ public class Player{
             }
         }
 
+        //ship movement
         if(gamemode.equals( "ship" ) ) {
 
             vy += shipG ;
 
-            if (GamePanel.mouseDown ) {        //ship movement if mouse pressed
+            if (GamePanel.mouseDown ) {        //vy magnitude increase if mouse pressed
                 vy += shipLift;
             }
 
+            //ship's rotation are restricted within [ -pi/4, pi/4]
             if ( vy >= Math.tan( Math.PI / 4) * vx ) {
                 angle = Math.PI /4 ;
             }
@@ -107,103 +169,41 @@ public class Player{
 
         }
 
+    }
 
+
+    // offsetY is used for the drawing of other objects
+    public void adjustOffset(){
         int newOffsetY = Globals.floor - groundLevel;
+        // offset from previous and current frame has to differ by 120 unit for the current offset to adjust
+        //prevent frequent screen movement
         if ( Math.abs(newOffsetY - offsetY) > 120 && !gamemode.equals("ship") ) {
             offsetY = Globals.floor - groundLevel;
         }
         else if ( vy > 0 && Math.abs(py - y) > 38) {
             offsetY = Globals.floor - groundLevel - 30;
         }
+
+        //when in ship mode, offsetY is fixed
         if (gamemode.equals("ship")) {
             offsetY = 220;
         }
 
+        // if the player won't be displaying within the height of the screen, adjust offsetY accordingly
         if( y + offsetY > Globals.SCREEN_HEIGHT ) {
             offsetY -= 100;
         }
         else if (y + offsetY < 0 ) {
             offsetY += 100;
         }
-
-//        rotation adjustment
-        if(onSurface || onCeiling){
-            angleAdjust();
-        }
-
-        onSurface = false;
-
-        for (int i=0; i<Math.abs(vy); i++) {
-            py = y;
-            if (vy < 0) {
-                y -= 1;
-            }
-            else {
-                y += 1;
-            }
-            for (Solid s : solids) {
-                collideSolid(s);
-            }
-        }
-
-        for (int j=0; j<vx; j++) {
-            px = x;
-            x += 1;
-            for (Solid s : solids) {
-                collideSolid(s);
-            }
-        }
-
-
-        for (Spike s : spikes) {
-            collideSpike(s);
-        }
-        for (Portal p : portals) {
-            collidePortal(p);
-        }
-
-
-        onCeiling = ceilingCheck();
-        prevOnSurface = onSurface;
-
-        groundCheck();
-
-
-        if(changeYdirection) {
-            upsideDown();
-            changeYdirection = false;
-        }
-
-
-        if (!pads.isEmpty()) {
-            for (Pad p: pads) {
-                collidePad(p);
-            }
-        }
-
-
-        if ( ! onSurface && !GamePanel.mouseDown) {
-            orbActivate = true;
-        }
-
-        if(onSurface) {
-            orbActivate = false;
-        }
-
-        if (!orbs.isEmpty()) {
-            for (Orb o : orbs) {
-                collideOrb(o);
-            }
-        }
-
-
     }
 
+    //only check if player's on ground if it's not in reverse mode.
     public void groundCheck() {
         if(reverse){
             return;
         }
-        if (y + width > Globals.floor) {
+        if (y + width > Globals.floor) { //Set groundLevel to the ground, player is onsurface
             y = Globals.floor - width;
             vy = 0;
             groundLevel = Globals.floor ;
@@ -211,6 +211,7 @@ public class Player{
         }
     }
 
+    //only check if player is touching the ceiling when it's in ship mode or reverse mode
     public boolean ceilingCheck() {
         if(  gamemode.equals("ship") && y < Globals.SHIP_CEILING) {
             y = Globals.SHIP_CEILING;
@@ -227,10 +228,12 @@ public class Player{
     }
 
 
+    //angle adjustment when player is touching the ceiling or ground
     public void angleAdjust() {
         int floorR = (int) Math.floor( (angle / (Math.PI /2 )) );
         int ceilR = floorR + 1;
         double incre = 0.3;
+        //add to player's rotation so it will adjust to the nearest multiple of pi/2 that is more than the current angle
         if ( gamemode == "cube") {
             if (angle % (Math.PI / 2) != 0) {
                 angle += incre;
@@ -241,6 +244,8 @@ public class Player{
             }
 
         }
+
+        //ship is opposite of cube for angle adjustment
         else if (gamemode == "ship") {
             incre *= -1;
             if (angle % (Math.PI / 2) != 0) {
@@ -255,10 +260,37 @@ public class Player{
         angle = angle % (2 * Math.PI);
     }
 
-    public void collide() {
+    public void collide(ArrayList<Solid> solids, ArrayList<Spike> spikes, ArrayList<Portal> portals) { //normal collision for solid, spikes and portals
+        for (int i=0; i<Math.abs(vy); i++) {
+            py = y;
+            if (vy < 0) {
+                y -= 1;
+            }
+            else {
+                y += 1;
+            }
+            for (Solid s : solids) {
+                collideSolid(s);
+            }
+        }
 
+        for (int j=0; j<vx; j++) {
+            x += 1;
+            for (Solid s : solids) {
+                collideSolid(s);
+            }
+        }
+
+
+        for (Spike s : spikes) {
+            collideSpike(s);
+        }
+        for (Portal p : portals) {
+            collidePortal(p);
+        }
     }
 
+//reverse the Y vector
     public void upsideDown() {
         reverse = true;
         g = -5.19; //gravity
@@ -268,6 +300,7 @@ public class Player{
         jumpRotate = (double) ( Math.PI * g ) / ( 2 * initY );
     }
 
+    //reset Y vectors
     public void upright() {
         reverse = false;
         g = 5.19; //gravity
@@ -277,10 +310,11 @@ public class Player{
         jumpRotate = (double) ( -Math.PI * g ) / ( 2 * initY );
     }
 
+    //
     public void collideSolid( Solid solid) {
+        //check which side(s) of the cube is the player colliding: right, up, down
 
         Rectangle sHitbox = solid.getRect();
-        Rectangle pHitbox = new Rectangle((int)px, (int)py, width, height);
 
         Rectangle bottom = new Rectangle( (int) solid.getX(), (int) solid.getY() + solid.getHeight() - 1, solid.getWidth(), 1 );
         Rectangle top = new Rectangle((int)solid.getX(),(int) solid.getY(), solid.getWidth(), 1);
@@ -288,6 +322,8 @@ public class Player{
         boolean collideUp = false;
         boolean collideDown = false;
         boolean collideX = false;
+
+        //check which side is colliding with the player
 
         if( sHitbox.intersects(getHitbox())) {
 
@@ -304,37 +340,39 @@ public class Player{
             }
         }
 
-
+        //cube and solid collisions
         if (gamemode == "cube" ) {
             if(collideUp && collideDown) {
                 dies();
             }
-            else if (collideUp && !reverse && !collideDown) {
+            else if (collideUp && !reverse) {
                 vy = 0;
                 y = solid.getY() - height;
                 groundLevel = (int) solid.getY();
                 onSurface = true;
             }
-            else if( collideDown && reverse && !collideUp) {
+            else if( collideDown && reverse ) {
                 vy = 0;
                 y = solid.getY() + solid.getHeight();
                 groundLevel = (int) solid.getY() + solid.getHeight();
                 onSurface = true;
-             //   System.out.println( (solid.getY() + solid.getHeight() ) + "    "+ solid.getY() + "    " + y);
             }
+
             else if (!reverse && (collideDown || collideX)) {
                 dies();
             }
             else if (reverse && collideUp ) {
                 dies();
             }
-            else if (reverse &&  collideX) {
+            else if (collideX) {
                 dies();
             }
 
 
 
         }
+
+        //ship collision with solid, only dies when collide with
         else {
             if (collideUp) {
                 vy = 0;
@@ -353,6 +391,7 @@ public class Player{
     }
 
 
+    //pad collision make player jump, increase vy
     public void collidePad( Pad pad) {
         Rectangle padHitbox = pad.getRect();
         if (getHitbox().intersects(padHitbox) ) {
@@ -361,6 +400,7 @@ public class Player{
         }
     }
 
+    //orb sollision also make player jump, increase vy
     public void collideOrb( Orb o) {
         Rectangle orbHitbox = o.getHitbox();
         if (getHitbox().intersects(orbHitbox) && orbActivate && GamePanel.mouseDown) {
@@ -369,12 +409,15 @@ public class Player{
         }
     }
 
+    //spikes kill player
     public void collideSpike(Spike spike) {
         Rectangle spikeHitbox = spike.getHitbox();
         if (getHitbox().intersects(spikeHitbox)) {
             dies();
         }
     }
+
+ //   portal change player's gamemode according to their type
     public void collidePortal(Portal portal) {
         Rectangle portalHitbox = portal.getRect();
         if (getHitbox().intersects(portalHitbox)) {
@@ -394,6 +437,8 @@ public class Player{
         }
 
     }
+
+    //
     public void dies() {
             GameFrame.stopGameSound();
             if(deathTimeCounter > 0) {
@@ -457,14 +502,11 @@ public class Player{
 
                 deathTimeCounter = 10;
 
-                System.out.println(Globals.lvl1TopScore);
-                System.out.println(Globals.lvl2TopScore);
-                System.out.println(Globals.lvl3TopScore);
-
             }
 
     }
 
+    //reset the player x, y, and all vectors and state to their initial state
     public void restart() {
         GameFrame.startGameSound(MenuPanel.targetLevel);
         gamemode = "cube";
@@ -478,6 +520,7 @@ public class Player{
         onSurface = true;
     }
 
+    //cube can jump when it's on a surface: ground (upright), ceiling(reverse), solid
     public void cubeJump() {
         if (gamemode == "cube" ) {
             if (onSurface  || prevOnSurface) {
@@ -488,13 +531,13 @@ public class Player{
     }
 
 
-
+    //player's hit box
     public Rectangle getHitbox() {
         return new Rectangle((int) x, (int) y, width, height);
     }
 
 
-
+    //draw player's sprtie. But if it died, play the death animation
     public void draw(Graphics g, int offsetY) {
         if (deathTimeCounter > 0) {
             g.drawImage(deathAnimation, (int) (constantX) - ((200 - width)/2), (int) (y + offsetY) - ((200-height)/2), 200, 200, null);
@@ -503,6 +546,7 @@ public class Player{
         drawSprite( g, offsetY);
     }
 
+    //draw sprite according to gamemode of the player
     public void drawSprite( Graphics g, int offsetY) {
         Graphics2D g2D = (Graphics2D)g;
         AffineTransform rot = new AffineTransform();
@@ -516,16 +560,14 @@ public class Player{
             g2D.drawImage(shipIcon, rotOp, (int) constantX, (int) y + offsetY);
         }
 
-        else if (gamemode == "ufo") {
-            g2D.drawImage(ufoIcon, rotOp, (int) constantX, (int) y + offsetY);
-        }
     }
 
-    public void drawHitbox(Graphics g) {
-        g.setColor(Color.RED);
-        g.drawRect((int) x, (int) y , width, height);
-    }
+//    public void drawHitbox(Graphics g) {
+//        g.setColor(Color.RED);
+//        g.drawRect((int) x, (int) y , width, height);
+//    }
 
+    //getter and setter methods for access to protected variables
     public String getGamemode() {
         return gamemode;
     }

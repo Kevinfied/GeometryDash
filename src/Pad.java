@@ -1,3 +1,9 @@
+/*
+    Pad.class
+
+    This class is for the pad objects. Boosts the player upon contact
+ */
+
 import java.awt.*;
 
 public class Pad {

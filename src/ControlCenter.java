@@ -1,9 +1,8 @@
-// Main.java
-
+// ControlCenter.java
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+// THIS IS THE MAIN THIS IS THE MAIN
 /*
 control all frames( MenuFrame, PauseScreen and GameFrame) and their panels.
 -Daisy

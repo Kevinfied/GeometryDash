@@ -1,3 +1,8 @@
+/*
+    * LevelSelect.java
+    * No longer used. Might also break code if delete so im scared
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

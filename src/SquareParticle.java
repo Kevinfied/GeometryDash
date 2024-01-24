@@ -1,3 +1,4 @@
+// SquareParticle.java
 import java.awt.*;
 public class SquareParticle { // a visual effect: s small square getting smaller and slowly fades out. Used for cube, ship, pad Daisy
     //coordinate and dimensions and angle or displacement

@@ -1,3 +1,4 @@
+// Background.java
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import javax.swing.*;

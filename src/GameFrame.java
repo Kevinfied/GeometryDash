@@ -1,4 +1,4 @@
-// Main.java
+// GameFrame.java
 
 import javax.sound.sampled.*;
 import javax.swing.*;

@@ -4,6 +4,7 @@
 #### Kevin Xu<br/>
 
 ## Description
+##### RUN ControlCenter.java TO START GAME LOL <<<<-------------------
 
 Geometry Dash is a rhythm-based side scroller. There are maps that the player can play. In each map, the player is to
 pass all the obstacles to get to the end of the map. 

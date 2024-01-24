@@ -1,4 +1,7 @@
-
+/*
+    * Util.java
+    * The utilities class. Contains a bunch of useful methods that we abused the heck out of
+ */
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -47,7 +47,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     BufferedImage groundLine = Util.resize(Util.loadBuffImage("assets/ground/groundLine.png"), Globals.SCREEN_WIDTH, 5);
 
     BufferedImage levelSelectBackground = Util.resize(Util.loadBuffImage("assets/background/gradient.png"), Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT);
-    String [] lvlNames = new String[4];
+    public static String [] lvlNames = new String[4];
     BufferedImage [] difficultyFaces = new BufferedImage[4];
     BufferedImage easyFace = Util.resize(Util.loadBuffImage("assets/difficultyFaces/easy.png"), 50, 50);
     BufferedImage hardFace = Util.resize(Util.loadBuffImage("assets/difficultyFaces/hard.png"), 50, 50);
@@ -74,7 +74,7 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         try{
             File fntFile = new File("assets/Fonts/PUSAB.otf");
             fontLocal = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(32f);
-            fontScores = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(60f);
+            fontScores = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(30f);
             lvlNameFont = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(50f);
         }
         catch(IOException ex){
@@ -153,7 +153,9 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         }
 
 
-        drawCenteredString(g, lvlNames[targetLevel], loadLevelHitbox, lvlNameFont);
+
+
+        Util.drawCenteredString(g, lvlNames[targetLevel], loadLevelHitbox, lvlNameFont);
         g.drawImage(difficultyFaces[targetLevel], (Globals.SCREEN_WIDTH/2) - 25 ,loadLevelHitbox.y + 200, null);
 
         for (int i=0; i<5; i++) {
@@ -164,7 +166,16 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
         g.setColor(new Color(0, 128, 255, 160));
         g.fillRect(0, Globals.SCREEN_HEIGHT - 150, Globals.SCREEN_WIDTH, 150);
 
+        int percent = ((Integer.parseInt(Util.readFile(Globals.scoreFile, targetLevel)) * 100)/ (Level.mapWidth * 75));
+        g.setColor(new Color(0, 0, 0,  100));
+        g.fillRoundRect((Globals.SCREEN_WIDTH/2) - 300,Globals.SCREEN_HEIGHT - 272, 600, 40, 32, 50);
+        g.setColor(Color.GREEN);
+        g.fillRoundRect((Globals.SCREEN_WIDTH/2) - 300,Globals.SCREEN_HEIGHT - 272, (600/100) * percent, 40, 32, 50);
+        Util.drawCenteredString(g, percent + "%", new Rectangle(0, Globals.SCREEN_HEIGHT - 325, Globals.SCREEN_WIDTH, 150), fontScores);
+
     }
+
+
     public void move() {
         bg1.move();
     }
@@ -318,17 +329,5 @@ public class MenuPanel extends JPanel implements KeyListener, ActionListener, Mo
     }
 
 
-    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
-        // Get the FontMetrics
-        FontMetrics metrics = g.getFontMetrics(font);
-        // Determine the X coordinate for the text
-        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
-        // Determine the Y coordinate for the text
-        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
-        // Set the font
-        g.setFont(font);
-        // Draw the String
-        g.setColor(Color.WHITE);
-        g.drawString(text, x, y);
-    }
+
 }

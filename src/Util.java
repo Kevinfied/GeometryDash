@@ -105,6 +105,19 @@ public class Util {
         return dimg;
     }
 
+    public static void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+        // Get the FontMetrics
+        FontMetrics metrics = g.getFontMetrics(font);
+        // Determine the X coordinate for the text
+        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+        // Determine the Y coordinate for the text
+        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+        // Set the font
+        g.setFont(font);
+        // Draw the String
+        g.setColor(Color.WHITE);
+        g.drawString(text, x, y);
+    }
 
     public static void stopSound(Clip music) {
         if (music != null) {

@@ -500,7 +500,7 @@ public class Player{
 
     public void draw(Graphics g, int offsetY) {
         if (deathTimeCounter > 0) {
-            g.drawImage(deathAnimation, (int) (constantX), (int) (y + offsetY), 100, 100, null);
+            g.drawImage(deathAnimation, (int) (constantX) - ((200 - width)/2), (int) (y + offsetY) - ((200-height)/2), 200, 200, null);
             return;
         }
         drawSprite( g, offsetY);

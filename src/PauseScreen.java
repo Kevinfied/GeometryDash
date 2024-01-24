@@ -2,7 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-
+import java.io.File;
+import java.io.IOException;
 
 
 public class PauseScreen extends JFrame implements ActionListener {
@@ -50,11 +51,15 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
     public BufferedImage menuButtonImg = Util.resize(Util.loadBuffImage("assets/buttons/menu.png"), buttonWidth, buttonHeight);
     public BufferedImage playButtonHoverImg = Util.resize(Util.loadBuffImage("assets/buttons/play.png"), playButtonWidth + 30, playButtonHeight + 30);
     public BufferedImage menuButtonHoverImg = Util.resize(Util.loadBuffImage("assets/buttons/menu.png"), buttonWidth + 30, buttonHeight + 30);
+    public BufferedImage practiceButtonImg = Util.resize(Util.loadBuffImage("assets/buttons/practice.png"), buttonWidth, buttonHeight);
+    public BufferedImage practiceButtonHoverImg = Util.resize(Util.loadBuffImage("assets/buttons/practice.png"), buttonWidth + 30, buttonHeight + 30);
+    public BufferedImage unpracticeButtonImg = Util.resize(Util.loadBuffImage("assets/buttons/unpractice.png"), buttonWidth, buttonHeight);
+    public BufferedImage unpracticeButtonHoverImg = Util.resize(Util.loadBuffImage("assets/buttons/unpractice.png"), buttonWidth + 30, buttonHeight + 30);
 
     public boolean playButtonHover = false;
     public boolean menuButtonHover = false;
     public boolean practiceButtonHover = false;
-
+    Font fontScores, lvlNameFont;
     public PausePanel() {
         super();
         setLayout(null);
@@ -68,7 +73,20 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseMotionListener(this);
+        timer.start();
 
+        try{
+            File fntFile = new File("assets/Fonts/PUSAB.otf");
+
+            fontScores = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(30f);
+            lvlNameFont = Font.createFont(Font.TRUETYPE_FONT, fntFile).deriveFont(50f);
+        }
+        catch(IOException ex){
+            System.out.println(ex);
+        }
+        catch(FontFormatException ex){
+            System.out.println(ex);
+        }
 
 
 //        timer.start();
@@ -94,7 +112,20 @@ class PausePanel extends JPanel implements KeyListener, ActionListener, MouseLis
             System.out.println("HOVERING");
             g.drawImage(menuButtonHoverImg, (Globals.SCREEN_WIDTH / 2) + (playButtonWidth / 2) + 175 - (buttonWidth / 2) - 15, 400 + 12 - 15, null);
         }
+
+        g.setColor(Color.WHITE);
+        Util.drawCenteredString(g, MenuPanel.lvlNames[MenuPanel.targetLevel], new Rectangle(0, 0, Globals.SCREEN_WIDTH, 80), lvlNameFont);
+
+
+        int percent = ((Integer.parseInt(Util.readFile(Globals.scoreFile, MenuPanel.targetLevel)) * 100)/ (Level.mapWidth * 75));
+        g.setColor(new Color(0, 0, 0,  100));
+        g.fillRoundRect((Globals.SCREEN_WIDTH/2) - 300, 100, 600, 40, 32, 50);
+        g.setColor(Color.GREEN);
+        g.fillRoundRect((Globals.SCREEN_WIDTH/2) - 300,100, (600/100) * percent, 40, 32, 50);
+        Util.drawCenteredString(g, percent + "%", new Rectangle(0, 82, Globals.SCREEN_WIDTH, 80), fontScores);
     }
+
+
 
     public void move() {
 

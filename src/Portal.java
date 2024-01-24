@@ -6,11 +6,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 public class Portal {
 
+    // coordinate and dimensions
     private int x, y;
     public static int width = 75;
     public static int height = 225;
     private static int gravity; // 0 no switch, 1 upside down, 2 up
+
+    //type: to ship, to cube, or reverse y vector
     private String type;
+
+    //sprites
     private BufferedImage cubePortalIcon;
     private BufferedImage shipPortalIcon;
     private BufferedImage portalIcon;
@@ -22,10 +27,8 @@ public class Portal {
         this.y = y;
         this.type = type;
         this.gravity = gravity;
-//        cubePortalIcon = Util.resize(Util.loadBuffImage("assets/portal/cube.png"), width, height);
-//        shipPortalIcon = Util.resize(Util.loadBuffImage("assets/portal/ship.png"), width, height);
-        System.out.println("assets/portals/" + type + ".png");
-//        portalIcon = Util.resize(Util.loadBuffImage("assets/portal/" + type + ".png"), width, height);
+
+        //assign portal image accorddingly the reseize it
         if (type == "cube"){
             portalIcon = Util.loadBuffImage("assets/portals/cubePortal.png");
         }
@@ -39,19 +42,8 @@ public class Portal {
         return new Rectangle(x, y, width, height);
     }
 
-    public void draw( Graphics g, int offsetX, int offsetY) {
-//        if (type == "ship") {
-////            g.setColor(Color.YELLOW);
-//            g.drawImage(shipPortalIcon, x + offsetX, y + offsetY, null);
-//        }
-//
-//        else if (type == "cube") {
-////            g.setColor(Color.GREEN);
-//            g.drawImage(cubePortalIcon, x + offsetX, y + offsetY, null);
-//        }
-//        portalIcon = Util.resize(Util.loadBuffImage("assets/portal/" + type + ".png"), width, height);
+    public void draw( Graphics g, int offsetX, int offsetY) { //draws the portal
         g.drawImage(portalIcon, x + offsetX, y + offsetY, null);
-//        g.fillRect(x + offsetX, y + offsetY, width, height);
     }
 
 

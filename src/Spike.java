@@ -7,10 +7,17 @@ import java.util.ArrayList;
 // hazards kill the player on contact - Kevin
 public class Spike {
 
+    //coordinate and dimensions of spike
     private int x, y;
     private int width = 75, height = 75;
+
+    //orintation
     private int orientation; // 0 = up, 1 = down
+
+    //sprite
     private BufferedImage img;
+
+    //type: normal or small or side
     private String type;
 
     // constructor
@@ -19,6 +26,8 @@ public class Spike {
         this.y = yy;
         this.orientation = orientation;
         this.type = type;
+
+        //assign the correct sprite according to spike's orientation and type
 
         if (type == "normal") {
 
@@ -78,6 +87,7 @@ public class Spike {
 
 
 
+    //for testing purposes
     public void drawHitbox(Graphics g, int offsetX, int offsetY) {
 
         int x = this.x + offsetX;
@@ -102,11 +112,12 @@ public class Spike {
 
 
     public void draw(Graphics g, int offsetX, int offsetY, Player player) {
-//        if (Util.onScreen(player, x)) {
-//            return;
-//        }
+        //same as solid
+
         int n = (int) (Globals.SCREEN_WIDTH / 2 - GamePanel.player.constantX);
         int a = (int) Math.abs(x - (player.getX() + n));
+
+        //same as solid
         if( Util.onScreen(player, x)) {
             int b =  (int) (a * 0.07 );
             if ( a < 550 || Math.abs(player.getGroundLevel() - Globals.floor) <300) {
@@ -118,8 +129,6 @@ public class Spike {
             g.drawImage(img, x + offsetX, y + offsetY + b, null);
 
         }
-
-       // drawHitbox(g, offsetX, offsetY);
     }
 
 

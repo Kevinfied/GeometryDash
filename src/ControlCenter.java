@@ -6,15 +6,15 @@ import java.awt.event.ActionListener;
 
 
 public class ControlCenter extends JFrame implements ActionListener {
+    //control different frame, panels, their timers
 
-
+    //3 frames:
     static MenuFrame MenuF = new MenuFrame();
     static GameFrame GameF = new GameFrame();
 
     static PauseScreen pauseMenu = new PauseScreen();
 
-    public ControlCenter() {
-    }
+    public ControlCenter() {}
 
     public void actionPerformed(ActionEvent e) {
     }
@@ -24,6 +24,7 @@ public class ControlCenter extends JFrame implements ActionListener {
     }
 
 
+    //show menu, player menu sound
     private static void start() {
         MenuF.timer.start();
         MenuF.setVisible(true);

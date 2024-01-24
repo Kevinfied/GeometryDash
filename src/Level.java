@@ -87,7 +87,6 @@ public class Level {
                     }
                     else if (c == 0xFF7F006E) {
                         v = 6;
-//                        System.out.println("portal found");
                     }
                     else if (c == 0xFF007F7F) {
                         v = 7;
